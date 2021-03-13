@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "702179245967",
+    "firebase_url": "https://tech-power-hour-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "tech-power-hour",
+    "storage_bucket": "tech-power-hour.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:702179245967:android:d1ff64b2f1a17777a495fa",
+        "android_client_info": {
+          "package_name": "com.example.techpowerhour"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "702179245967-23bnlctp1ib8i4qfvmieq1ffgid1o6r0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAG33uuo0QmMGymfWZlVYRQJB2PwfPN_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "702179245967-23bnlctp1ib8i4qfvmieq1ffgid1o6r0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

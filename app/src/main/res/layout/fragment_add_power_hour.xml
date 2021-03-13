@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.add_power_hour.AddPowerHourFragment">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.techpowerhour.ui.add_power_hour.AddPowerHourViewModel" />
+    </data>
+
+    <FrameLayout android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="1"
+            android:padding="20dp"
+            android:rowCount="4">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/workoutNameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add_ph_workout_name_hint"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_drive_file_rename_black_24dp"
+                android:paddingBottom="20dp" >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/workoutNameText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/durationLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/add_ph_duration_hint"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_schedule_black_24dp"
+                android:paddingBottom="20dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/durationText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/typeLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/add_ph_type_hint"
+                android:paddingBottom="20dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/typeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/datePickerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:hint="@string/add_ph_date_hint"
+                app:endIconDrawable="@drawable/ic_calendar_event_black_24dp"
+                app:endIconMode="custom">
+
+                <EditText
+                    android:id="@+id/datePickerText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusableInTouchMode="false"
+                    android:autofillHints=""
+                    android:inputType="date"
+                    tools:ignore="LabelFor" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </GridLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@android:drawable/ic_menu_save"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/add_ph_save_fab_desc" />
+
+    </FrameLayout>
+</layout>

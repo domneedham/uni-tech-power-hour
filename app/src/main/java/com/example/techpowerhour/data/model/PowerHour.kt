@@ -1,0 +1,42 @@
+package com.example.techpowerhour.data.model
+
+import com.example.techpowerhour.data.model.enums.PowerHourType
+import java.time.LocalDate
+import kotlin.math.ceil
+
+/**
+ * Hold all information about the Power Hour completed.
+ * @property name The user defined name of the Power Hour
+ * @property minutes The duration of the Power Hour in minutes.
+ * @property type The type of the Power Hour completed.
+ * @property epochDate The date the Power Hour was completed formatted as Long for easy serialisation.
+ * @property difficulty The difficulty of the Power Hour. Determined from the type of Power Hour (PowerHourType enum).
+ * @property points The points earned for the Power Hour.
+ */
+
+data class PowerHour(
+    var name: String,
+
+    var minutes: Double,
+
+    var type: PowerHourType,
+
+    var epochDate: Long,
+
+) {
+    var difficulty: Int = type.difficulty
+
+    var points: Int = ceil((minutes * difficulty) / 10).toInt()
+
+    var id: Int? = null
+
+    override fun toString(): String {
+        return "ID: $id \n" +
+                "Name: $name \n" +
+                "Duration: $minutes minutes \n" +
+                "Difficulty: $difficulty \n" +
+                "Points: $points \n" +
+                "Type: ${type.name} \n" +
+                "Date: ${LocalDate.ofEpochDay(epochDate)}"
+    }
+}

@@ -1,0 +1,40 @@
+package com.example.techpowerhour.util
+
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Context
+import com.example.techpowerhour.R
+import java.util.*
+
+class DatePickerHelper(context: Context, isSpinnerType: Boolean = false) {
+    private var dialog: DatePickerDialog
+    private var callback: Callback? = null
+    private val listener = OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+        callback?.onDateSelected(dayOfMonth, monthOfYear, year)
+    }
+
+    init {
+        val style = if (isSpinnerType) R.style.SpinnerDatePickerDialog else 0
+        val cal = Calendar.getInstance()
+        dialog = DatePickerDialog(context, style, listener,
+            cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+    }
+
+    fun showDialog(day: Int, month: Int, year: Int, callback: Callback?) {
+        this.callback = callback
+        dialog.datePicker.init(year, month, day, null)
+        dialog.show()
+    }
+
+    fun setMinDate(minDate: Long) {
+        dialog.datePicker.minDate = minDate
+    }
+
+    fun setMaxDate(maxDate: Long) {
+        dialog.datePicker.maxDate = maxDate
+    }
+
+    interface Callback {
+        fun onDateSelected(day: Int, month: Int, year: Int)
+    }
+}

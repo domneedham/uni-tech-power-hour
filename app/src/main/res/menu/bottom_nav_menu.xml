@@ -15,9 +15,4 @@
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_account_circle_black_24dp"
         android:title="@string/title_profile" />
-
-    <item
-        android:id="@+id/navigation_add_power_hour"
-        android:icon="@android:drawable/ic_input_add"
-        android:title="Add" />
 </menu>

@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.techpowerhour.R
 import com.example.techpowerhour.Repositories
 import com.example.techpowerhour.databinding.FragmentHomeBinding
 
@@ -30,12 +32,21 @@ class HomeFragment : Fragment() {
         // app stuff
         observePowerHourTable()
 
+        fabFragmentSwitchBinding()
+
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun fabFragmentSwitchBinding() {
+        binding.fab.setOnClickListener {
+            findNavController().navigate(R.id.navigation_add_power_hour)
+        }
+
     }
 
     private fun setupViewModelBinding() {

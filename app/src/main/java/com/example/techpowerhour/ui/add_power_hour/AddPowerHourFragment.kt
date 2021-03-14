@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.techpowerhour.R
 import com.example.techpowerhour.Repositories
 import com.example.techpowerhour.data.model.enums.PowerHourType
@@ -83,6 +84,9 @@ class AddPowerHourFragment : Fragment() {
             resetForm()
             Snackbar.make(requireContext(), requireView(), "Power hour created!", Snackbar.LENGTH_SHORT).show()
 
+            // go back to previous fragment
+            // can ignore if fails, leave user to navigate
+            findNavController().navigateUp()
         }
     }
 

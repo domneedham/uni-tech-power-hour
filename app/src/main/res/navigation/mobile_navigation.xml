@@ -26,6 +26,6 @@
     <fragment
         android:id="@+id/navigation_add_power_hour"
         android:name="com.example.techpowerhour.ui.add_power_hour.AddPowerHourFragment"
-        android:label="Add"
+        android:label="AddPowerHour"
         tools:layout="@layout/fragment_add_power_hour" />
 </navigation>

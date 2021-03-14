@@ -79,7 +79,7 @@
             android:contentDescription="@string/fab_add_content"
             android:layout_margin="16dp"
             android:clickable="true"
-            android:src="@android:drawable/ic_input_add"/>
+            android:src="@android:drawable/ic_input_add" />
 
     </FrameLayout>
 </layout>

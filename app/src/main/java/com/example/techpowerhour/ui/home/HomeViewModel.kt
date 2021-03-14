@@ -1,6 +1,8 @@
 package com.example.techpowerhour.ui.home
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.data.model.enums.PowerHourType
 import com.example.techpowerhour.data.repository.PowerHourRepository
@@ -13,13 +15,13 @@ class HomeViewModel(private val repository: PowerHourRepository) : ViewModel() {
         repository.insert(newPowerHour)
     }
 
-    fun addPowerHourRun() {
+    fun addPowerHourRun() = viewModelScope.launch {
         val newPowerHour = PowerHour("Run", 30.0, PowerHourType.Run, LocalDate.now().toEpochDay())
-        repository.insertTest()
+        repository.insert(newPowerHour)
     }
 
     fun deleteAllPowerHours() = viewModelScope.launch {
-//        repository.deleteAll()
+        repository.deleteAll()
     }
 
     fun getAllPowerHours(): LiveData<List<PowerHour>> {

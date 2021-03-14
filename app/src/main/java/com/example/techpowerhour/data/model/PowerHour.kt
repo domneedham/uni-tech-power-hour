@@ -15,20 +15,14 @@ import kotlin.math.ceil
  */
 
 data class PowerHour(
-    var name: String,
-
-    var minutes: Double,
-
-    var type: PowerHourType,
-
-    var epochDate: Long,
-
+    var name: String? = null,
+    var minutes: Double? = null,
+    var type: PowerHourType? = null,
+    var epochDate: Long? = null,
+    var difficulty: Int? = type?.difficulty,
+    var points: Int? = (difficulty?.let { minutes?.times(it) })?.div(10)?.let { ceil(it).toInt() }
 ) {
-    var difficulty: Int = type.difficulty
-
-    var points: Int = ceil((minutes * difficulty) / 10).toInt()
-
-    var id: Int? = null
+    var id: String? = null
 
     override fun toString(): String {
         return "ID: $id \n" +
@@ -36,7 +30,7 @@ data class PowerHour(
                 "Duration: $minutes minutes \n" +
                 "Difficulty: $difficulty \n" +
                 "Points: $points \n" +
-                "Type: ${type.name} \n" +
-                "Date: ${LocalDate.ofEpochDay(epochDate)}"
+                "Type: ${type?.name} \n" +
+                "Date: ${epochDate?.let { LocalDate.ofEpochDay(it) }}"
     }
 }

@@ -8,7 +8,7 @@ import com.example.techpowerhour.data.repository.PowerHourRepository
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class AddPowerHourViewModel(val repository: PowerHourRepository) : ViewModel() {
+class AddPowerHourViewModel(private val repository: PowerHourRepository) : ViewModel() {
     fun createNewPourHour(name: String, duration: Double, type: PowerHourType, date: LocalDate) = viewModelScope.launch {
         val powerHour = PowerHour(
             name,

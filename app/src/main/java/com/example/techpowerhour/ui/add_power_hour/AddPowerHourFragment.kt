@@ -86,7 +86,7 @@ class AddPowerHourFragment : Fragment() {
                 val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
                 val date = LocalDate.parse(dateText, formatter)
 
-                viewModel.createNewPourHour(
+                val powerHour = viewModel.createNewPourHour(
                         nameText,
                         durationText.toDouble(),
                         PowerHourType.valueOf(typeText),
@@ -94,7 +94,12 @@ class AddPowerHourFragment : Fragment() {
                 )
 
                 resetForm()
-                Snackbar.make(requireContext(), requireView(), "Power hour created!", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(
+                        requireContext(),
+                        requireView(),
+                        "Nice job, you earned ${powerHour.points} points!",
+                        Snackbar.LENGTH_SHORT
+                ).show()
 
                 // go back to previous fragment
                 // can ignore if fails, leave user to navigate

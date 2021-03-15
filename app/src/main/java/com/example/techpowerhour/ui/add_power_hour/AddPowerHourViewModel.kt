@@ -5,11 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.data.model.enums.PowerHourType
 import com.example.techpowerhour.data.repository.PowerHourRepository
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class AddPowerHourViewModel(private val repository: PowerHourRepository) : ViewModel() {
-    fun createNewPourHour(name: String, duration: Double, type: PowerHourType, date: LocalDate) = viewModelScope.launch {
+    fun createNewPourHour(name: String, duration: Double, type: PowerHourType, date: LocalDate): PowerHour {
         val powerHour = PowerHour(
             name,
             duration,
@@ -17,5 +18,6 @@ class AddPowerHourViewModel(private val repository: PowerHourRepository) : ViewM
             date.toEpochDay()
         )
         repository.insert(powerHour)
+        return powerHour
     }
 }

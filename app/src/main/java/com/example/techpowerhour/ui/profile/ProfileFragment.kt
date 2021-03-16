@@ -4,27 +4,47 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.techpowerhour.R
+import com.example.techpowerhour.Repositories
+import com.example.techpowerhour.databinding.FragmentHomeBinding
+import com.example.techpowerhour.databinding.FragmentProfileBinding
+import com.example.techpowerhour.ui.home.HomeViewModel
+import com.example.techpowerhour.ui.home.HomeViewModelFactory
 
 class ProfileFragment : Fragment() {
 
-    private lateinit var profileViewModel: ProfileViewModel
+    private var _binding: FragmentProfileBinding? = null
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
+
+    private lateinit var viewModel: ProfileViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        profileViewModel =
-                ViewModelProvider(this).get(ProfileViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_profile, container, false)
-        val textView: TextView = root.findViewById(R.id.text_profile)
-        profileViewModel.text.observe(viewLifecycleOwner, {
-            textView.text = it
-        })
-        return root
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+
+        setupViewModelBinding()
+
+        fabFragmentSwitchBinding()
+
+        return binding.root
+    }
+
+    private fun setupViewModelBinding() {
+        val viewModelFactory = ProfileViewModelFactory(Repositories.powerHour)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java)
+        binding.viewModel = viewModel
+    }
+
+    private fun fabFragmentSwitchBinding() {
+        binding.fab.setOnClickListener {
+            findNavController().navigate(R.id.navigation_add_power_hour)
+        }
     }
 }

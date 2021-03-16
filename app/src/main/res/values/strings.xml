@@ -6,10 +6,18 @@
 
     <string name="fab_add_content">Add new Pour Hour</string>
 
-<!--    Add power hour-->
+<!--    AddPowerHour fragment-->
     <string name="add_ph_workout_name_hint">Workout Name</string>
     <string name="add_ph_duration_hint">Duration (in minutes)</string>
     <string name="add_ph_type_hint">Type</string>
     <string name="add_ph_date_hint">Date</string>
     <string name="add_ph_save_fab_desc">Save the new pour hour</string>
+
+<!--    Profile fragment-->
+    <string name="profile_statistics_title">Statistics</string>
+    <string name="profile_controls_title">Controls</string>
+    <string name="profile_image_description">Profile picture of the user</string>
+    <string name="profile_points_subheading">Points</string>
+    <string name="profile_power_hours_subheading">Power Hours</string>
+    <string name="controls_power_hour_list_text">View and edit a list of your Power Hours</string>
 </resources>

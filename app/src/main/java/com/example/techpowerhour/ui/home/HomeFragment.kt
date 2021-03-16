@@ -46,7 +46,6 @@ class HomeFragment : Fragment() {
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.navigation_add_power_hour)
         }
-
     }
 
     private fun setupViewModelBinding() {

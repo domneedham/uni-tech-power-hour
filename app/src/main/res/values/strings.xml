@@ -20,4 +20,12 @@
     <string name="profile_points_subheading">Points</string>
     <string name="profile_power_hours_subheading">Power Hours</string>
     <string name="controls_power_hour_list_text">View and edit a list of your Power Hours</string>
+    <plurals name="profile_statistics_total_points">
+        <item quantity="one">You have earned %d point</item>
+        <item quantity="other">You have earned %d points</item>
+    </plurals>
+    <plurals name="profile_statistics_total_power_hours">
+        <item quantity="one">You have completed %d Power Hour</item>
+        <item quantity="other">You have completed %d Power Hours</item>
+    </plurals>
 </resources>

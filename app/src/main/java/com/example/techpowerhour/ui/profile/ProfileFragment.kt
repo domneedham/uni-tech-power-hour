@@ -33,6 +33,8 @@ class ProfileFragment : Fragment() {
 
         fabFragmentSwitchBinding()
 
+        changePowerHourStatisticsText()
+
         return binding.root
     }
 
@@ -46,5 +48,23 @@ class ProfileFragment : Fragment() {
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.navigation_add_power_hour)
         }
+    }
+
+    private fun changePowerHourStatisticsText() {
+        val totalPoints = viewModel.getTotalPointsEarned()
+        val totalPointsText = resources.getQuantityString(
+                R.plurals.profile_statistics_total_points,
+                totalPoints,
+                totalPoints
+        )
+        binding.pointsText.text = totalPointsText
+
+        val totalPowerHours = viewModel.getTotalPowerHours()
+        val totalPowerHoursText = resources.getQuantityString(
+                R.plurals.profile_statistics_total_power_hours,
+                totalPowerHours,
+                totalPowerHours
+        )
+        binding.numberWorkoutsText.text = totalPowerHoursText
     }
 }

@@ -32,6 +32,14 @@ class PowerHourRepository() {
         powerHours.removeValue()
     }
 
+    fun getTotalPointsEarned(): Int? {
+        return powerHoursLD.value?.sumOf { powerHour: PowerHour -> powerHour.points!! }
+    }
+
+    fun getTotalPowerHoursCreated(): Int? {
+        return powerHoursLD.value?.size
+    }
+
     private fun getAll() {
         powerHours.addValueEventListener(object : ValueEventListener {
             val powerHoursArray = ArrayList<PowerHour>()

@@ -3,6 +3,8 @@
     <string name="title_home">Home</string>
     <string name="title_leaderboard">Leaderboard</string>
     <string name="title_profile">Profile</string>
+    <string name="title_add_power_hour">Add Power Hour</string>
+    <string name="title_user_power_hour_list">Your Power Hours</string>
 
     <string name="fab_add_content">Add new Pour Hour</string>
 

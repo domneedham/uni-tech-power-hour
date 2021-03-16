@@ -26,12 +26,12 @@
     <fragment
         android:id="@+id/navigation_add_power_hour"
         android:name="com.example.techpowerhour.ui.add_power_hour.AddPowerHourFragment"
-        android:label="AddPowerHour"
+        android:label="@string/title_add_power_hour"
         tools:layout="@layout/fragment_add_power_hour" />
 
     <fragment
         android:id="@+id/navigation_user_power_hour_list"
         android:name="com.example.techpowerhour.ui.user_power_hour_list.UserPowerHourListFragment"
-        android:label="UserPowerHourList"
+        android:label="@string/title_user_power_hour_list"
         tools:layout="@layout/fragment_user_power_hour_list" />
 </navigation>

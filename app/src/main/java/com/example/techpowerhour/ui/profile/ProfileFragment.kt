@@ -32,6 +32,7 @@ class ProfileFragment : Fragment() {
         setupViewModelBinding()
 
         fabFragmentSwitchBinding()
+        powerHourListFragmentSwitchBinding()
 
         changePowerHourStatisticsText()
 
@@ -47,6 +48,12 @@ class ProfileFragment : Fragment() {
     private fun fabFragmentSwitchBinding() {
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.navigation_add_power_hour)
+        }
+    }
+
+    private fun powerHourListFragmentSwitchBinding() {
+        binding.controlsPowerHourListLayout.setOnClickListener {
+            findNavController().navigate(R.id.navigation_user_power_hour_list)
         }
     }
 

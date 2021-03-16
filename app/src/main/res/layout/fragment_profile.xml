@@ -175,15 +175,19 @@
                     android:background="?attr/selectableItemBackground"
                     android:minHeight="64dp"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/controls_layout"
-                    app:layout_constraintVertical_bias="0.0"
-                    tools:layout_editor_absoluteX="0dp">
+                    app:layout_constraintVertical_bias="0.0">
 
                     <TextView
                         android:id="@+id/controls_power_hour_list_title"
-                        android:layout_width="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="-1dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_toStartOf="@+id/controls_power_hour_end_icon"
                         android:maxLines="1"
                         android:paddingHorizontal="16dp"
                         android:paddingTop="16dp"
@@ -192,14 +196,28 @@
 
                     <TextView
                         android:id="@+id/controls_power_hour_list_text"
-                        android:layout_width="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/controls_power_hour_list_title"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"
+                        android:layout_toStartOf="@+id/controls_power_hour_end_icon"
                         android:maxLines="2"
                         android:paddingHorizontal="16dp"
                         android:text="@string/controls_power_hour_list_text"
                         android:textAppearance="?attr/textAppearanceBody2" />
+
+                    <ImageView
+                        android:id="@+id/controls_power_hour_end_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/profile_power_hour_list_chevron"
+                        android:src="@drawable/ic_chevron_right_24dp" />
 
                 </RelativeLayout>
 

@@ -82,6 +82,45 @@ class PowerHourRepository() {
         return points
     }
 
+    fun getTotalPowerHoursCompletedTodayForCompany(): LiveData<Int> {
+        val points: MutableLiveData<Int> = MutableLiveData(0)
+        val todayEpoch = LocalDate.now().toEpochDay()
+        powerHoursLD.observeForever {
+            val observePoints = it
+                    .filter { powerHour: PowerHour -> powerHour.epochDate!! >= todayEpoch }
+                    .count()
+            points.value = observePoints
+        }
+        return points
+    }
+
+    fun getTotalPowerHoursCompletedThisWeekForCompany(): LiveData<Int> {
+        val points: MutableLiveData<Int> = MutableLiveData(0)
+        val differenceInDays = LocalDate.now().dayOfWeek.compareTo(DayOfWeek.MONDAY).toLong()
+        val weekEpoch = LocalDate.now().minusDays(differenceInDays).toEpochDay()
+        powerHoursLD.observeForever {
+            val observePoints = it
+                    .filter { powerHour: PowerHour -> powerHour.epochDate!! >= weekEpoch }
+                    .count()
+            points.value = observePoints
+        }
+        return points
+    }
+
+    fun getTotalPowerHoursCompletedThisMonthForCompany(): LiveData<Int> {
+        val points: MutableLiveData<Int> = MutableLiveData(0)
+        // get difference between current date and first day of the month
+        val differenceInDays = LocalDate.now().dayOfMonth - 1.toLong()
+        val monthEpoch = LocalDate.now().minusDays(differenceInDays).toEpochDay()
+        powerHoursLD.observeForever {
+            val observePoints = it
+                    .filter { powerHour: PowerHour -> powerHour.epochDate!! >= monthEpoch }
+                    .count()
+            points.value = observePoints
+        }
+        return points
+    }
+
     private fun getAll() {
         powerHours.addValueEventListener(object : ValueEventListener {
             val powerHoursArray = ArrayList<PowerHour>()

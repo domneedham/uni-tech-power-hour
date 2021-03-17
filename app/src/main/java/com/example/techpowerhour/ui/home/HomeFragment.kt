@@ -36,8 +36,8 @@ class HomeFragment : Fragment() {
 
         // point statistics
         changePointsEarnedStatistics()
-
         // power hour statistics
+        changePowerHoursCompletedStatistics()
 
         return binding.root
     }
@@ -88,12 +88,41 @@ class HomeFragment : Fragment() {
         })
 
         viewModel.getTotalPointsEarnedThisMonthForCompany().observe(viewLifecycleOwner, {
-            value -> val pointsWeekText = resources.getQuantityString(
+            value -> val pointsMonthText = resources.getQuantityString(
                 R.plurals.home_company_points_month,
                 value,
                 value
         )
-            binding.companyPointsLayoutMonthText.text = pointsWeekText
+            binding.companyPointsLayoutMonthText.text = pointsMonthText
+        })
+    }
+
+    private fun changePowerHoursCompletedStatistics() {
+        viewModel.getTotalPowerHoursCompletedTodayForCompany().observe(viewLifecycleOwner, {
+            value -> val powerHoursTodayText = resources.getQuantityString(
+                R.plurals.home_company_power_hour_today,
+                value,
+                value
+        )
+            binding.companyPowerHoursLayoutTodayText.text = powerHoursTodayText
+        })
+
+        viewModel.getTotalPowerHoursCompletedThisWeekForCompany().observe(viewLifecycleOwner, {
+            value -> val powerHoursWeekText = resources.getQuantityString(
+                R.plurals.home_company_power_hour_week,
+                value,
+                value
+        )
+            binding.companyPowerHoursLayoutWeekText.text = powerHoursWeekText
+        })
+
+        viewModel.getTotalPowerHoursCompletedThisMonthForCompany().observe(viewLifecycleOwner, {
+            value -> val powerHoursMonthText = resources.getQuantityString(
+                R.plurals.home_company_power_hour_month,
+                value,
+                value
+        )
+            binding.companyPowerHoursLayoutMonthText.text = powerHoursMonthText
         })
     }
 }

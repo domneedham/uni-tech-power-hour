@@ -69,20 +69,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun changePointsEarnedStatistics() {
-        val pointsToday = viewModel.getTotalPointsEarnedTodayForCompany()
-        val pointsTodayText = resources.getQuantityString(
-            R.plurals.home_company_points_today,
-            pointsToday,
-            pointsToday
+        viewModel.getTotalPointsEarnedTodayForCompany().observe(viewLifecycleOwner, {
+            value -> val pointsTodayText = resources.getQuantityString(
+                R.plurals.home_company_points_today,
+                value,
+                value
         )
-        binding.companyPointsLayoutTodayText.text = pointsTodayText
+            binding.companyPointsLayoutTodayText.text = pointsTodayText
+        })
 
-        val pointsWeek = viewModel.getTotalPointsEarnedThisWeekForCompany()
-        val pointsWeekText = resources.getQuantityString(
+        viewModel.getTotalPointsEarnedThisWeekForCompany().observe(viewLifecycleOwner, {
+            value -> val pointsWeekText = resources.getQuantityString(
                 R.plurals.home_company_points_week,
-                pointsWeek,
-                pointsWeek
+                value,
+                value
         )
-        binding.companyPointsLayoutWeekText.text = pointsWeekText
+            binding.companyPointsLayoutWeekText.text = pointsWeekText
+        })
     }
 }

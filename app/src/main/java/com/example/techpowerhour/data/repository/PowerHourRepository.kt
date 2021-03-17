@@ -1,6 +1,7 @@
 package com.example.techpowerhour.data.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.techpowerhour.data.model.PowerHour
 import com.google.firebase.database.*
@@ -42,19 +43,29 @@ class PowerHourRepository() {
         return powerHoursLD.value?.size
     }
 
-    fun getTotalPointsEarnedTodayForCompany(): Int? {
+    fun getTotalPointsEarnedTodayForCompany(): LiveData<Int> {
+        val points: MutableLiveData<Int> = MutableLiveData(0)
         val todayEpoch = LocalDate.now().toEpochDay()
-        return powerHoursLD.value
-                ?.filter { powerHour: PowerHour -> powerHour.epochDate!! >= todayEpoch  }
-                ?.sumOf { powerHour: PowerHour -> powerHour.points!! }
+        powerHoursLD.observeForever {
+            val observePoints = it
+                    .filter { powerHour: PowerHour -> powerHour.epochDate!! >= todayEpoch }
+                    .sumOf { powerHour: PowerHour -> powerHour.points!! }
+            points.value = observePoints
+        }
+        return points
     }
 
-    fun getTotalPointsEarnedThisWeekForCompany(): Int? {
+    fun getTotalPointsEarnedThisWeekForCompany(): LiveData<Int> {
+        val points: MutableLiveData<Int> = MutableLiveData(0)
         val differenceInDays = LocalDate.now().dayOfWeek.compareTo(DayOfWeek.MONDAY).toLong()
         val weekEpoch = LocalDate.now().minusDays(differenceInDays).toEpochDay()
-        return powerHoursLD.value
-                ?.filter { powerHour: PowerHour -> powerHour.epochDate!! >= weekEpoch  }
-                ?.sumOf { powerHour: PowerHour -> powerHour.points!! }
+        powerHoursLD.observeForever {
+            val observePoints = it
+                    .filter { powerHour: PowerHour -> powerHour.epochDate!! >= weekEpoch }
+                    .sumOf { powerHour: PowerHour -> powerHour.points!! }
+            points.value = observePoints
+        }
+        return points
     }
 
     private fun getAll() {

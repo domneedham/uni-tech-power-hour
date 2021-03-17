@@ -28,11 +28,11 @@ class HomeViewModel(private val repository: PowerHourRepository) : ViewModel() {
         return repository.powerHoursLD
     }
 
-    fun getTotalPointsEarnedTodayForCompany() : Int {
-        return repository.getTotalPointsEarnedTodayForCompany() ?: 0
+    fun getTotalPointsEarnedTodayForCompany() : LiveData<Int> {
+        return repository.getTotalPointsEarnedTodayForCompany()
     }
 
-    fun getTotalPointsEarnedThisWeekForCompany() : Int {
-        return repository.getTotalPointsEarnedThisWeekForCompany() ?: 0
+    fun getTotalPointsEarnedThisWeekForCompany() : LiveData<Int> {
+        return repository.getTotalPointsEarnedThisWeekForCompany()
     }
 }

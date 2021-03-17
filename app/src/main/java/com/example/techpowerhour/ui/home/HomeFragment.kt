@@ -34,6 +34,11 @@ class HomeFragment : Fragment() {
 
         fabFragmentSwitchBinding()
 
+        // point statistics
+        changePointsEarnedStatistics()
+
+        // power hour statistics
+
         return binding.root
     }
 
@@ -61,5 +66,23 @@ class HomeFragment : Fragment() {
                 powerHours)
             binding.powerHourList.adapter = adapter
         })
+    }
+
+    private fun changePointsEarnedStatistics() {
+        val pointsToday = viewModel.getTotalPointsEarnedTodayForCompany()
+        val pointsTodayText = resources.getQuantityString(
+            R.plurals.home_company_points_today,
+            pointsToday,
+            pointsToday
+        )
+        binding.companyPointsLayoutTodayText.text = pointsTodayText
+
+        val pointsWeek = viewModel.getTotalPointsEarnedThisWeekForCompany()
+        val pointsWeekText = resources.getQuantityString(
+                R.plurals.home_company_points_week,
+                pointsWeek,
+                pointsWeek
+        )
+        binding.companyPointsLayoutWeekText.text = pointsWeekText
     }
 }

@@ -6,6 +6,8 @@ import com.example.techpowerhour.data.model.PowerHour
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.time.DayOfWeek
+import java.time.LocalDate
 import java.util.*
 
 class PowerHourRepository() {
@@ -38,6 +40,21 @@ class PowerHourRepository() {
 
     fun getTotalPowerHoursCreated(): Int? {
         return powerHoursLD.value?.size
+    }
+
+    fun getTotalPointsEarnedTodayForCompany(): Int? {
+        val todayEpoch = LocalDate.now().toEpochDay()
+        return powerHoursLD.value
+                ?.filter { powerHour: PowerHour -> powerHour.epochDate!! >= todayEpoch  }
+                ?.sumOf { powerHour: PowerHour -> powerHour.points!! }
+    }
+
+    fun getTotalPointsEarnedThisWeekForCompany(): Int? {
+        val differenceInDays = LocalDate.now().dayOfWeek.compareTo(DayOfWeek.MONDAY).toLong()
+        val weekEpoch = LocalDate.now().minusDays(differenceInDays).toEpochDay()
+        return powerHoursLD.value
+                ?.filter { powerHour: PowerHour -> powerHour.epochDate!! >= weekEpoch  }
+                ?.sumOf { powerHour: PowerHour -> powerHour.points!! }
     }
 
     private fun getAll() {

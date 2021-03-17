@@ -8,6 +8,19 @@
 
     <string name="fab_add_content">Add new Pour Hour</string>
 
+<!--    Home fragment-->
+    <string name="home_company_points_statistics_title">BT Point Statistics</string>
+    <string name="home_company_points_statistics_title_today">Points Earned Today</string>
+    <plurals name="home_company_points_today">
+        <item quantity="one">%d point recorded today</item>
+        <item quantity="other">%d points recorded today</item>
+    </plurals>
+    <string name="home_company_points_statistics_title_week">Points Earned This Week</string>
+    <plurals name="home_company_points_week">
+        <item quantity="one">%d point recorded this week</item>
+        <item quantity="other">%d points recorded this week</item>
+    </plurals>
+
 <!--    AddPowerHour fragment-->
     <string name="add_ph_workout_name_hint">Workout Name</string>
     <string name="add_ph_duration_hint">Duration (in minutes)</string>

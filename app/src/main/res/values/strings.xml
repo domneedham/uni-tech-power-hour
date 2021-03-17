@@ -20,6 +20,11 @@
         <item quantity="one">%d point recorded this week</item>
         <item quantity="other">%d points recorded this week</item>
     </plurals>
+    <string name="home_company_points_statistics_title_month">Points Earned This Month</string>
+    <plurals name="home_company_points_month">
+        <item quantity="one">%d point recorded this month</item>
+        <item quantity="other">%d points recorded this month</item>
+    </plurals>
 
 <!--    AddPowerHour fragment-->
     <string name="add_ph_workout_name_hint">Workout Name</string>

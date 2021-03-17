@@ -35,4 +35,8 @@ class HomeViewModel(private val repository: PowerHourRepository) : ViewModel() {
     fun getTotalPointsEarnedThisWeekForCompany() : LiveData<Int> {
         return repository.getTotalPointsEarnedThisWeekForCompany()
     }
+
+    fun getTotalPointsEarnedThisMonthForCompany() : LiveData<Int> {
+        return repository.getTotalPointsEarnedThisMonthForCompany()
+    }
 }

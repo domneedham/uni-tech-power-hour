@@ -86,5 +86,14 @@ class HomeFragment : Fragment() {
         )
             binding.companyPointsLayoutWeekText.text = pointsWeekText
         })
+
+        viewModel.getTotalPointsEarnedThisMonthForCompany().observe(viewLifecycleOwner, {
+            value -> val pointsWeekText = resources.getQuantityString(
+                R.plurals.home_company_points_month,
+                value,
+                value
+        )
+            binding.companyPointsLayoutMonthText.text = pointsWeekText
+        })
     }
 }

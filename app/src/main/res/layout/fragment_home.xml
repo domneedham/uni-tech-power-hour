@@ -102,6 +102,38 @@
 
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/company_points_layout_month"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/company_points_layout_week"
+                    android:background="?attr/selectableItemBackground"
+                    android:minHeight="64dp"
+                    app:layout_constraintTop_toBottomOf="@+id/company_points_layout_week">
+
+                    <TextView
+                        android:id="@+id/company_points_layout_month_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:paddingHorizontal="16dp"
+                        android:paddingTop="16dp"
+                        android:text="@string/home_company_points_statistics_title_month"
+                        android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+                    <TextView
+                        android:id="@+id/company_points_layout_month_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/company_points_layout_month_title"
+                        android:layout_gravity="center_vertical"
+                        android:maxLines="2"
+                        android:paddingHorizontal="16dp"
+                        android:text="150 points recorded this month"
+                        android:textAppearance="?attr/textAppearanceBody2" />
+
+                </RelativeLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

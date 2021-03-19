@@ -29,9 +29,6 @@ class HomeFragment : Fragment() {
 
         setupViewModelBinding()
 
-        // app stuff
-        observePowerHourTable()
-
         fabFragmentSwitchBinding()
 
         // point statistics
@@ -57,15 +54,6 @@ class HomeFragment : Fragment() {
         val viewModelFactory = HomeViewModelFactory(Repositories.powerHour)
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
         binding.viewModel = viewModel
-    }
-
-    private fun observePowerHourTable() {
-        viewModel.getAllPowerHours().observe(viewLifecycleOwner, { powerHours ->
-            val adapter = ArrayAdapter((activity?.application!!),
-                android.R.layout.simple_list_item_1,
-                powerHours)
-            binding.powerHourList.adapter = adapter
-        })
     }
 
     private fun changePointsEarnedStatistics() {

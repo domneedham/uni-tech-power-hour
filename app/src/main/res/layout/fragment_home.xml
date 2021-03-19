@@ -3,7 +3,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.home.HomeFragment" >
 
     <data>
         <variable
@@ -17,9 +17,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="8dp">
 
-<!--            BT Point Statistics-->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/company_points_layout"
                 android:layout_width="match_parent"
@@ -37,6 +37,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+
                 <RelativeLayout
                     android:id="@+id/company_points_layout_today"
                     android:layout_width="match_parent"
@@ -53,9 +54,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
-                        android:paddingTop="16dp"
                         android:paddingHorizontal="16dp"
-                        android:text="@string/home_company_points_statistics_title_today"
+                        android:paddingTop="16dp"
+                        android:text="@string/home_company_statistics_title_today"
                         android:textAppearance="?attr/textAppearanceSubtitle1" />
 
                     <TextView
@@ -87,7 +88,7 @@
                         android:maxLines="1"
                         android:paddingHorizontal="16dp"
                         android:paddingTop="16dp"
-                        android:text="@string/home_company_points_statistics_title_week"
+                        android:text="@string/home_company_statistics_title_week"
                         android:textAppearance="?attr/textAppearanceSubtitle1" />
 
                     <TextView
@@ -119,7 +120,7 @@
                         android:maxLines="1"
                         android:paddingHorizontal="16dp"
                         android:paddingTop="16dp"
-                        android:text="@string/home_company_points_statistics_title_month"
+                        android:text="@string/home_company_statistics_title_month"
                         android:textAppearance="?attr/textAppearanceSubtitle1" />
 
                     <TextView
@@ -137,11 +138,12 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--            BT Power Hour Statistics-->
+            <!--            BT Power Hour Statistics-->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/company_power_hours_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp">
 
                 <TextView
                     android:id="@+id/company_power_hours_layout_header"
@@ -171,9 +173,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
-                        android:paddingTop="16dp"
                         android:paddingHorizontal="16dp"
-                        android:text="@string/home_company_power_hour_statistics_title_today"
+                        android:paddingTop="16dp"
+                        android:text="@string/home_company_statistics_title_today"
                         android:textAppearance="?attr/textAppearanceSubtitle1" />
 
                     <TextView
@@ -205,7 +207,7 @@
                         android:maxLines="1"
                         android:paddingHorizontal="16dp"
                         android:paddingTop="16dp"
-                        android:text="@string/home_company_power_hour_statistics_title_week"
+                        android:text="@string/home_company_statistics_title_week"
                         android:textAppearance="?attr/textAppearanceSubtitle1" />
 
                     <TextView
@@ -237,7 +239,7 @@
                         android:maxLines="1"
                         android:paddingHorizontal="16dp"
                         android:paddingTop="16dp"
-                        android:text="@string/home_company_power_hour_statistics_title_month"
+                        android:text="@string/home_company_statistics_title_month"
                         android:textAppearance="?attr/textAppearanceSubtitle1" />
 
                     <TextView
@@ -255,58 +257,8 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="50dp">
-
-                <Button
-                    android:id="@+id/addWalkButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:onClick="@{() -> viewModel.addPowerHourWalk()}"
-                    android:text="Add Walk"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/addRunButton"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/addRunButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="40dp"
-                    android:onClick="@{() -> viewModel.addPowerHourRun()}"
-                    android:text="Add Run"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/deleteAllButton"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-
-                <Button
-                    android:id="@+id/deleteAllButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:onClick="@{() -> viewModel.deleteAllPowerHours()}"
-                    android:text="Remove All"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <ListView
-                android:id="@+id/powerHourList"
-                android:layout_width="match_parent"
-                android:layout_height="368dp"
-                android:layout_marginTop="25dp"
-                android:listSelector="@android:color/darker_gray" />
         </LinearLayout>
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

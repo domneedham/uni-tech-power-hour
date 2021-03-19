@@ -9,35 +9,33 @@
     <string name="fab_add_content">Add new Pour Hour</string>
 
 <!--    Home fragment-->
+    <string name="home_company_statistics_title_today">Today</string>
+    <string name="home_company_statistics_title_week">This Week</string>
+    <string name="home_company_statistics_title_month">This Month</string>
+
     <string name="home_company_points_statistics_title">BT Point Statistics</string>
-    <string name="home_company_points_statistics_title_today">Points Earned Today</string>
     <plurals name="home_company_points_today">
         <item quantity="one">%d point recorded today</item>
         <item quantity="other">%d points recorded today</item>
     </plurals>
-    <string name="home_company_points_statistics_title_week">Points Earned This Week</string>
     <plurals name="home_company_points_week">
         <item quantity="one">%d point recorded this week</item>
         <item quantity="other">%d points recorded this week</item>
     </plurals>
-    <string name="home_company_points_statistics_title_month">Points Earned This Month</string>
     <plurals name="home_company_points_month">
         <item quantity="one">%d point recorded this month</item>
         <item quantity="other">%d points recorded this month</item>
     </plurals>
 
     <string name="home_company_power_hour_statistics_title">BT Power Hour Statistics</string>
-    <string name="home_company_power_hour_statistics_title_today">Power Hours Completed Today</string>
     <plurals name="home_company_power_hour_today">
         <item quantity="one">%d Power Hour recorded today</item>
         <item quantity="other">%d Power Hours recorded today</item>
     </plurals>
-    <string name="home_company_power_hour_statistics_title_week">Power Hours Completed This Week</string>
     <plurals name="home_company_power_hour_week">
         <item quantity="one">%d Power Hour recorded this week</item>
         <item quantity="other">%d Power Hours recorded this week</item>
     </plurals>
-    <string name="home_company_power_hour_statistics_title_month">Power Hours Completed This Month</string>
     <plurals name="home_company_power_hour_month">
         <item quantity="one">%d Power Hour recorded this month</item>
         <item quantity="other">%d Power Hours recorded this month</item>

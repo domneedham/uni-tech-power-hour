@@ -1,5 +1,7 @@
 package com.example.techpowerhour.ui.user_power_hour_list
 
+import android.app.AlertDialog
+import android.app.Dialog
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -58,10 +60,23 @@ class UserPowerHourListFragment : Fragment() {
             val adapter = PowerHourRecyclerAdapter(
                 powerHours,
                 { powerHour -> editPowerHour(powerHour) },
-                { powerHour -> viewModel.deletePowerHour(powerHour) }
+                { powerHour -> deletePowerHour(powerHour) }
             )
             binding.powerHourList.adapter = adapter
         })
+    }
+
+    private fun deletePowerHour(powerHour: PowerHour) {
+        val builder = AlertDialog.Builder(this.context)
+        builder.setMessage("Are you sure you want to delete ${powerHour.name}?")
+            .setCancelable(false)
+            .setPositiveButton("Yes") { _, _ ->
+                viewModel.deletePowerHour(powerHour)
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+        builder.show()
     }
 
     private fun editPowerHour(powerHour: PowerHour) {

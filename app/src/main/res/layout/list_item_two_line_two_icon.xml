@@ -49,13 +49,14 @@
 
         <ImageButton
             android:id="@+id/mtrl_list_item_icon_delete"
-            android:src="@drawable/ic_delete_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/mtrl_list_item_icon_edit"
-            android:padding="8dp"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/ph_list_delete_icon"/>
+            android:contentDescription="@string/ph_list_delete_icon"
+            android:padding="8dp"
+            android:src="@drawable/ic_delete_24dp"
+            android:tint="#B71C1C" />
 
     </RelativeLayout>
 

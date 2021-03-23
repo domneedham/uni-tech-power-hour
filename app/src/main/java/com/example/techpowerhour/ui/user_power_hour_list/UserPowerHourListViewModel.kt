@@ -9,4 +9,8 @@ class UserPowerHourListViewModel(private val repository: PowerHourRepository) : 
     fun getAllPowerHours(): LiveData<List<PowerHour>> {
         return repository.powerHoursLD
     }
+
+    fun deletePowerHour(powerHour: PowerHour) {
+        return repository.delete(powerHour)
+    }
 }

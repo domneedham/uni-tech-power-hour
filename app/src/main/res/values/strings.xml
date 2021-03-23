@@ -64,4 +64,8 @@
         <item quantity="other">You have completed %d Power Hours</item>
     </plurals>
     <string name="profile_power_hour_list_chevron">End icon for card</string>
+
+<!--    PowerHourList fragment-->
+    <string name="ph_list_edit_icon">Edit icon button for list item</string>
+    <string name="ph_list_delete_icon">Delete icon button for list item</string>
 </resources>

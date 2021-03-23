@@ -8,11 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.techpowerhour.R
 import com.example.techpowerhour.Repositories
+import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.databinding.FragmentProfileBinding
 import com.example.techpowerhour.databinding.FragmentUserPowerHourListBinding
 import com.example.techpowerhour.ui.profile.ProfileViewModel
@@ -25,13 +28,18 @@ class UserPowerHourListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: UserPowerHourListViewModel
+    
+    private lateinit var layoutManager: LinearLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentUserPowerHourListBinding.inflate(inflater, container, false)
+
+        layoutManager = LinearLayoutManager(this.context)
+        binding.powerHourList.layoutManager = layoutManager
 
         setupViewModelBinding()
         observePowerHourTable()
@@ -47,11 +55,16 @@ class UserPowerHourListFragment : Fragment() {
 
     private fun observePowerHourTable() {
         viewModel.getAllPowerHours().observe(viewLifecycleOwner, { powerHours ->
-            val adapter = ArrayAdapter((activity?.application!!),
-                    android.R.layout.simple_list_item_1,
-                    powerHours)
+            val adapter = PowerHourRecyclerAdapter(
+                powerHours,
+                { powerHour -> editPowerHour(powerHour) },
+                { powerHour -> viewModel.deletePowerHour(powerHour) }
+            )
             binding.powerHourList.adapter = adapter
         })
     }
 
+    private fun editPowerHour(powerHour: PowerHour) {
+        // TODO
+    }
 }

@@ -50,9 +50,12 @@ class AddPowerHourFragment : Fragment() {
 
         powerHourId = arguments?.getString("id")
         if (powerHourId != null) {
+            // change title to show form is in edit mode
             (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.title_edit_power_hour)
+            // get the full power pour the user wants to edit
             oldPowerHour = viewModel.getPowerHourById(powerHourId!!)
-            copyValues()
+            // copy the new values into the form fields
+            copyValuesFromOldPowerHour()
         }
 
         setupCalendarBinding()
@@ -74,7 +77,7 @@ class AddPowerHourFragment : Fragment() {
         dateField = binding.datePickerText
     }
 
-    private fun copyValues() {
+    private fun copyValuesFromOldPowerHour() {
         nameField.setText(oldPowerHour?.name, TextView.BufferType.NORMAL)
         durationField.setText(oldPowerHour?.minutes.toString(), TextView.BufferType.NORMAL)
         typeField.setText(oldPowerHour?.type.toString(), TextView.BufferType.NORMAL)
@@ -114,37 +117,41 @@ class AddPowerHourFragment : Fragment() {
             resetFormErrors()
 
             val errors = checkForFormErrors(nameText, durationText, typeText, dateText)
+            if (errors) return@setOnClickListener
 
-            if (!errors) {
-                val powerHour: PowerHour = if (powerHourId != null) {
-                    viewModel.updatePowerHour(
-                        oldPowerHour!!,
-                        nameText,
-                        durationText,
-                        typeText,
-                        dateText
-                    )
-                } else {
-                    viewModel.createNewPourHour(
-                        nameText,
-                        durationText,
-                        typeText,
-                        dateText
-                    )
-                }
-
-                resetForm()
-                Snackbar.make(
-                    requireContext(),
-                    requireView(),
-                    "Nice job, you earned ${powerHour.points} points!",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-
-                // go back to previous fragment
-                // can ignore if fails, leave user to navigate
-                findNavController().navigateUp()
+            val powerHour: PowerHour = if (powerHourId != null) {
+                viewModel.updatePowerHour(
+                    oldPowerHour!!,
+                    nameText,
+                    durationText,
+                    typeText,
+                    dateText
+                )
+            } else {
+                viewModel.createNewPourHour(
+                    nameText,
+                    durationText,
+                    typeText,
+                    dateText
+                )
             }
+
+            Snackbar.make(
+                requireContext(),
+                requireView(),
+                resources.getQuantityString(
+                        R.plurals.add_ph_on_save_snackbar,
+                        powerHour.points!!,
+                        powerHour.points!!
+                ),
+                Snackbar.LENGTH_SHORT
+            ).show()
+
+            resetForm()
+
+            // go back to previous fragment
+            // can ignore if fails, leave user to navigate
+            findNavController().navigateUp()
         }
     }
 

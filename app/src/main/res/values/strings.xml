@@ -48,6 +48,10 @@
     <string name="add_ph_type_hint">Type</string>
     <string name="add_ph_date_hint">Date</string>
     <string name="add_ph_save_fab_desc">Save the new pour hour</string>
+    <plurals name="add_ph_on_save_snackbar">
+        <item quantity="one">Nice job, you have earned %d point!</item>
+        <item quantity="other">Nice job, you have earned %d points!</item>
+    </plurals>
 
 <!--    Profile fragment-->
     <string name="profile_statistics_title">Statistics</string>

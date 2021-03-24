@@ -5,24 +5,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.techpowerhour.R
 import com.example.techpowerhour.Repositories
+import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.data.model.enums.PowerHourType
 import com.example.techpowerhour.databinding.FragmentAddPowerHourBinding
+import com.example.techpowerhour.util.DateHelper
 import com.example.techpowerhour.util.DatePickerHelper
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputLayout
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 class AddPowerHourFragment : Fragment() {
+    private var powerHourId: String? = null
+    private var oldPowerHour: PowerHour? = null
 
     private lateinit var viewModel: AddPowerHourViewModel
 
@@ -32,6 +34,11 @@ class AddPowerHourFragment : Fragment() {
 
     private lateinit var datePicker: DatePickerHelper
 
+    private lateinit var nameField: EditText
+    private lateinit var durationField: EditText
+    private lateinit var typeField: EditText
+    private lateinit var dateField: EditText
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,6 +46,15 @@ class AddPowerHourFragment : Fragment() {
         _binding = FragmentAddPowerHourBinding.inflate(inflater, container, false)
 
         setupViewModelBinding()
+        bindTextFields()
+
+        powerHourId = arguments?.getString("id")
+        if (powerHourId != null) {
+            (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.title_edit_power_hour)
+            oldPowerHour = viewModel.getPowerHourById(powerHourId!!)
+            copyValues()
+        }
+
         setupCalendarBinding()
         setupDropdownMenu()
         setupSaveButtonBinding()
@@ -49,6 +65,23 @@ class AddPowerHourFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun bindTextFields() {
+        nameField = binding.workoutNameText
+        durationField = binding.durationText
+        typeField = binding.typeText
+        dateField = binding.datePickerText
+    }
+
+    private fun copyValues() {
+        nameField.setText(oldPowerHour?.name, TextView.BufferType.NORMAL)
+        durationField.setText(oldPowerHour?.minutes.toString(), TextView.BufferType.NORMAL)
+        typeField.setText(oldPowerHour?.type.toString(), TextView.BufferType.NORMAL)
+        dateField.setText(
+                oldPowerHour?.epochDate?.let { DateHelper.displayDate(it) },
+                TextView.BufferType.NORMAL
+        )
     }
 
     private fun setupViewModelBinding() {
@@ -73,32 +106,39 @@ class AddPowerHourFragment : Fragment() {
 
     private fun setupSaveButtonBinding() {
         binding.floatingActionButton.setOnClickListener {
-            val nameText = binding.workoutNameText.text.toString().trim()
-            val durationText = binding.durationText.text.toString().trim()
-            val typeText = binding.typeText.text.toString().trim()
-            val dateText = binding.datePickerText.text.toString().trim()
+            val nameText = nameField.text.toString().trim()
+            val durationText = durationField.text.toString().trim()
+            val typeText = typeField.text.toString().trim()
+            val dateText = dateField.text.toString().trim()
 
             resetFormErrors()
 
             val errors = checkForFormErrors(nameText, durationText, typeText, dateText)
 
             if (!errors) {
-                val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-                val date = LocalDate.parse(dateText, formatter)
-
-                val powerHour = viewModel.createNewPourHour(
+                val powerHour: PowerHour = if (powerHourId != null) {
+                    viewModel.updatePowerHour(
+                        oldPowerHour!!,
                         nameText,
-                        durationText.toDouble(),
-                        PowerHourType.valueOf(typeText),
-                        date
-                )
+                        durationText,
+                        typeText,
+                        dateText
+                    )
+                } else {
+                    viewModel.createNewPourHour(
+                        nameText,
+                        durationText,
+                        typeText,
+                        dateText
+                    )
+                }
 
                 resetForm()
                 Snackbar.make(
-                        requireContext(),
-                        requireView(),
-                        "Nice job, you earned ${powerHour.points} points!",
-                        Snackbar.LENGTH_SHORT
+                    requireContext(),
+                    requireView(),
+                    "Nice job, you earned ${powerHour.points} points!",
+                    Snackbar.LENGTH_SHORT
                 ).show()
 
                 // go back to previous fragment

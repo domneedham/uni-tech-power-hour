@@ -19,10 +19,18 @@ data class PowerHour(
     var minutes: Double? = null,
     var type: PowerHourType? = null,
     var epochDate: Long? = null,
-    var difficulty: Int? = type?.difficulty,
-    var points: Int? = (difficulty?.let { minutes?.times(it) })?.div(10)?.let { ceil(it).toInt() }
 ) {
     var id: String? = null
+
+    val difficulty: Int?
+        get(): Int? = type?.difficulty
+
+    val points: Int?
+        get(): Int? = calculatePoints()
+
+    private fun calculatePoints() : Int? {
+        return (difficulty?.let { minutes?.times(it) })?.div(10)?.let { ceil(it).toInt() }
+    }
 
     override fun toString(): String {
         return "ID: $id \n" +

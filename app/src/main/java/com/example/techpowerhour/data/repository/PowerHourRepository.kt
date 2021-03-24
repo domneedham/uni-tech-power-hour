@@ -26,6 +26,9 @@ class PowerHourRepository() {
         powerHours.child(id).setValue(newPourHour)
     }
 
+    fun update(powerHour: PowerHour) {
+        powerHours.child(powerHour.id!!).setValue(powerHour)
+    }
 
     fun delete(pourHour: PowerHour) {
         powerHours.child(pourHour.id!!).removeValue()
@@ -137,5 +140,9 @@ class PowerHourRepository() {
                 Log.w("TAG", "onCancelled", databaseError.toException())
             }
         })
+    }
+
+    fun getPowerHourById(id: String): PowerHour? {
+        return powerHoursLD.value?.find { ph -> ph.id == id }
     }
 }

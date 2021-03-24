@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.techpowerhour.R
@@ -80,6 +81,7 @@ class UserPowerHourListFragment : Fragment() {
     }
 
     private fun editPowerHour(powerHour: PowerHour) {
-        // TODO
+        val bundle = bundleOf("id" to powerHour.id!!)
+        findNavController().navigate(R.id.navigation_add_power_hour, bundle)
     }
 }

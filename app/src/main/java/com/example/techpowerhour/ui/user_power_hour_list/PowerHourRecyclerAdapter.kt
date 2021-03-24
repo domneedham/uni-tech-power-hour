@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.techpowerhour.R
 import com.example.techpowerhour.data.model.PowerHour
+import com.example.techpowerhour.util.DateHelper
 import java.time.LocalDate
 
 class PowerHourRecyclerAdapter(
@@ -25,7 +26,7 @@ class PowerHourRecyclerAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
         holder.textPrimary.text = item.name
-        holder.textSecondary.text = LocalDate.ofEpochDay(item.epochDate!!).toString()
+        holder.textSecondary.text = DateHelper.displayDate(item.epochDate!!)
 
         holder.editButton.setOnClickListener { editCallback(item) }
         holder.deleteButton.setOnClickListener { deleteCallback(item) }

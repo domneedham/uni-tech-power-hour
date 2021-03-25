@@ -46,6 +46,7 @@ class UserPowerHourListFragment : Fragment() {
 
         setupViewModelBinding()
         observePowerHourTable()
+        fabFragmentSwitchBinding()
 
         return binding.root
     }
@@ -66,6 +67,12 @@ class UserPowerHourListFragment : Fragment() {
             )
             binding.powerHourList.adapter = adapter
         })
+    }
+
+    private fun fabFragmentSwitchBinding() {
+        binding.fab.setOnClickListener {
+            findNavController().navigate(R.id.navigation_add_power_hour)
+        }
     }
 
     private fun deletePowerHour(powerHour: PowerHour) {

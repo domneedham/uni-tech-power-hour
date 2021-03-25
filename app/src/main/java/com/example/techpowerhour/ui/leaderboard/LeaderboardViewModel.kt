@@ -1,13 +1,8 @@
 package com.example.techpowerhour.ui.leaderboard
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.techpowerhour.data.repository.PowerHourRepository
 
-class LeaderboardViewModel : ViewModel() {
+class LeaderboardViewModel(private val repository: PowerHourRepository) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is leaderboard Fragment"
-    }
-    val text: LiveData<String> = _text
 }

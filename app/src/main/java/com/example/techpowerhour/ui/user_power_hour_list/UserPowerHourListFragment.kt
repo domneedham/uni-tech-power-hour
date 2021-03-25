@@ -58,10 +58,11 @@ class UserPowerHourListFragment : Fragment() {
 
     private fun observePowerHourTable() {
         viewModel.getAllPowerHours().observe(viewLifecycleOwner, { powerHours ->
+            val sortedPowerHours = powerHours.sortedByDescending { it.epochDate }
             val adapter = PowerHourRecyclerAdapter(
-                powerHours,
-                { powerHour -> editPowerHour(powerHour) },
-                { powerHour -> deletePowerHour(powerHour) }
+                    sortedPowerHours,
+                    { powerHour -> editPowerHour(powerHour) },
+                    { powerHour -> deletePowerHour(powerHour) }
             )
             binding.powerHourList.adapter = adapter
         })

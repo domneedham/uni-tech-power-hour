@@ -1,9 +1,18 @@
 package com.example.techpowerhour.util
 
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 object DateHelper {
+    val todayEpoch = LocalDate.now().toEpochDay()
+
+    private val differenceInDaysWeek = LocalDate.now().dayOfWeek.compareTo(DayOfWeek.MONDAY).toLong()
+    val startOfWeekEpoch = LocalDate.now().minusDays(differenceInDaysWeek).toEpochDay()
+
+    private val differenceInDaysStartOfMonth = LocalDate.now().dayOfMonth - 1.toLong()
+    val startOfMonthEpoch = LocalDate.now().minusDays(differenceInDaysStartOfMonth).toEpochDay()
+
     private val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
     /**
@@ -29,4 +38,5 @@ object DateHelper {
     fun parseDateToEpoch(date: String) : Long? {
         return parseDateToLocalDate(date)?.toEpochDay()
     }
+
 }

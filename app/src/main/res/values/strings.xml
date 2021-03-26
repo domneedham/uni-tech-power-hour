@@ -73,4 +73,14 @@
 <!--    PowerHourList fragment-->
     <string name="ph_list_edit_icon">Edit icon button for list item</string>
     <string name="ph_list_delete_icon">Delete icon button for list item</string>
+
+<!--    Leaderboard fragment-->
+    <string name="leaderboard_action_date_range_title">Date Range</string>
+    <string name="leaderboard_action_date_range_action_today">Today</string>
+    <string name="leaderboard_action_date_range_action_week">Week</string>
+    <string name="leaderboard_action_date_range_action_month">Month</string>
+
+    <string name="leaderboard_title_today">Leaderboard Today</string>
+    <string name="leaderboard_title_week">Leaderboard This Week</string>
+    <string name="leaderboard_title_month">Leaderboard This Month</string>
 </resources>

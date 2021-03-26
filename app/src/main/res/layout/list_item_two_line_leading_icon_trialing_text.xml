@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground" >
+
+    <RelativeLayout
+        android:id="@+id/leadingIconContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="8dp">
+
+        <ImageView
+            android:id="@+id/mtrl_list_leading_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_background"
+            android:padding="4dp"
+            android:src="@drawable/ic_account_circle_black_24dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/textContainer"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="16dp"
+        android:layout_toStartOf="@id/trailingTextContainer"
+        android:layout_toEndOf="@id/leadingIconContainer">
+
+        <TextView
+            android:id="@+id/mtrl_list_item_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+        <TextView
+            android:id="@+id/mtrl_list_item_secondary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mtrl_list_item_text"
+            android:layout_gravity="center_vertical"
+            android:maxLines="2"
+            android:textAppearance="?attr/textAppearanceBody2" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/trailingTextContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:id="@+id/mtrl_list_trailing_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="#1"/>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:layout_alignBottom="@id/textContainer"/>
+
+</RelativeLayout>

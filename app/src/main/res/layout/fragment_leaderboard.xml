@@ -15,16 +15,25 @@
             android:id="@+id/leaderboard_date_range_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/home_company_points_statistics_title"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:text="@string/leaderboard_title"
             android:padding="8dp"/>
+
+        <TextView
+            android:id="@+id/list_empty_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/leaderboard_empty_text"
+            android:layout_marginTop="15dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/powerHourList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

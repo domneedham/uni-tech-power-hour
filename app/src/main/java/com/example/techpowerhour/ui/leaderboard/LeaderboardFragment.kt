@@ -1,9 +1,9 @@
 package com.example.techpowerhour.ui.leaderboard
 
+
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.techpowerhour.R
@@ -11,7 +11,6 @@ import com.example.techpowerhour.Repositories
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.databinding.FragmentLeaderboardBinding
 import com.example.techpowerhour.util.DateHelper
-import java.time.LocalDate
 
 class LeaderboardFragment : Fragment() {
 
@@ -104,6 +103,13 @@ class LeaderboardFragment : Fragment() {
                 filteredPowerHours,
         )
         binding.powerHourList.adapter = adapter
+
+        // if no items in leaderboard, show a message to the user
+        if (filteredPowerHours.isEmpty()) {
+            binding.listEmptyText.visibility = View.VISIBLE
+        } else {
+            binding.listEmptyText.visibility = View.GONE
+        }
     }
 
     private fun changeTitle() {

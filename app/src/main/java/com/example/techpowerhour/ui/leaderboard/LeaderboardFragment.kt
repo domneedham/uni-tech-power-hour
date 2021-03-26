@@ -10,6 +10,8 @@ import com.example.techpowerhour.R
 import com.example.techpowerhour.Repositories
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.databinding.FragmentLeaderboardBinding
+import com.example.techpowerhour.util.DateHelper
+import java.time.LocalDate
 
 class LeaderboardFragment : Fragment() {
 
@@ -75,15 +77,24 @@ class LeaderboardFragment : Fragment() {
     }
 
     private fun displayFilteredPowerHours() {
+        val todayEpoch = DateHelper.todayEpoch
+        val weekEpoch = DateHelper.startOfWeekEpoch
+        val monthEpoch = DateHelper.startOfMonthEpoch
+
         val filteredPowerHours: List<PowerHour> = when (dateRange) {
             DateRanges.TODAY -> {
-                allPowerHours.filter { it.epochDate!!.toInt() == 18710}
+                // if the date is equal today
+                allPowerHours.filter { it.epochDate!! == todayEpoch }
             }
             DateRanges.WEEK -> {
-                allPowerHours.filter { it.epochDate!!.toInt() in 18707..18710 }
+                // if the date is between start of the week and today
+                // no need for the end of the week as can't add workouts beyond the current day
+                allPowerHours.filter { it.epochDate!! in weekEpoch..todayEpoch }
             }
             DateRanges.MONTH -> {
-                allPowerHours.filter { it.epochDate!!.toInt() in 18698..18710}
+                // if the date is between start of the month and today
+                // no need for the end of the month as can't add workouts beyond the current day
+                allPowerHours.filter { it.epochDate!! in monthEpoch..todayEpoch }
             }
         }
         val adapter = LeaderboardUserRecyclerAdapter(

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.techpowerhour.data.model.PowerHour
+import com.example.techpowerhour.util.DateHelper
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -48,7 +49,7 @@ class PowerHourRepository() {
 
     fun getTotalPointsEarnedTodayForCompany(): LiveData<Int> {
         val points: MutableLiveData<Int> = MutableLiveData(0)
-        val todayEpoch = LocalDate.now().toEpochDay()
+        val todayEpoch = DateHelper.todayEpoch
         powerHoursLD.observeForever {
             val observePoints = it
                     .filter { powerHour: PowerHour -> powerHour.epochDate!! >= todayEpoch }
@@ -60,8 +61,7 @@ class PowerHourRepository() {
 
     fun getTotalPointsEarnedThisWeekForCompany(): LiveData<Int> {
         val points: MutableLiveData<Int> = MutableLiveData(0)
-        val differenceInDays = LocalDate.now().dayOfWeek.compareTo(DayOfWeek.MONDAY).toLong()
-        val weekEpoch = LocalDate.now().minusDays(differenceInDays).toEpochDay()
+        val weekEpoch = DateHelper.startOfWeekEpoch
         powerHoursLD.observeForever {
             val observePoints = it
                     .filter { powerHour: PowerHour -> powerHour.epochDate!! >= weekEpoch }
@@ -74,8 +74,7 @@ class PowerHourRepository() {
     fun getTotalPointsEarnedThisMonthForCompany(): LiveData<Int> {
         val points: MutableLiveData<Int> = MutableLiveData(0)
         // get difference between current date and first day of the month
-        val differenceInDays = LocalDate.now().dayOfMonth - 1.toLong()
-        val monthEpoch = LocalDate.now().minusDays(differenceInDays).toEpochDay()
+        val monthEpoch = DateHelper.startOfMonthEpoch
         powerHoursLD.observeForever {
             val observePoints = it
                     .filter { powerHour: PowerHour -> powerHour.epochDate!! >= monthEpoch }
@@ -87,7 +86,7 @@ class PowerHourRepository() {
 
     fun getTotalPowerHoursCompletedTodayForCompany(): LiveData<Int> {
         val points: MutableLiveData<Int> = MutableLiveData(0)
-        val todayEpoch = LocalDate.now().toEpochDay()
+        val todayEpoch = DateHelper.todayEpoch
         powerHoursLD.observeForever {
             val observePoints = it
                     .filter { powerHour: PowerHour -> powerHour.epochDate!! >= todayEpoch }
@@ -99,8 +98,7 @@ class PowerHourRepository() {
 
     fun getTotalPowerHoursCompletedThisWeekForCompany(): LiveData<Int> {
         val points: MutableLiveData<Int> = MutableLiveData(0)
-        val differenceInDays = LocalDate.now().dayOfWeek.compareTo(DayOfWeek.MONDAY).toLong()
-        val weekEpoch = LocalDate.now().minusDays(differenceInDays).toEpochDay()
+        val weekEpoch = DateHelper.startOfWeekEpoch
         powerHoursLD.observeForever {
             val observePoints = it
                     .filter { powerHour: PowerHour -> powerHour.epochDate!! >= weekEpoch }
@@ -112,9 +110,7 @@ class PowerHourRepository() {
 
     fun getTotalPowerHoursCompletedThisMonthForCompany(): LiveData<Int> {
         val points: MutableLiveData<Int> = MutableLiveData(0)
-        // get difference between current date and first day of the month
-        val differenceInDays = LocalDate.now().dayOfMonth - 1.toLong()
-        val monthEpoch = LocalDate.now().minusDays(differenceInDays).toEpochDay()
+        val monthEpoch = DateHelper.startOfMonthEpoch
         powerHoursLD.observeForever {
             val observePoints = it
                     .filter { powerHour: PowerHour -> powerHour.epochDate!! >= monthEpoch }

@@ -51,6 +51,7 @@ class LeaderboardFragment : Fragment() {
         }
 
         displayFilteredPowerHours()
+        changeTitle()
         return true
     }
 
@@ -65,6 +66,8 @@ class LeaderboardFragment : Fragment() {
 
         layoutManager = LinearLayoutManager(this.context)
         binding.powerHourList.layoutManager = layoutManager
+
+        changeTitle()
 
         observePowerHourTable()
 
@@ -101,6 +104,20 @@ class LeaderboardFragment : Fragment() {
                 filteredPowerHours,
         )
         binding.powerHourList.adapter = adapter
+    }
+
+    private fun changeTitle() {
+        binding.leaderboardDateRangeTitle.text = when (dateRange) {
+            DateRanges.TODAY -> {
+                getString(R.string.leaderboard_title_today)
+            }
+            DateRanges.WEEK -> {
+                getString(R.string.leaderboard_title_week)
+            }
+            DateRanges.MONTH -> {
+                getString(R.string.leaderboard_title_month)
+            }
+        }
     }
 
     private fun observePowerHourTable() {

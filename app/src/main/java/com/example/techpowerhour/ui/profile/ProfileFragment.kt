@@ -1,5 +1,7 @@
 package com.example.techpowerhour.ui.profile
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,12 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.techpowerhour.LoginActivity
 import com.example.techpowerhour.R
 import com.example.techpowerhour.Repositories
-import com.example.techpowerhour.databinding.FragmentHomeBinding
 import com.example.techpowerhour.databinding.FragmentProfileBinding
-import com.example.techpowerhour.ui.home.HomeViewModel
-import com.example.techpowerhour.ui.home.HomeViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment : Fragment() {
@@ -35,6 +35,8 @@ class ProfileFragment : Fragment() {
 
         fabFragmentSwitchBinding()
         powerHourListFragmentSwitchBinding()
+
+        signoutBinding()
 
         binding.profileHeaderName.text = auth.currentUser!!.displayName!!
         changePowerHourStatisticsText()
@@ -76,5 +78,22 @@ class ProfileFragment : Fragment() {
                 totalPowerHours
         )
         binding.numberWorkoutsText.text = totalPowerHoursText
+    }
+
+    private fun signoutBinding() {
+        binding.accountSignoutLayout.setOnClickListener {
+            val builder = AlertDialog.Builder(this.context)
+            builder.setMessage("Are you sure you want to signout?")
+                .setCancelable(false)
+                .setPositiveButton("Yes") { _, _ ->
+                    auth.signOut()
+                    val nextIntent = Intent(requireActivity(), LoginActivity::class.java)
+                    startActivity(nextIntent)
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+            builder.show()
+        }
     }
 }

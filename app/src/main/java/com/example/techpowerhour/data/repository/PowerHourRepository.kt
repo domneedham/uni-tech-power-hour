@@ -39,12 +39,32 @@ class PowerHourRepository() {
         powerHours.removeValue()
     }
 
-    fun getTotalPointsEarned(): Int? {
-        return powerHoursLD.value?.sumOf { powerHour: PowerHour -> powerHour.points!! }
+    fun getTotalPointsEarned(): Int {
+        return powerHoursLD.value?.sumOf { powerHour: PowerHour -> powerHour.points!! } ?: 0
     }
 
-    fun getTotalPowerHoursCreated(): Int? {
-        return powerHoursLD.value?.size
+    fun getTotalPowerHoursCreated(): Int {
+        return powerHoursLD.value?.size ?: 0
+    }
+
+    fun getTotalPointsEarnedForUser(userId: String): Int {
+        // no need for live data as no way of possible updates when on user page
+        // therefore called every refresh anyway
+        val points = powerHoursLD.value
+            ?.filter { powerHour: PowerHour -> powerHour.userId!! == userId }
+            ?.sumOf { powerHour: PowerHour -> powerHour.points!! }
+
+        return points ?: 0
+    }
+
+    fun getTotalPowerHoursCompletedForUser(userId: String): Int {
+        // no need for live data as no way of possible updates when on user page
+        // therefore called every refresh anyway
+        val points = powerHoursLD.value
+            ?.filter { powerHour: PowerHour -> powerHour.userId!! == userId }
+            ?.count()
+
+        return points ?: 0
     }
 
     fun getTotalPointsEarnedTodayForCompany(): LiveData<Int> {

@@ -47,6 +47,16 @@ class PowerHourRepository() {
         return powerHoursLD.value?.size ?: 0
     }
 
+    fun getPowerHoursForUser(userId: String): LiveData<List<PowerHour>> {
+        val powerHours = MutableLiveData<List<PowerHour>>()
+        powerHoursLD.observeForever {
+            val filteredList = it
+                .filter { ph -> ph.userId == userId }
+            powerHours.value = filteredList
+        }
+        return powerHours
+    }
+
     fun getTotalPointsEarnedForUser(userId: String): Int {
         // no need for live data as no way of possible updates when on user page
         // therefore called every refresh anyway

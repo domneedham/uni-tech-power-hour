@@ -13,8 +13,10 @@ import com.example.techpowerhour.databinding.FragmentHomeBinding
 import com.example.techpowerhour.databinding.FragmentProfileBinding
 import com.example.techpowerhour.ui.home.HomeViewModel
 import com.example.techpowerhour.ui.home.HomeViewModelFactory
+import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment : Fragment() {
+    private val auth = FirebaseAuth.getInstance()
 
     private var _binding: FragmentProfileBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
@@ -26,7 +28,7 @@ class ProfileFragment : Fragment() {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         setupViewModelBinding()
@@ -34,6 +36,7 @@ class ProfileFragment : Fragment() {
         fabFragmentSwitchBinding()
         powerHourListFragmentSwitchBinding()
 
+        binding.profileHeaderName.text = auth.currentUser!!.displayName!!
         changePowerHourStatisticsText()
 
         return binding.root

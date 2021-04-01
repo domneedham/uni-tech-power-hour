@@ -23,6 +23,9 @@ class LoginActivity : AppCompatActivity() {
         } else {
             setContentView(R.layout.activity_main)
             binding = ActivityLoginBinding.inflate(layoutInflater)
+
+            signInButtonBinding()
+
             setContentView(binding.root)
         }
     }
@@ -31,8 +34,8 @@ class LoginActivity : AppCompatActivity() {
         private const val RC_SIGN_IN = 123 //Request code for sign in
     }
 
-    fun createSignInIntent(view: View) {
-        displaySignIn()
+    fun signInButtonBinding() {
+        binding.signInButton.setOnClickListener { displaySignIn() }
     }
 
     private fun displaySignIn() {
@@ -65,7 +68,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayNewActivity(){
+    private fun displayNewActivity() {
         val nextIntent = Intent(this, MainActivity::class.java)
         startActivity(nextIntent)
     }

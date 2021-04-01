@@ -9,6 +9,9 @@
 
     <string name="fab_add_content">Add new Pour Hour</string>
 
+    <!--    Login activity-->
+    <string name="login_button">Login or Signup</string>
+
     <!--    Home fragment-->
     <string name="home_company_statistics_title_today">Today</string>
     <string name="home_company_statistics_title_week">This Week</string>

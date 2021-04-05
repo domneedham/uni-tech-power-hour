@@ -1,5 +1,6 @@
 package com.example.techpowerhour.ui.add_power_hour
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.techpowerhour.data.model.PowerHour
@@ -39,6 +40,6 @@ class AddPowerHourViewModel(private val repository: PowerHourRepository) : ViewM
     }
 
     fun getPowerHourById(id: String): PowerHour? {
-        return repository.getPowerHourById(id)
+        return repository.getUserPowerHourById(id)
     }
 }

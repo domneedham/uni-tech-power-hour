@@ -7,10 +7,8 @@ import com.example.techpowerhour.data.repository.PowerHourRepository
 import com.google.firebase.auth.FirebaseAuth
 
 class UserPowerHourListViewModel(private val repository: PowerHourRepository) : ViewModel() {
-    private val auth = FirebaseAuth.getInstance()
-
     fun getAllPowerHours(): LiveData<List<PowerHour>> {
-        return repository.getPowerHoursForUser(auth.uid!!)
+        return repository.userPowerHoursLD
     }
 
     fun deletePowerHour(powerHour: PowerHour) {

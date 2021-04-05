@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.techpowerhour.R
-import com.example.techpowerhour.data.model.PowerHour
+import com.example.techpowerhour.data.model.LeaderboardUser
 
 class LeaderboardUserRecyclerAdapter(
-        private val data: List<PowerHour>
+        private val data: List<LeaderboardUser>
 ): RecyclerView.Adapter<LeaderboardUserRecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

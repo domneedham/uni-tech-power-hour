@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.techpowerhour.R
 import com.example.techpowerhour.Repositories
+import com.example.techpowerhour.data.model.LeaderboardUser
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.databinding.FragmentLeaderboardBinding
 import com.example.techpowerhour.util.DateHelper
@@ -67,8 +68,7 @@ class LeaderboardFragment : Fragment() {
         binding.powerHourList.layoutManager = layoutManager
 
         changeTitle()
-
-        observePowerHourTable()
+        displayFilteredPowerHours()
 
         return binding.root
     }
@@ -83,29 +83,31 @@ class LeaderboardFragment : Fragment() {
         val weekEpoch = DateHelper.startOfWeekEpoch
         val monthEpoch = DateHelper.startOfMonthEpoch
 
-        val filteredPowerHours: List<PowerHour> = when (dateRange) {
+        val leaderboard: List<LeaderboardUser> = when (dateRange) {
             DateRanges.TODAY -> {
                 // if the date is equal today
-                allPowerHours.filter { it.epochDate!! == todayEpoch }
+                viewModel.leaderboardToday()
             }
             DateRanges.WEEK -> {
                 // if the date is between start of the week and today
                 // no need for the end of the week as can't add workouts beyond the current day
-                allPowerHours.filter { it.epochDate!! in weekEpoch..todayEpoch }
+//                allPowerHours.filter { it.epochDate!! in weekEpoch..todayEpoch }
+                viewModel.leaderboardToday()
             }
             DateRanges.MONTH -> {
                 // if the date is between start of the month and today
                 // no need for the end of the month as can't add workouts beyond the current day
-                allPowerHours.filter { it.epochDate!! in monthEpoch..todayEpoch }
+//                allPowerHours.filter { it.epochDate!! in monthEpoch..todayEpoch }
+                viewModel.leaderboardToday()
             }
         }
         val adapter = LeaderboardUserRecyclerAdapter(
-                filteredPowerHours,
+            leaderboard,
         )
         binding.powerHourList.adapter = adapter
 
         // if no items in leaderboard, show a message to the user
-        if (filteredPowerHours.isEmpty()) {
+        if (leaderboard.isEmpty()) {
             binding.listEmptyText.visibility = View.VISIBLE
         } else {
             binding.listEmptyText.visibility = View.GONE
@@ -124,13 +126,6 @@ class LeaderboardFragment : Fragment() {
                 getString(R.string.leaderboard_title_month)
             }
         }
-    }
-
-    private fun observePowerHourTable() {
-        viewModel.getAllPowerHours().observe(viewLifecycleOwner, { powerHours ->
-            allPowerHours = powerHours
-            displayFilteredPowerHours()
-        })
     }
 
     enum class DateRanges {

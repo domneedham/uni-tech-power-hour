@@ -5,4 +5,8 @@ data class User(
     var imageUrl: String? = null,
 ) {
     var id: String? = null
+
+    override fun toString(): String {
+        return "ID: $id, Name: $name"
+    }
 }

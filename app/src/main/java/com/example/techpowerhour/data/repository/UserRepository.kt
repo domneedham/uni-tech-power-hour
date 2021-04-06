@@ -1,6 +1,5 @@
 package com.example.techpowerhour.data.repository
 
-import android.util.Log
 import com.example.techpowerhour.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -8,7 +7,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class UserRepository() {
+class UserRepository {
     private val auth = FirebaseAuth.getInstance()
     private val database: FirebaseDatabase = Firebase.database
     private val users: DatabaseReference = database.getReference("user")
@@ -54,7 +53,6 @@ class UserRepository() {
 
         val snapshot = users.get()
         snapshot.addOnSuccessListener {
-            Log.v("snapshot,", it.value.toString())
             for (childSnapshot in it.children) {
                 val user = childSnapshot.getValue(User::class.java)
                 user!!.id = childSnapshot.key

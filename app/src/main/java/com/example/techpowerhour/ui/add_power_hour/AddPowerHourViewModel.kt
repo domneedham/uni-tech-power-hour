@@ -1,17 +1,11 @@
 package com.example.techpowerhour.ui.add_power_hour
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.data.model.enums.PowerHourType
 import com.example.techpowerhour.data.repository.PowerHourRepository
 import com.example.techpowerhour.util.DateHelper
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class AddPowerHourViewModel(private val repository: PowerHourRepository) : ViewModel() {
     private val auth = FirebaseAuth.getInstance()

@@ -1,6 +1,5 @@
 package com.example.techpowerhour.ui.leaderboard
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.techpowerhour.Repositories
 import com.example.techpowerhour.data.model.LeaderboardUser
@@ -25,10 +24,7 @@ class LeaderboardViewModel(private val repository: PowerHourRepository) : ViewMo
         val powerHours = getAllPowerHours()
         val users = userRepository.getAll()
 
-        Log.v("users", users.toString())
-
         users.forEach {
-            Log.v("User", it.toString())
             val userPowerHours = powerHours
                 .filter { ph -> ph.userId == it.id }
             val points = userPowerHours

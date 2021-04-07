@@ -1,5 +1,6 @@
 package com.example.techpowerhour.ui.leaderboard
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.techpowerhour.Repositories
 import com.example.techpowerhour.data.model.LeaderboardUser
@@ -10,30 +11,17 @@ import com.example.techpowerhour.util.DateHelper
 
 class LeaderboardViewModel(private val repository: PowerHourRepository) : ViewModel() {
     private val userRepository = Repositories.user
+    private val leaderboardRepository = Repositories.leaderboard
 
-    fun getAllPowerHours(): List<PowerHour> {
-        return repository.userPowerHoursLD.value!!
+    fun leaderboardToday(): MutableLiveData<List<LeaderboardUser>> {
+        return leaderboardRepository.getLeaderboardListForToday()
     }
 
-    fun getAllUsers() : List<User> {
-        return userRepository.getAll()
+    fun leaderboardWeek(): MutableLiveData<List<LeaderboardUser>> {
+        return leaderboardRepository.getLeaderboardListForWeek()
     }
 
-    fun leaderboardToday(): List<LeaderboardUser> {
-        val leaderboard = ArrayList<LeaderboardUser>()
-        val powerHours = getAllPowerHours()
-        val users = userRepository.getAll()
-
-        users.forEach {
-            val userPowerHours = powerHours
-                .filter { ph -> ph.userId == it.id }
-            val points = userPowerHours
-                .filter { ph -> ph.epochDate == DateHelper.todayEpoch }
-                .sumOf { ph -> ph.points!! }
-
-            leaderboard.add(LeaderboardUser(it.name!!, points))
-        }
-
-        return leaderboard
+    fun leaderboardMonth(): MutableLiveData<List<LeaderboardUser>> {
+        return leaderboardRepository.getLeaderboardListForMonth()
     }
 }

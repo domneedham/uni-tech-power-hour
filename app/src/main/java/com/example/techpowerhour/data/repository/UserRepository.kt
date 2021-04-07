@@ -10,7 +10,7 @@ import com.google.firebase.ktx.Firebase
 class UserRepository {
     private val auth = FirebaseAuth.getInstance()
     private val database: FirebaseDatabase = Firebase.database
-    private val users: DatabaseReference = database.getReference("user")
+    private val users: DatabaseReference = database.getReference("users")
 
     var currentUser: User? = null
 

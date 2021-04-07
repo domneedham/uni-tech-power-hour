@@ -22,15 +22,17 @@ class AddPowerHourViewModel(private val repository: PowerHourRepository) : ViewM
         return powerHour
     }
 
-    fun updatePowerHour(powerHour: PowerHour, name: String, duration: String, type: String, date: String): PowerHour {
-        powerHour.name = name
-        powerHour.minutes = duration.toDouble()
-        powerHour.type = PowerHourType.valueOf(type)
-        powerHour.epochDate = DateHelper.parseDateToEpoch(date)
+    fun updatePowerHour(oldPowerHour: PowerHour, name: String, duration: String, type: String, date: String): PowerHour {
+        val newPowerHour = oldPowerHour.copy(
+            name = name,
+            minutes = duration.toDouble(),
+            type = PowerHourType.valueOf(type),
+            epochDate = DateHelper.parseDateToEpoch(date)
+        )
 
-        repository.update(powerHour)
+        repository.update(oldPowerHour, newPowerHour)
 
-        return powerHour
+        return newPowerHour
     }
 
     fun getPowerHourById(id: String): PowerHour? {

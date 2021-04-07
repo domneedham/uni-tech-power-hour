@@ -68,4 +68,16 @@ object DateHelper {
     fun parseDateToEpoch(date: String) : Long? {
         return parseDateToLocalDate(date)?.toEpochDay()
     }
+
+    fun getStartOfWeekEpochFromDayEpoch(day: Long) : Long {
+        val date = LocalDate.ofEpochDay(day)
+        val differenceInDaysWeek = date.dayOfWeek.compareTo(DayOfWeek.MONDAY).toLong()
+        return date.minusDays(differenceInDaysWeek).toEpochDay()
+    }
+
+    fun getStartOfMonthEpochFromDayEpoch(day: Long) : Long {
+        val date = LocalDate.ofEpochDay(day)
+        val differenceInDaysStartOfMonth = date.dayOfMonth - 1.toLong()
+        return date.minusDays(differenceInDaysStartOfMonth).toEpochDay()
+    }
 }

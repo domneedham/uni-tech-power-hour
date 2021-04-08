@@ -4,6 +4,7 @@ import com.example.techpowerhour.data.model.LeaderboardUser
 import com.example.techpowerhour.data.repository.enums.DatabaseCollectionPaths
 import com.example.techpowerhour.data.repository.enums.PowerHourDatabaseDateType
 import com.example.techpowerhour.util.DateHelper
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -24,14 +25,8 @@ class LeaderboardRepository (private val userRepository: UserRepository) {
             .limit(25)
         val documents = query.get().await().documents
         for (doc in documents) {
-            var points = 0.0
-            val value = doc.data?.get("points")?.toString()
-            points += value?.toDouble()!!
-
-            val user = userRepository.getById(doc.id)
-
-            val leaderboardUser = LeaderboardUser(doc.id, user.name!!, points.toInt())
-            tempList.add(leaderboardUser)
+            val user = makeUserFromDocument(doc)
+            tempList.add(user)
         }
         return tempList
     }
@@ -47,14 +42,8 @@ class LeaderboardRepository (private val userRepository: UserRepository) {
             .limit(25)
         val documents = query.get().await().documents
         for (doc in documents) {
-            var points = 0.0
-            val value = doc.data?.get("points")?.toString()
-            points += value?.toDouble()!!
-
-            val user = userRepository.getById(doc.id)
-
-            val leaderboardUser = LeaderboardUser(doc.id, user.name!!, points.toInt())
-            tempList.add(leaderboardUser)
+            val user = makeUserFromDocument(doc)
+            tempList.add(user)
         }
         return tempList
     }
@@ -70,15 +59,21 @@ class LeaderboardRepository (private val userRepository: UserRepository) {
             .limit(25)
         val documents = query.get().await().documents
         for (doc in documents) {
-            var points = 0.0
-            val value = doc.data?.get("points")?.toString()
-            points += value?.toDouble()!!
-
-            val user = userRepository.getById(doc.id)
-
-            val leaderboardUser = LeaderboardUser(doc.id, user.name!!, points.toInt())
-            tempList.add(leaderboardUser)
+            val user = makeUserFromDocument(doc)
+            tempList.add(user)
         }
         return tempList
+    }
+
+    private suspend fun makeUserFromDocument(document: DocumentSnapshot): LeaderboardUser {
+        // ran into issues converting straight away from the get, due to long/double
+        // so convert to string first then into a double as no issues found this way
+        var points = 0.0
+        val value = document.data?.get("points")?.toString()
+        points += value?.toDouble()!!
+
+        val user = userRepository.getById(document.id)
+
+        return LeaderboardUser(document.id, user.name!!, points.toInt())
     }
 }

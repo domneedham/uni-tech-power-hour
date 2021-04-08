@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import com.example.techpowerhour.databinding.ActivityLoginBinding
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -14,15 +13,20 @@ import com.google.firebase.auth.FirebaseAuth
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val userRepository = Repositories.user
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (auth.currentUser != null) {
+            userRepository.setCurrentUser(auth.uid!!)
             displayNewActivity()
         } else {
             setContentView(R.layout.activity_main)
             binding = ActivityLoginBinding.inflate(layoutInflater)
+
+            signInButtonBinding()
+
             setContentView(binding.root)
         }
     }
@@ -31,8 +35,8 @@ class LoginActivity : AppCompatActivity() {
         private const val RC_SIGN_IN = 123 //Request code for sign in
     }
 
-    fun createSignInIntent(view: View) {
-        displaySignIn()
+    private fun signInButtonBinding() {
+        binding.signInButton.setOnClickListener { displaySignIn() }
     }
 
     private fun displaySignIn() {
@@ -54,18 +58,20 @@ class LoginActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 //Check email has been verified – if not
                 if(!auth.currentUser!!.isEmailVerified) {
-                    //display the sign in page again
                     verifyEmail()
+
+                    //display the sign in page again
                     displaySignIn()
                 }
                 else { //if user has had their email address verified
+                    userRepository.setCurrentUser(auth.uid!!)
                     displayNewActivity()
                 }
             }
         }
     }
 
-    private fun displayNewActivity(){
+    private fun displayNewActivity() {
         val nextIntent = Intent(this, MainActivity::class.java)
         startActivity(nextIntent)
     }

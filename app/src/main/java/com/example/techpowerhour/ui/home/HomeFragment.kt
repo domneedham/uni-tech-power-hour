@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupViewModelBinding() {
-        val viewModelFactory = HomeViewModelFactory(Repositories.powerHour)
+        val viewModelFactory = HomeViewModelFactory(Repositories.statistics)
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
         binding.viewModel = viewModel
     }

@@ -7,7 +7,7 @@ import com.example.techpowerhour.data.repository.PowerHourRepository
 
 class UserPowerHourListViewModel(private val repository: PowerHourRepository) : ViewModel() {
     fun getAllPowerHours(): LiveData<List<PowerHour>> {
-        return repository.powerHoursLD
+        return repository.userPowerHoursLD
     }
 
     fun deletePowerHour(powerHour: PowerHour) {

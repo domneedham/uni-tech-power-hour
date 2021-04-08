@@ -1,7 +1,6 @@
 package com.example.techpowerhour.ui.add_power_hour
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -234,7 +233,6 @@ class AddPowerHourFragment : Fragment() {
     }
 
     private fun checkForDateError(text: String): FormError {
-        Log.v("date", text)
         if (text.isEmpty())
             return FormError(true, "The date of the workout is missing")
 

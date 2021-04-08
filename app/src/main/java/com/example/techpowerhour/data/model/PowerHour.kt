@@ -6,10 +6,11 @@ import kotlin.math.ceil
 
 /**
  * Hold all information about the Power Hour completed.
- * @property name The user defined name of the Power Hour
+ * @property name The user defined name of the Power Hour.
  * @property minutes The duration of the Power Hour in minutes.
  * @property type The type of the Power Hour completed.
  * @property epochDate The date the Power Hour was completed formatted as Long for easy serialisation.
+ * @property userId The user id who created the Power Hour.
  * @property difficulty The difficulty of the Power Hour. Determined from the type of Power Hour (PowerHourType enum).
  * @property points The points earned for the Power Hour.
  */
@@ -19,6 +20,7 @@ data class PowerHour(
     var minutes: Double? = null,
     var type: PowerHourType? = null,
     var epochDate: Long? = null,
+    var userId: String? = null,
 ) {
     var id: String? = null
 
@@ -34,6 +36,7 @@ data class PowerHour(
 
     override fun toString(): String {
         return "ID: $id \n" +
+                "User ID: $userId \n" +
                 "Name: $name \n" +
                 "Duration: $minutes minutes \n" +
                 "Difficulty: $difficulty \n" +

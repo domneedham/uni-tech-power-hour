@@ -9,6 +9,9 @@
 
     <string name="fab_add_content">Add new Pour Hour</string>
 
+    <!--    Login activity-->
+    <string name="login_button">Login or Signup</string>
+
     <!--    Home fragment-->
     <string name="home_company_statistics_title_today">Today</string>
     <string name="home_company_statistics_title_week">This Week</string>
@@ -59,7 +62,7 @@
     <string name="profile_image_description">Profile picture of the user</string>
     <string name="profile_points_subheading">Points</string>
     <string name="profile_power_hours_subheading">Power Hours</string>
-    <string name="controls_power_hour_list_text">View and edit a list of your Power Hours</string>
+    <string name="profile_controls_power_hour_list_text">View and edit a list of your Power Hours</string>
     <plurals name="profile_statistics_total_points">
         <item quantity="one">You have earned %d point</item>
         <item quantity="other">You have earned %d points</item>
@@ -68,6 +71,9 @@
         <item quantity="one">You have completed %d Power Hour</item>
         <item quantity="other">You have completed %d Power Hours</item>
     </plurals>
+    <string name="profile_account_title">Account</string>
+    <string name="profile_account_signout_subheading">Signout</string>
+    <string name="profile_account_signout_text">Signout of your account</string>
     <string name="profile_power_hour_list_chevron">End icon for card</string>
 
     <!--    PowerHourList fragment-->

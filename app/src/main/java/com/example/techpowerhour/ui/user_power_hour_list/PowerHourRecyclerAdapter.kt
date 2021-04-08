@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.techpowerhour.R
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.util.DateHelper
-import java.time.LocalDate
 
 class PowerHourRecyclerAdapter(
     private val data: List<PowerHour>,

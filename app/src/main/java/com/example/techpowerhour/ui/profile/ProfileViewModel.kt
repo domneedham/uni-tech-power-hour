@@ -5,10 +5,10 @@ import com.example.techpowerhour.data.repository.PowerHourRepository
 
 class ProfileViewModel(private val repository: PowerHourRepository) : ViewModel() {
     fun getTotalPointsEarned(): Int {
-        return repository.getTotalPointsEarned() ?: 0
+        return repository.getTotalPointsEarnedForUser()
     }
 
     fun getTotalPowerHours(): Int {
-        return repository.getTotalPowerHoursCreated() ?: 0
+        return repository.getTotalPowerHoursCompletedForUser()
     }
 }

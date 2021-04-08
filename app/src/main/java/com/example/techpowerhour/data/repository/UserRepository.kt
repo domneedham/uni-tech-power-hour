@@ -1,66 +1,70 @@
 package com.example.techpowerhour.data.repository
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.example.techpowerhour.data.model.User
+import com.example.techpowerhour.data.repository.enums.DatabaseCollectionPaths
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
 class UserRepository {
     private val auth = FirebaseAuth.getInstance()
-    private val database: FirebaseDatabase = Firebase.database
-    private val users: DatabaseReference = database.getReference("users")
+    private val db = Firebase.firestore
+    private val usersRef = db.collection(DatabaseCollectionPaths.User.path)
 
     var currentUser: User? = null
 
     fun setCurrentUser(id: String) {
-        val snapshot = users.child(id).get()
-        snapshot.addOnCompleteListener {
-            // if no user is found, create them
-            if (it.result?.value == null) {
-                create()
-            } else {
-                currentUser = it.result?.getValue(User::class.java)
-            }
-        }
-        snapshot.addOnFailureListener {
-            it.printStackTrace()
-        }
-
+        val query = usersRef.document(id)
+        query.get()
+                .addOnSuccessListener { document ->
+                    // if no user is found, create them
+                    if (document.data == null) {
+                        create(id)
+                    } else {
+                        currentUser = document.toObject<User>()
+                    }
+                }
+                .addOnFailureListener { error ->
+                    Log.d(TAG, "Error: $error")
+                }
     }
 
-    fun create() {
+    private fun create(id: String) {
         val user = User(auth.currentUser!!.displayName!!)
-        users.child(auth.uid!!).setValue(user)
-        setCurrentUser(auth.uid!!)
+
+        val statement = usersRef.document(id).set(user)
+        statement.addOnSuccessListener {
+            setCurrentUser(id)
+        }.addOnFailureListener { error ->
+            Log.d(TAG, "Error: $error")
+        }
+
     }
 
     fun update(user: User) {
-        users.child(user.id!!).setValue(user)
+        usersRef.document(user.id!!).set(user)
     }
 
     fun delete(user: User) {
-        users.child(user.id!!).removeValue()
-    }
-
-    fun deleteAll() {
-        users.removeValue()
+        usersRef.document(user.id!!).delete()
     }
 
     fun getAll(): List<User> {
         val userList = ArrayList<User>()
 
-        val snapshot = users.get()
-        snapshot.addOnSuccessListener {
-            for (childSnapshot in it.children) {
-                val user = childSnapshot.getValue(User::class.java)
-                user!!.id = childSnapshot.key
+        val snapshot = usersRef.get()
+        snapshot.addOnSuccessListener { documents ->
+            for (doc in documents.documents) {
+                val user = doc.toObject<User>()
+                user!!.id = doc.id
                 userList.add(user)
             }
         }
-        snapshot.addOnFailureListener {
-            it.printStackTrace()
+        snapshot.addOnFailureListener { error ->
+            Log.d(TAG, "Error: $error")
         }
 
         return userList

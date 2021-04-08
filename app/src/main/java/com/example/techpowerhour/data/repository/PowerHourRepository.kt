@@ -37,125 +37,140 @@ class PowerHourRepository {
     fun insert(powerHour: PowerHour) {
         powerHoursRef.add(powerHour)
 
-        // update for the day
+        // insert or update values for the day collections
         val powerHourDayDate = powerHour.epochDate!!
-        updatePointsInLeaderboard(powerHourDayDate, powerHour.points!!, PointsType.Increment, PowerHourDatabaseDateType.Day)
-        updatePointsInStatistics(powerHourDayDate, powerHour.points!!, PointsType.Increment, PowerHourDatabaseDateType.Day)
-        updateCountInStatistics(powerHourDayDate, PointsType.Increment, PowerHourDatabaseDateType.Day)
+        incrementValuesAll(powerHourDayDate, powerHour.points!!, PowerHourDatabaseDateType.Day)
 
-        // update for the week
+        // insert or update values for the week collections
         val powerHourWeekDate = DateHelper.getStartOfWeekEpochFromDayEpoch(powerHour.epochDate!!)
-        updatePointsInLeaderboard(powerHourWeekDate, powerHour.points!!, PointsType.Increment, PowerHourDatabaseDateType.Week)
-        updatePointsInStatistics(powerHourWeekDate, powerHour.points!!, PointsType.Increment, PowerHourDatabaseDateType.Week)
-        updateCountInStatistics(powerHourWeekDate, PointsType.Increment, PowerHourDatabaseDateType.Week)
+        incrementValuesAll(powerHourWeekDate, powerHour.points!!, PowerHourDatabaseDateType.Week)
 
-        // update for the month
+        // insert or update values for the month collections
         val powerHourMonthDate = DateHelper.getStartOfMonthEpochFromDayEpoch(powerHour.epochDate!!)
-        updatePointsInLeaderboard(powerHourMonthDate, powerHour.points!!, PointsType.Increment, PowerHourDatabaseDateType.Month)
-        updatePointsInStatistics(powerHourMonthDate, powerHour.points!!, PointsType.Increment, PowerHourDatabaseDateType.Month)
-        updateCountInStatistics(powerHourMonthDate, PointsType.Increment, PowerHourDatabaseDateType.Month)
+        incrementValuesAll(powerHourMonthDate, powerHour.points!!, PowerHourDatabaseDateType.Month)
     }
 
     fun update(oldPowerHour: PowerHour, newPowerHour: PowerHour) {
         powerHoursRef.document(oldPowerHour.id!!).set(newPowerHour)
 
+        // if the updated power hour has changed date
+        // the value needs changing in the leaderboard and statistics collections
         if (oldPowerHour.epochDate != newPowerHour.epochDate) {
-            // update for the day value
+            // store the dates from the power hour class
             val oldPowerHourDayDate = oldPowerHour.epochDate!!
             val newPowerHourDayDate = newPowerHour.epochDate!!
 
-            // remove old values
-            updatePointsInLeaderboard(oldPowerHourDayDate, oldPowerHour.points!!, PointsType.Decrement, PowerHourDatabaseDateType.Day)
-            updatePointsInStatistics(oldPowerHourDayDate, oldPowerHour.points!!, PointsType.Decrement, PowerHourDatabaseDateType.Day)
-            updateCountInStatistics(oldPowerHourDayDate, PointsType.Decrement, PowerHourDatabaseDateType.Day)
+            // remove the values from the old date as this is no longer the date of the power hour
+            decrementValuesAll(oldPowerHourDayDate, oldPowerHour.points!!, PowerHourDatabaseDateType.Day)
 
-            // add new values
-            updatePointsInLeaderboard(newPowerHourDayDate, newPowerHour.points!!, PointsType.Increment, PowerHourDatabaseDateType.Day)
-            updatePointsInStatistics(newPowerHourDayDate, newPowerHour.points!!, PointsType.Increment, PowerHourDatabaseDateType.Day)
-            updateCountInStatistics(newPowerHourDayDate, PointsType.Increment, PowerHourDatabaseDateType.Day)
+            // populate the values for the new date
+            incrementValuesAll(newPowerHourDayDate, oldPowerHour.points!!, PowerHourDatabaseDateType.Day)
 
-            // update for the week value
+            // the new date may have made it change weeks
+            // so need to check if the old date week and new date week are different
             val oldPowerHourWeekDate = DateHelper.getStartOfWeekEpochFromDayEpoch(oldPowerHour.epochDate!!)
             val newPowerHourWeekDate = DateHelper.getStartOfWeekEpochFromDayEpoch(newPowerHour.epochDate!!)
             if (oldPowerHourWeekDate != newPowerHourWeekDate) {
-                // remove old values
-                updatePointsInLeaderboard(oldPowerHourWeekDate, oldPowerHour.points!!, PointsType.Decrement, PowerHourDatabaseDateType.Week)
-                updatePointsInStatistics(oldPowerHourWeekDate, oldPowerHour.points!!, PointsType.Decrement, PowerHourDatabaseDateType.Week)
-                updateCountInStatistics(oldPowerHourWeekDate, PointsType.Decrement, PowerHourDatabaseDateType.Week)
+                // if they are different, remove the values from the old week collections
+                decrementValuesAll(oldPowerHourWeekDate, oldPowerHour.points!!, PowerHourDatabaseDateType.Week)
 
-                // add new values
-                updatePointsInLeaderboard(newPowerHourWeekDate, newPowerHour.points!!, PointsType.Increment, PowerHourDatabaseDateType.Week)
-                updatePointsInStatistics(newPowerHourWeekDate, newPowerHour.points!!, PointsType.Increment, PowerHourDatabaseDateType.Week)
-                updateCountInStatistics(newPowerHourWeekDate, PointsType.Increment, PowerHourDatabaseDateType.Week)
+                // then put the new values into the new week of the power hour
+                incrementValuesAll(newPowerHourWeekDate, newPowerHour.points!!, PowerHourDatabaseDateType.Week)
             } else if (oldPowerHour.points!! != newPowerHour.points!!) {
+                // if the date has not changed for the week, the points may have so they need updating if the case
                 val difference = getDifferenceInPoints(oldPowerHour.points!!, newPowerHour.points!!)
-                updatePointsInLeaderboard(newPowerHourWeekDate, difference, PointsType.Increment, PowerHourDatabaseDateType.Week)
-                updatePointsInStatistics(newPowerHourWeekDate, difference, PointsType.Increment, PowerHourDatabaseDateType.Week)
+                incrementValuesPoints(newPowerHourWeekDate, difference, PowerHourDatabaseDateType.Week)
             }
 
-            // update for the month value
+            // the new date may have made it change months
+            // so need to check if the old date month and new date month are different
             val oldPowerHourMonthDate = DateHelper.getStartOfMonthEpochFromDayEpoch(oldPowerHour.epochDate!!)
             val newPowerHourMonthDate = DateHelper.getStartOfMonthEpochFromDayEpoch(newPowerHour.epochDate!!)
             if (oldPowerHourMonthDate != newPowerHourMonthDate) {
-                // remove old values
-                updatePointsInLeaderboard(oldPowerHourMonthDate, oldPowerHour.points!!, PointsType.Decrement, PowerHourDatabaseDateType.Month)
-                updatePointsInStatistics(oldPowerHourMonthDate, oldPowerHour.points!!, PointsType.Decrement, PowerHourDatabaseDateType.Month)
-                updateCountInStatistics(oldPowerHourMonthDate, PointsType.Decrement, PowerHourDatabaseDateType.Month)
+                // if they are different, remove the values from the old month collections
+                decrementValuesAll(oldPowerHourMonthDate, oldPowerHour.points!!, PowerHourDatabaseDateType.Month)
 
-                // add new values
-                updatePointsInLeaderboard(newPowerHourMonthDate, newPowerHour.points!!, PointsType.Increment, PowerHourDatabaseDateType.Month)
-                updatePointsInStatistics(newPowerHourMonthDate, newPowerHour.points!!, PointsType.Increment, PowerHourDatabaseDateType.Month)
-                updateCountInStatistics(newPowerHourMonthDate, PointsType.Increment, PowerHourDatabaseDateType.Month)
+                // then put the new values into the new month of the power hour
+                incrementValuesAll(newPowerHourMonthDate, newPowerHour.points!!, PowerHourDatabaseDateType.Month)
             } else if (oldPowerHour.points!! != newPowerHour.points!!) {
+                // if the date has not changed for the month, the points may have so they need updating if the case
                 val difference = getDifferenceInPoints(oldPowerHour.points!!, newPowerHour.points!!)
-                updatePointsInLeaderboard(newPowerHourMonthDate, difference, PointsType.Increment, PowerHourDatabaseDateType.Month)
-                updatePointsInStatistics(newPowerHourMonthDate, difference, PointsType.Increment, PowerHourDatabaseDateType.Month)
+                incrementValuesPoints(newPowerHourMonthDate, difference, PowerHourDatabaseDateType.Month)
             }
+
         } else if (oldPowerHour.points!! != newPowerHour.points!!) {
+            // if the date has not changed, the points may have changed and so still need updating
             val difference = getDifferenceInPoints(oldPowerHour.points!!, newPowerHour.points!!)
 
-            // update day points
+            // update the points value for the day collections
             val dayDate = oldPowerHour.epochDate!!
-            updatePointsInLeaderboard(dayDate, difference, PointsType.Increment, PowerHourDatabaseDateType.Day)
-            updatePointsInStatistics(dayDate, difference, PointsType.Increment, PowerHourDatabaseDateType.Day)
+            incrementValuesPoints(dayDate, difference, PowerHourDatabaseDateType.Day)
 
-            // update week points
+            // update the points value for the week collections
             val weekDate = DateHelper.getStartOfWeekEpochFromDayEpoch(dayDate)
-            updatePointsInLeaderboard(weekDate, difference, PointsType.Increment, PowerHourDatabaseDateType.Week)
-            updatePointsInStatistics(weekDate, difference, PointsType.Increment, PowerHourDatabaseDateType.Week)
+            incrementValuesPoints(weekDate, difference, PowerHourDatabaseDateType.Week)
 
-            // update month points
+            // update the points value for the month collections
             val monthDate = DateHelper.getStartOfMonthEpochFromDayEpoch(dayDate)
-            updatePointsInLeaderboard(monthDate, difference, PointsType.Increment, PowerHourDatabaseDateType.Month)
-            updatePointsInStatistics(monthDate, difference, PointsType.Increment, PowerHourDatabaseDateType.Month)
+            incrementValuesPoints(monthDate, difference, PowerHourDatabaseDateType.Month)
         }
     }
 
     fun delete(powerHour: PowerHour) {
         powerHoursRef.document(powerHour.id!!).delete()
 
-        // delete value for the day
+        // delete values from the day collections
         val powerHourDayDate = powerHour.epochDate!!
-        updatePointsInLeaderboard(powerHourDayDate, powerHour.points!!, PointsType.Decrement, PowerHourDatabaseDateType.Day)
-        updatePointsInStatistics(powerHourDayDate, powerHour.points!!, PointsType.Decrement, PowerHourDatabaseDateType.Day)
-        updateCountInStatistics(powerHourDayDate, PointsType.Decrement, PowerHourDatabaseDateType.Day)
+        decrementValuesAll(powerHourDayDate, powerHour.points!!, PowerHourDatabaseDateType.Day)
 
-        // delete value for the week
+        // delete values from the week collections
         val powerHourWeekDate = DateHelper.getStartOfWeekEpochFromDayEpoch(powerHour.epochDate!!)
-        updatePointsInLeaderboard(powerHourWeekDate, powerHour.points!!, PointsType.Decrement, PowerHourDatabaseDateType.Week)
-        updatePointsInStatistics(powerHourWeekDate, powerHour.points!!, PointsType.Decrement, PowerHourDatabaseDateType.Week)
-        updateCountInStatistics(powerHourWeekDate, PointsType.Decrement, PowerHourDatabaseDateType.Week)
+        decrementValuesAll(powerHourWeekDate, powerHour.points!!, PowerHourDatabaseDateType.Week)
 
-        // delete value for the month
+        // delete values from the month collections
         val powerHourMonthDate = DateHelper.getStartOfMonthEpochFromDayEpoch(powerHour.epochDate!!)
-        updatePointsInLeaderboard(powerHourMonthDate, powerHour.points!!, PointsType.Decrement, PowerHourDatabaseDateType.Month)
-        updatePointsInStatistics(powerHourMonthDate, powerHour.points!!, PointsType.Decrement, PowerHourDatabaseDateType.Month)
-        updateCountInStatistics(powerHourMonthDate, PointsType.Decrement, PowerHourDatabaseDateType.Month)
+        decrementValuesAll(powerHourMonthDate, powerHour.points!!, PowerHourDatabaseDateType.Month)
     }
 
     enum class PointsType {
         Increment,
         Decrement
+    }
+
+    /**
+     * Increment or update the values for:
+     * - points in the leaderboard
+     * - points in the statistics
+     * - the count of power hours in statistics
+     */
+    private fun incrementValuesAll(date: Long, points: Int, type: PowerHourDatabaseDateType) {
+        updatePointsInLeaderboard(date, points, PointsType.Increment, type)
+        updatePointsInStatistics(date, points, PointsType.Increment, type)
+        updateCountInStatistics(date, PointsType.Increment, type)
+    }
+
+    /**
+     * Increment (or effectively delete) the values for:
+     * - points in the leaderboard
+     * - points in the statistics
+     * - the count of power hours in statistics
+     */
+    private fun decrementValuesAll(date: Long, points: Int, type: PowerHourDatabaseDateType) {
+        updatePointsInLeaderboard(date, points, PointsType.Decrement, type)
+        updatePointsInStatistics(date, points, PointsType.Decrement, type)
+        updateCountInStatistics(date, PointsType.Decrement, type)
+    }
+
+    /**
+     * Increment or update the values for points only:
+     * - points in the leaderboard
+     * - points in the statistics
+     *
+     * To be used when there is no need for modifying the count of power hours.
+     */
+    private fun incrementValuesPoints(date: Long, points: Int, type: PowerHourDatabaseDateType) {
+        updatePointsInLeaderboard(date, points, PointsType.Increment, type)
+        updatePointsInStatistics(date, points, PointsType.Increment, type)
     }
 
     private fun updatePointsInLeaderboard(powerHourDate: Long, powerHourPoints: Int, pointsType: PointsType, dateType: PowerHourDatabaseDateType) {

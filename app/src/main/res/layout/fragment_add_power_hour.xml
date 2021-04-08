@@ -11,7 +11,9 @@
             type="com.example.techpowerhour.ui.add_power_hour.AddPowerHourViewModel" />
     </data>
 
-    <FrameLayout android:layout_width="match_parent"
+    <FrameLayout
+        android:id="@+id/content_wrapper"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <GridLayout

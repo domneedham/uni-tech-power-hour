@@ -1,9 +1,11 @@
 package com.example.techpowerhour.ui.add_power_hour
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -59,6 +61,15 @@ class AddPowerHourFragment : Fragment() {
         setupDropdownMenu()
         setupSaveButtonBinding()
 
+        // hide the keyboard when the user clicks anywhere that is not an input field
+        binding.contentWrapper.setOnClickListener {
+            it.hideKeyboard()
+            nameField.clearFocus()
+            durationField.clearFocus()
+            typeField.clearFocus()
+            dateField.clearFocus()
+        }
+
         return binding.root
     }
 
@@ -91,9 +102,10 @@ class AddPowerHourFragment : Fragment() {
     }
 
     private fun setupCalendarBinding() {
-        datePicker = DatePickerHelper(this.requireContext())
+        datePicker = DatePickerHelper(requireContext())
 
-        binding.datePickerText.setOnClickListener {
+        dateField.setOnClickListener {
+            it.hideKeyboard()
             showDatePickerDialog()
         }
     }
@@ -102,6 +114,10 @@ class AddPowerHourFragment : Fragment() {
         val items = PowerHourType.values()
         val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
         (binding.typeLayout.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+
+        binding.typeText.setOnClickListener {
+            it.hideKeyboard()
+        }
     }
 
     private fun setupSaveButtonBinding() {
@@ -243,4 +259,9 @@ class AddPowerHourFragment : Fragment() {
     }
 
     inner class FormError(val error: Boolean, val text: String?)
+
+    private fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
+    }
 }

@@ -1,19 +1,17 @@
 package com.example.techpowerhour.ui.leaderboard
 
-
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.techpowerhour.R
 import com.example.techpowerhour.Repositories
 import com.example.techpowerhour.data.model.LeaderboardUser
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.databinding.FragmentLeaderboardBinding
+import kotlinx.coroutines.launch
 
 class LeaderboardFragment : Fragment() {
 
@@ -76,39 +74,30 @@ class LeaderboardFragment : Fragment() {
     }
 
     private fun setupViewModelBinding() {
-        val viewModelFactory = LeaderboardViewModelFactory(Repositories.powerHour)
+        val viewModelFactory = LeaderboardViewModelFactory(Repositories.leaderboard)
         viewModel = ViewModelProvider(this, viewModelFactory).get(LeaderboardViewModel::class.java)
     }
 
     private fun getLeaderboardValues() {
-        val leaderboard = MutableLiveData<List<LeaderboardUser>>()
-        when (dateRange) {
-            DateRanges.TODAY -> {
-                // if the date is equal today
-                viewModel.leaderboardToday().observe(viewLifecycleOwner, Observer<List<LeaderboardUser>> {
-                    Log.v("List", it.toString())
-                    leaderboard.value = it
-                    updateDisplay(it)
-                })
+        viewModel.viewModelScope.launch {
+            val leaderboard = when (dateRange) {
+                DateRanges.TODAY -> {
+                    // if the date is equal today
+                    viewModel.leaderboardToday()
+                }
+                DateRanges.WEEK -> {
+                    // if the date is between start of the week and today
+                    // no need for the end of the week as can't add workouts beyond the current day
+                    viewModel.leaderboardWeek()
+
+                }
+                DateRanges.MONTH -> {
+                    // if the date is between start of the month and today
+                    // no need for the end of the month as can't add workouts beyond the current day
+                    viewModel.leaderboardMonth()
+                }
             }
-            DateRanges.WEEK -> {
-                // if the date is between start of the week and today
-                // no need for the end of the week as can't add workouts beyond the current day
-                viewModel.leaderboardWeek().observe(viewLifecycleOwner, Observer<List<LeaderboardUser>> {
-                    Log.v("List", it.toString())
-                    leaderboard.value = it
-                    updateDisplay(it)
-                })
-            }
-            DateRanges.MONTH -> {
-                // if the date is between start of the month and today
-                // no need for the end of the month as can't add workouts beyond the current day
-                viewModel.leaderboardMonth().observe(viewLifecycleOwner, Observer<List<LeaderboardUser>> {
-                    Log.v("List", it.toString())
-                    leaderboard.value = it
-                    updateDisplay(it)
-                })
-            }
+            updateDisplay(leaderboard)
         }
     }
 

@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 
 class UserRepository {
     private val auth = FirebaseAuth.getInstance()
@@ -68,5 +69,10 @@ class UserRepository {
         }
 
         return userList
+    }
+
+    suspend fun getById(id: String): User {
+        val query = usersRef.document(id)
+        return query.get().await().toObject<User>()!!
     }
 }

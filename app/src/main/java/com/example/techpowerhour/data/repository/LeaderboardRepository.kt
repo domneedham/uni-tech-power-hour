@@ -18,9 +18,10 @@ class LeaderboardRepository (private val userRepository: UserRepository) {
         val todayEpoch = DateHelper.todayEpoch.toString()
 
         val query = leaderboardRef
-                .document(PowerHourDatabaseDateType.Day.type)
-                .collection(todayEpoch)
-                .orderBy("points", Query.Direction.DESCENDING)
+            .document(PowerHourDatabaseDateType.Day.type)
+            .collection(todayEpoch)
+            .orderBy("points", Query.Direction.DESCENDING)
+            .limit(25)
         val documents = query.get().await().documents
         for (doc in documents) {
             var points = 0.0
@@ -43,6 +44,7 @@ class LeaderboardRepository (private val userRepository: UserRepository) {
             .document(PowerHourDatabaseDateType.Week.type)
             .collection(weekEpoch)
             .orderBy("points", Query.Direction.DESCENDING)
+            .limit(25)
         val documents = query.get().await().documents
         for (doc in documents) {
             var points = 0.0
@@ -65,6 +67,7 @@ class LeaderboardRepository (private val userRepository: UserRepository) {
             .document(PowerHourDatabaseDateType.Month.type)
             .collection(monthEpoch)
             .orderBy("points", Query.Direction.DESCENDING)
+            .limit(25)
         val documents = query.get().await().documents
         for (doc in documents) {
             var points = 0.0

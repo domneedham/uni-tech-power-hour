@@ -2,9 +2,9 @@ package com.example.techpowerhour.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.techpowerhour.data.repository.PowerHourRepository
+import com.example.techpowerhour.data.repository.StatisticsRepository
 
-class HomeViewModel(private val repository: PowerHourRepository) : ViewModel() {
+class HomeViewModel(private val repository: StatisticsRepository) : ViewModel() {
     fun getTotalPointsEarnedTodayForCompany() : LiveData<Int> {
         return repository.getTotalPointsEarnedTodayForCompany()
     }

@@ -4,5 +4,5 @@ enum class DatabaseCollectionPaths(val path: String) {
     PowerHour("power_hours"),
     Leaderboard("leaderboard"),
     Statistics("statistics"),
-    User("user")
+    User("users")
 }

@@ -10,4 +10,30 @@
         <item name="android:calendarViewShown">false</item>
         <item name="android:datePickerMode">spinner</item>
     </style>
+    
+    <style name="FragmentListTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginHorizontal">8dp</item>
+    </style>
+
+    <style name="FragmentListSubtitle" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingHorizontal">16dp</item>
+        <item name="android:paddingTop">16dp</item>
+    </style>
+
+    <style name="FragmentListText" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:maxLines">2</item>
+        <item name="android:paddingHorizontal">16dp</item>
+    </style>
+
+    <style name="AddPowerHourFAB">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">end|bottom</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:color">@color/black</item>
+    </style>
 </resources>

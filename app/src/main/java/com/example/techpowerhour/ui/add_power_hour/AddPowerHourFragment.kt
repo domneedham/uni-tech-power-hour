@@ -98,7 +98,6 @@ class AddPowerHourFragment : Fragment() {
     private fun setupViewModelBinding() {
         val viewModelFactory = AddPowerHourViewModelFactory(Repositories.powerHour)
         viewModel = ViewModelProvider(this, viewModelFactory).get(AddPowerHourViewModel::class.java)
-        binding.viewModel = viewModel
     }
 
     private fun setupCalendarBinding() {

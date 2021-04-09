@@ -47,7 +47,6 @@ class ProfileFragment : Fragment() {
     private fun setupViewModelBinding() {
         val viewModelFactory = ProfileViewModelFactory(Repositories.powerHour)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java)
-        binding.viewModel = viewModel
     }
 
     private fun fabFragmentSwitchBinding() {

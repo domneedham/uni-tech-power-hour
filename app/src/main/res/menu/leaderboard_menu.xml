@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_date_range"
-        android:icon="@drawable/ic_calendar_event_black_24dp"
+        android:icon="@drawable/ic_calendar_event_24dp"
         android:title="@string/leaderboard_action_date_range_title"
         app:showAsAction="always">
 

@@ -23,10 +23,17 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_leaderboard, R.id.navigation_profile))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        Repositories.onInit()
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Repositories.onDestroy()
     }
 }

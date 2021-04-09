@@ -88,6 +88,7 @@ class ProfileFragment : Fragment() {
                     auth.signOut()
                     val nextIntent = Intent(requireActivity(), LoginActivity::class.java)
                     startActivity(nextIntent)
+                    requireActivity().finish()
                 }
                 .setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()

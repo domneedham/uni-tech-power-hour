@@ -74,6 +74,7 @@ class LoginActivity : AppCompatActivity() {
     private fun displayNewActivity() {
         val nextIntent = Intent(this, MainActivity::class.java)
         startActivity(nextIntent)
+        finish()
     }
 
     private fun verifyEmail() {

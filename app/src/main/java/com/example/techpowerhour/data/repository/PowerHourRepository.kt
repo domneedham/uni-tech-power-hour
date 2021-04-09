@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -21,18 +22,16 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class PowerHourRepository {
-    private val loggedInUserId = FirebaseAuth.getInstance().uid
+    private var loggedInUserId: String? = null
 
     private val db = Firebase.firestore
     private val powerHoursRef = db.collection(DatabaseCollectionPaths.PowerHour.path)
     private val leaderboardRef = db.collection(DatabaseCollectionPaths.Leaderboard.path)
     private val statisticsRef = db.collection(DatabaseCollectionPaths.Statistics.path)
 
-    val userPowerHoursLD = MutableLiveData<List<PowerHour>>()
+    lateinit var userPowerHoursDataListener: ListenerRegistration
 
-    init {
-        getPowerHoursForUser()
-    }
+    val userPowerHoursLD = MutableLiveData<List<PowerHour>>()
 
     fun insert(powerHour: PowerHour) {
         powerHoursRef.add(powerHour)
@@ -229,8 +228,8 @@ class PowerHourRepository {
     }
 
     private fun getPowerHoursForUser() {
-        val query = powerHoursRef.whereEqualTo("userId", loggedInUserId)
-        query.addSnapshotListener { value, error ->
+        val query = powerHoursRef.whereEqualTo("userId", loggedInUserId!!)
+        userPowerHoursDataListener = query.addSnapshotListener { value, error ->
             if (error != null) {
                 Log.w(TAG, "listen:error", error)
                 return@addSnapshotListener
@@ -287,5 +286,22 @@ class PowerHourRepository {
 
     fun getUserPowerHourById(id: String) : PowerHour? {
         return userPowerHoursLD.value?.find { ph -> ph.id == id }
+    }
+
+    fun onInit() {
+        Log.d("Repositories", "PowerHourRepository: onInit")
+        loggedInUserId = FirebaseAuth.getInstance().uid!!
+        getPowerHoursForUser()
+    }
+
+    fun onDestroy() {
+        closeListeners()
+        userPowerHoursLD.value = ArrayList()
+        loggedInUserId = null
+    }
+
+    private fun closeListeners() {
+        Log.d(TAG, "Closing listeners in PowerHourRepository")
+        userPowerHoursDataListener.remove()
     }
 }

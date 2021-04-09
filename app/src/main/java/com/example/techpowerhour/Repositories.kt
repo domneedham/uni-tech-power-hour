@@ -10,4 +10,12 @@ object Repositories {
     val user by lazy { UserRepository() }
     val leaderboard by lazy { LeaderboardRepository(user) }
     val statistics by lazy { StatisticsRepository() }
+
+    fun onInit() {
+        powerHour.onInit()
+    }
+
+    fun onDestroy() {
+        powerHour.onDestroy()
+    }
 }

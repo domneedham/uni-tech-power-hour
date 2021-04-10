@@ -6,17 +6,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.techpowerhour.data.repository.LeaderboardRepository
-import com.example.techpowerhour.data.repository.PowerHourRepository
-import com.example.techpowerhour.data.repository.StatisticsRepository
-import com.example.techpowerhour.data.repository.UserRepository
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        Repositories.onInit()
 
         setContentView(R.layout.activity_main)
 
@@ -35,10 +29,5 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp() || super.onSupportNavigateUp()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Repositories.onDestroy()
     }
 }

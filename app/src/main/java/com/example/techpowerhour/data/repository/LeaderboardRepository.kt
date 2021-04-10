@@ -10,7 +10,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
-class LeaderboardRepository (private val userRepository: UserRepository) {
+class LeaderboardRepository (private val userRepository: UserRepository) : BaseRepository() {
     private val db = Firebase.firestore
     private val leaderboardRef = db.collection(DatabaseCollectionPaths.Leaderboard.path)
 

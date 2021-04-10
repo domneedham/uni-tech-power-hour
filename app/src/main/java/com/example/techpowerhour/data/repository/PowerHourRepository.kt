@@ -21,7 +21,7 @@ import com.google.firebase.ktx.Firebase
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PowerHourRepository {
+class PowerHourRepository : BaseRepository() {
     private var loggedInUserId: String? = null
 
     private val db = Firebase.firestore
@@ -288,20 +288,22 @@ class PowerHourRepository {
         return userPowerHoursLD.value?.find { ph -> ph.id == id }
     }
 
-    fun onInit() {
-        Log.d("Repositories", "PowerHourRepository: onInit")
-        loggedInUserId = FirebaseAuth.getInstance().uid!!
-        getPowerHoursForUser()
-    }
-
-    fun onDestroy() {
-        closeListeners()
-        userPowerHoursLD.value = ArrayList()
-        loggedInUserId = null
-    }
-
     private fun closeListeners() {
         Log.d(TAG, "Closing listeners in PowerHourRepository")
         userPowerHoursDataListener.remove()
+    }
+
+    override fun onInit() {
+        super.onInit()
+        loggedInUserId = FirebaseAuth.getInstance().uid!!
+        getPowerHoursForUser()
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        closeListeners()
+        userPowerHoursLD.value = ArrayList()
+        loggedInUserId = null
     }
 }

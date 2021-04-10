@@ -25,8 +25,6 @@ class LeaderboardFragment : Fragment() {
 
     private var dateRange = DateRanges.TODAY
 
-    private lateinit var allPowerHours: List<PowerHour>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)

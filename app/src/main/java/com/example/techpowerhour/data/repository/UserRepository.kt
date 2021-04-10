@@ -10,14 +10,14 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
-class UserRepository {
+class UserRepository : BaseRepository() {
     private val auth = FirebaseAuth.getInstance()
     private val db = Firebase.firestore
     private val usersRef = db.collection(DatabaseCollectionPaths.User.path)
 
     var currentUser: User? = null
 
-    fun setCurrentUser(id: String) {
+    fun setCurrentUser(id: String = auth.uid!!) {
         val query = usersRef.document(id)
         query.get()
                 .addOnSuccessListener { document ->
@@ -74,5 +74,10 @@ class UserRepository {
     suspend fun getById(id: String): User {
         val query = usersRef.document(id)
         return query.get().await().toObject<User>()!!
+    }
+
+    override fun onInit() {
+        super.onInit()
+        setCurrentUser()
     }
 }

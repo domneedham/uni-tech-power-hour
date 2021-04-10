@@ -11,7 +11,7 @@ import com.example.techpowerhour.util.DateHelper
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class StatisticsRepository {
+class StatisticsRepository : BaseRepository() {
     private val db = Firebase.firestore
     private val statisticsRef = db.collection(DatabaseCollectionPaths.Statistics.path)
 

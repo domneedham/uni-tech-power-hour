@@ -3,8 +3,8 @@ package com.example.techpowerhour.data.service
 import com.example.techpowerhour.data.model.LeaderboardUser
 import com.example.techpowerhour.data.repository.BaseRepository
 import com.example.techpowerhour.data.repository.UserRepository
-import com.example.techpowerhour.data.repository.enums.DatabaseCollectionPaths
-import com.example.techpowerhour.data.repository.enums.PowerHourDatabaseDateType
+import com.example.techpowerhour.data.service.enums.DatabaseCollectionPaths
+import com.example.techpowerhour.data.service.enums.PowerHourDatabaseDateType
 import com.example.techpowerhour.util.DateHelper
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query

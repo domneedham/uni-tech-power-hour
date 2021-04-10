@@ -4,9 +4,9 @@ import android.content.ContentValues
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.techpowerhour.data.model.PowerHour
-import com.example.techpowerhour.data.repository.enums.DatabaseCollectionPaths
-import com.example.techpowerhour.data.repository.enums.DatabaseStatisticsDocumentPaths
-import com.example.techpowerhour.data.repository.enums.PowerHourDatabaseDateType
+import com.example.techpowerhour.data.service.enums.DatabaseCollectionPaths
+import com.example.techpowerhour.data.service.enums.DatabaseStatisticsDocumentPaths
+import com.example.techpowerhour.data.service.enums.PowerHourDatabaseDateType
 import com.example.techpowerhour.util.DateHelper
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FieldValue

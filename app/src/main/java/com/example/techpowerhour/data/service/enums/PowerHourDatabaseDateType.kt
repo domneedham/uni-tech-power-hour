@@ -1,4 +1,4 @@
-package com.example.techpowerhour.data.repository.enums
+package com.example.techpowerhour.data.service.enums
 
 enum class PowerHourDatabaseDateType(val type: String) {
     Day("days"),

@@ -1,7 +1,7 @@
 package com.example.techpowerhour.data.service
 
 import com.example.techpowerhour.data.model.User
-import com.example.techpowerhour.data.repository.enums.DatabaseCollectionPaths
+import com.example.techpowerhour.data.service.enums.DatabaseCollectionPaths
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject

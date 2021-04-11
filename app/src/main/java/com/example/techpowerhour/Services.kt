@@ -6,20 +6,8 @@ import com.example.techpowerhour.data.service.StatisticsService
 import com.example.techpowerhour.data.service.UserService
 
 object Services {
-    val user by lazy {
-        val ur = UserService()
-        ur
-    }
-    val powerHour by lazy {
-        val phr = PowerHourService()
-        phr
-    }
-    val leaderboard by lazy {
-        val lr = LeaderboardService(Repositories.user.value)
-        lr
-    }
-    val statistics by lazy {
-        val sr = StatisticsService()
-        sr
-    }
+    val user by lazy { UserService() }
+    val powerHour by lazy { PowerHourService() }
+    val leaderboard by lazy { LeaderboardService(Repositories.user.value) }
+    val statistics by lazy { StatisticsService() }
 }

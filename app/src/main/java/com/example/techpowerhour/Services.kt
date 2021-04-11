@@ -15,7 +15,7 @@ object Services {
         phr
     }
     val leaderboard by lazy {
-        val lr = LeaderboardService(Repositories.user)
+        val lr = LeaderboardService(Repositories.user.value)
         lr
     }
     val statistics by lazy {

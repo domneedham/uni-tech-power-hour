@@ -3,7 +3,7 @@ package com.example.techpowerhour.data.repository
 import androidx.lifecycle.LiveData
 import com.example.techpowerhour.data.service.StatisticsService
 
-class StatisticsRepository(private val service: StatisticsService) {
+class StatisticsRepository(private val service: StatisticsService) : BaseRepository() {
     fun getTotalPointsEarnedTodayForCompany(): LiveData<Int> {
         return service.getTotalPointsEarnedTodayForCompany()
     }

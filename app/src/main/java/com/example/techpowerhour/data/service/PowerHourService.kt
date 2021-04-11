@@ -24,8 +24,6 @@ class PowerHourService {
 
     lateinit var userPowerHoursDataListener: ListenerRegistration
 
-    val userPowerHoursLD = MutableLiveData<List<PowerHour>>()
-
     fun insert(id: String, powerHour: PowerHour) {
         powerHoursRef.add(powerHour)
 
@@ -220,7 +218,7 @@ class PowerHourService {
         }
     }
 
-    fun getPowerHoursForUser(id: String) {
+    fun getPowerHoursForUser(id: String, onChangeCallback: ((powerHour: PowerHour, docId: String, change: DocumentChange.Type) -> Unit)) {
         val query = powerHoursRef.whereEqualTo("userId", id)
         userPowerHoursDataListener = query.addSnapshotListener { value, error ->
             if (error != null) {
@@ -228,56 +226,11 @@ class PowerHourService {
                 return@addSnapshotListener
             }
 
-            val phList = ArrayList<PowerHour>()
-            if (userPowerHoursLD.value != null) {
-                phList.addAll(userPowerHoursLD.value!!.asIterable())
-            }
-
             for (dc in value!!.documentChanges) {
-                when (dc.type) {
-                    DocumentChange.Type.ADDED -> {
-                        val powerHour = dc.document.toObject<PowerHour>()
-                        powerHour.id = dc.document.id
-                        phList.add(powerHour)
-                    }
-                    DocumentChange.Type.MODIFIED -> {
-                        val powerHour = dc.document.toObject<PowerHour>()
-                        powerHour.id = dc.document.id
-
-                        val index = phList.indexOfFirst { ph -> ph.id == dc.document.id }
-                        if (index != -1) {
-                            phList[index] = powerHour
-                        }
-                    }
-                    DocumentChange.Type.REMOVED -> {
-                        val id = dc.document.id
-                        phList.removeIf { ph -> ph.id == id }
-                    }
-                }
+                val powerHour = dc.document.toObject<PowerHour>()
+                onChangeCallback(powerHour, dc.document.id, dc.type)
             }
 
-            userPowerHoursLD.value = phList
         }
-    }
-
-    fun getTotalPointsEarnedForUser(): Int {
-        // no need for live data as no way of possible updates when on user page
-        // therefore called every refresh anyway
-        val points = userPowerHoursLD.value
-                ?.sumOf { powerHour: PowerHour -> powerHour.points!! }
-
-        return points ?: 0
-    }
-
-    fun getTotalPowerHoursCompletedForUser(): Int {
-        // no need for live data as no way of possible updates when on user page
-        // therefore called every refresh anyway
-        val points = userPowerHoursLD.value?.count()
-
-        return points ?: 0
-    }
-
-    fun getUserPowerHourById(id: String) : PowerHour? {
-        return userPowerHoursLD.value?.find { ph -> ph.id == id }
     }
 }

@@ -72,7 +72,7 @@ class LeaderboardFragment : Fragment() {
     }
 
     private fun setupViewModelBinding() {
-        val viewModelFactory = LeaderboardViewModelFactory(Repositories.leaderboard)
+        val viewModelFactory = LeaderboardViewModelFactory(Repositories.leaderboard.value)
         viewModel = ViewModelProvider(this, viewModelFactory).get(LeaderboardViewModel::class.java)
     }
 

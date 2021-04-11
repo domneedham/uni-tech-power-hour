@@ -13,13 +13,11 @@ import com.google.firebase.auth.FirebaseAuth
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val userRepository = Repositories.user
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (auth.currentUser != null) {
-            userRepository.setCurrentUser(auth.uid!!)
             displayNewActivity()
         } else {
             setContentView(R.layout.activity_main)
@@ -64,7 +62,6 @@ class LoginActivity : AppCompatActivity() {
                     displaySignIn()
                 }
                 else { //if user has had their email address verified
-                    userRepository.setCurrentUser(auth.uid!!)
                     displayNewActivity()
                 }
             }
@@ -74,6 +71,7 @@ class LoginActivity : AppCompatActivity() {
     private fun displayNewActivity() {
         val nextIntent = Intent(this, MainActivity::class.java)
         startActivity(nextIntent)
+        finish()
     }
 
     private fun verifyEmail() {

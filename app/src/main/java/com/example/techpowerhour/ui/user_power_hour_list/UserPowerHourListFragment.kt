@@ -43,7 +43,7 @@ class UserPowerHourListFragment : Fragment() {
     }
 
     private fun setupViewModelBinding() {
-        val viewModelFactory = UserPowerHourListViewModelFactory(Repositories.powerHour)
+        val viewModelFactory = UserPowerHourListViewModelFactory(Repositories.powerHour.value)
         viewModel = ViewModelProvider(this, viewModelFactory).get(UserPowerHourListViewModel::class.java)
 //        binding.viewModel = viewModel
     }

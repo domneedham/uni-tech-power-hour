@@ -11,6 +11,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Repositories.onInit()
+
         setContentView(R.layout.activity_main)
 
         // Bottom navigation
@@ -23,6 +26,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_leaderboard, R.id.navigation_profile))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Repositories.onDestroy()
     }
 
     override fun onSupportNavigateUp(): Boolean {

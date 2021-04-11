@@ -45,7 +45,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupViewModelBinding() {
-        val viewModelFactory = ProfileViewModelFactory(Repositories.powerHour)
+        val viewModelFactory = ProfileViewModelFactory(Repositories.powerHour.value)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java)
     }
 
@@ -88,6 +88,7 @@ class ProfileFragment : Fragment() {
                     auth.signOut()
                     val nextIntent = Intent(requireActivity(), LoginActivity::class.java)
                     startActivity(nextIntent)
+                    requireActivity().finish()
                 }
                 .setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()

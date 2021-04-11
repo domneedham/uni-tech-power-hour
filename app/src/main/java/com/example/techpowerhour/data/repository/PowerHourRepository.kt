@@ -144,5 +144,6 @@ class PowerHourRepository(private val service: PowerHourService) : BaseRepositor
         loggedInUserId = null
         // reset power hour value
         userPowerHoursLD.value = ArrayList()
+        service.userPowerHoursDataListener.remove()
     }
 }

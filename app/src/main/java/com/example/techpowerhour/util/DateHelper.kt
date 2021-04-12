@@ -5,6 +5,9 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+/**
+ * A collection of helper functions for dates.
+ */
 object DateHelper {
     val todayInMs = Calendar.getInstance().timeInMillis
     val todayEpoch = LocalDate.now().toEpochDay()
@@ -69,12 +72,20 @@ object DateHelper {
         return parseDateToLocalDate(date)?.toEpochDay()
     }
 
+    /**
+     * Gets the Epoch day value for the start of the week relating to the passed in [day].
+     * @param day The exact day Epoch value to get the start of week value for.
+     */
     fun getStartOfWeekEpochFromDayEpoch(day: Long) : Long {
         val date = LocalDate.ofEpochDay(day)
         val differenceInDaysWeek = date.dayOfWeek.compareTo(DayOfWeek.MONDAY).toLong()
         return date.minusDays(differenceInDaysWeek).toEpochDay()
     }
 
+    /**
+     * Gets the Epoch day value for the start of the month relating to the passed in [day].
+     * @param day The exact day Epoch value to get the start of month value for.
+     */
     fun getStartOfMonthEpochFromDayEpoch(day: Long) : Long {
         val date = LocalDate.ofEpochDay(day)
         val differenceInDaysStartOfMonth = date.dayOfMonth - 1.toLong()

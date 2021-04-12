@@ -13,6 +13,8 @@ import com.example.techpowerhour.LoginActivity
 import com.example.techpowerhour.R
 import com.example.techpowerhour.Repositories
 import com.example.techpowerhour.databinding.FragmentProfileBinding
+import com.example.techpowerhour.ui.add_power_hour.AddPowerHourFragment
+import com.example.techpowerhour.ui.user_power_hour_list.UserPowerHourListFragment
 import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment : Fragment() {
@@ -44,23 +46,35 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Setup the binding to the viewmodel.
+     */
     private fun setupViewModelBinding() {
         val viewModelFactory = ProfileViewModelFactory(Repositories.powerHour.value)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java)
     }
 
+    /**
+     * Set the click binding on the FAB to navigate to the [AddPowerHourFragment].
+     */
     private fun fabFragmentSwitchBinding() {
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.navigation_add_power_hour)
         }
     }
 
+    /**
+     * Set the click binding on the user Power List field to navigate to the [UserPowerHourListFragment].
+     */
     private fun powerHourListFragmentSwitchBinding() {
         binding.controlsPowerHourListLayout.setOnClickListener {
             findNavController().navigate(R.id.navigation_user_power_hour_list)
         }
     }
 
+    /**
+     * Fetch and update the UI for for users Power Hour total statistics.
+     */
     private fun changePowerHourStatisticsText() {
         val totalPoints = viewModel.getTotalPointsEarned()
         val totalPointsText = resources.getQuantityString(
@@ -79,6 +93,9 @@ class ProfileFragment : Fragment() {
         binding.numberWorkoutsText.text = totalPowerHoursText
     }
 
+    /**
+     * Set the click binding for the signout field.
+     */
     private fun signoutBinding() {
         binding.accountSignoutLayout.setOnClickListener {
             val builder = AlertDialog.Builder(this.context)

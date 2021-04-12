@@ -78,6 +78,9 @@ class AddPowerHourFragment : Fragment() {
         _binding = null
     }
 
+    /**
+     * Set the field variables to the relevant binding of the UI.
+     */
     private fun bindTextFields() {
         nameField = binding.workoutNameText
         durationField = binding.durationText
@@ -85,6 +88,9 @@ class AddPowerHourFragment : Fragment() {
         dateField = binding.datePickerText
     }
 
+    /**
+     * Set the fields to the values of the [oldPowerHour] if the user is editing.
+     */
     private fun copyValuesFromOldPowerHour() {
         nameField.setText(oldPowerHour?.name, TextView.BufferType.NORMAL)
         durationField.setText(oldPowerHour?.minutes.toString(), TextView.BufferType.NORMAL)
@@ -95,11 +101,18 @@ class AddPowerHourFragment : Fragment() {
         )
     }
 
+    /**
+     * Setup the binding to the viewmodel.
+     */
     private fun setupViewModelBinding() {
         val viewModelFactory = AddPowerHourViewModelFactory(Repositories.powerHour.value)
         viewModel = ViewModelProvider(this, viewModelFactory).get(AddPowerHourViewModel::class.java)
     }
 
+    /**
+     * Setup the binding for the calendar input field click. This method also binds the field
+     * click to close the keyboard automatically.
+     */
     private fun setupCalendarBinding() {
         datePicker = DatePickerHelper(requireContext())
 
@@ -109,6 +122,10 @@ class AddPowerHourFragment : Fragment() {
         }
     }
 
+    /**
+     * Setup the dropdown menu for selecting the Power Hour type. This method also binds the field
+     * click to close the keyboard automatically.
+     */
     private fun setupDropdownMenu() {
         val items = PowerHourType.values()
         val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
@@ -119,6 +136,10 @@ class AddPowerHourFragment : Fragment() {
         }
     }
 
+    /**
+     * Setup the binding to the save FAB. Does verification on the data before trying to save
+     * to persistent storage through the viewmodel.
+     */
     private fun setupSaveButtonBinding() {
         binding.floatingActionButton.setOnClickListener {
             val nameText = nameField.text.toString().trim()
@@ -167,6 +188,10 @@ class AddPowerHourFragment : Fragment() {
         }
     }
 
+    /**
+     * Loads the datepicker dialog for the user to select a date.
+     * @see DatePickerHelper for how the dialog works.
+     */
     private fun showDatePickerDialog() {
         val cal = Calendar.getInstance()
         val d = cal.get(Calendar.DAY_OF_MONTH)
@@ -186,6 +211,9 @@ class AddPowerHourFragment : Fragment() {
         })
     }
 
+    /**
+     * Clears the form errors, inputs and focus to look like first load.
+     */
     private fun resetForm() {
         resetFormErrors()
 
@@ -199,6 +227,9 @@ class AddPowerHourFragment : Fragment() {
         binding.datePickerText.clearFocus()
     }
 
+    /**
+     * Clears the form errors.
+     */
     private fun resetFormErrors() {
         binding.workoutNameLayout.error = null
         binding.durationLayout.error = null
@@ -206,7 +237,19 @@ class AddPowerHourFragment : Fragment() {
         binding.datePickerLayout.error = null
     }
 
-    private fun checkForFormErrors(nameText: String, durationText: String, typeText: String, dateText: String): Boolean {
+    /**
+     * Checks for issues with the user input and updates the UI if errors are found.
+     * @param nameText The text for the name input.
+     * @param durationText The text for the duration input.
+     * @param typeText The text for the type input.
+     * @param dateText The text for the date input.
+     */
+    private fun checkForFormErrors(
+            nameText: String,
+            durationText: String,
+            typeText: String,
+            dateText: String
+    ): Boolean {
         // check for issues in the form
         val nameError = checkForNameError(nameText)
         binding.workoutNameLayout.error = nameError.text
@@ -223,6 +266,10 @@ class AddPowerHourFragment : Fragment() {
         return nameError.error || durationError.error || typeError.error || dateError.error
     }
 
+    /**
+     * Checks for errors on the [nameField].
+     * @param text The text of the name input.
+     */
     private fun checkForNameError(text: String): FormError {
         if (text.isEmpty())
             return FormError(true, "The name of the workout is missing")
@@ -230,6 +277,10 @@ class AddPowerHourFragment : Fragment() {
         return FormError(false, null)
     }
 
+    /**
+     * Checks for errors on the [durationField].
+     * @param text The text of the duration input.
+     */
     private fun checkForDurationError(text: String): FormError {
         if (text.isEmpty())
             return FormError(true, "The duration of the workout is missing")
@@ -240,6 +291,10 @@ class AddPowerHourFragment : Fragment() {
         return FormError(false, null)
     }
 
+    /**
+     * Checks for errors on the [typeField].
+     * @param text The text of the type input.
+     */
     private fun checkForTypeError(text: String): FormError {
         if (text.isEmpty())
             return FormError(true, "The type of workout is required")
@@ -247,6 +302,10 @@ class AddPowerHourFragment : Fragment() {
         return FormError(false, null)
     }
 
+    /**
+     * Checks for erros on the [dateField].
+     * @param text The text of the date input.
+     */
     private fun checkForDateError(text: String): FormError {
         if (text.isEmpty())
             return FormError(true, "The date of the workout is missing")
@@ -257,8 +316,16 @@ class AddPowerHourFragment : Fragment() {
         return FormError(false, null)
     }
 
+    /**
+     * Class to represent an error on a form field.
+     * @param error Whether there is an error or not.
+     * @param text If there is an error, what text should be displayed to the user.
+     */
     inner class FormError(val error: Boolean, val text: String?)
 
+    /**
+     * Function to hide the keyboard from the user.
+     */
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)

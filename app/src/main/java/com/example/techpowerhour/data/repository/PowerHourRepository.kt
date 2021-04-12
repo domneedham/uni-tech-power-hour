@@ -6,22 +6,50 @@ import com.example.techpowerhour.data.service.PowerHourService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 
+/**
+ * The repository for all things related to the Power Hours.
+ * @param service The Power Hour service to fetch data from.
+ */
 class PowerHourRepository(private val service: PowerHourService) : BaseRepository() {
+    /**
+     * The current logged in user ID to sent to the service.
+     */
     private var loggedInUserId: String? = null
+
+    /**
+     * The storage of the user Power Hour list. Can be subscribed to to listen for changes.
+     */
     val userPowerHoursLD = MutableLiveData<List<PowerHour>>()
 
+    /**
+     * Inserts a new Power Hour into the persistent storage.
+     * @param powerHour The Power Hour the user has just created.
+     */
     fun insert(powerHour: PowerHour) {
         return service.insert(loggedInUserId!!, powerHour)
     }
 
+    /**
+     * Updates a Power Hour in the persistent storage.
+     * @param oldPowerHour The Power Hour state before changes.
+     * @param newPowerHour The Power Hour with the updated values.
+     */
     fun update(oldPowerHour: PowerHour, newPowerHour: PowerHour) {
         return service.update(loggedInUserId!!, oldPowerHour, newPowerHour)
     }
 
+    /**
+     * Deletes a Power Hour from the persistent storage.
+     * @param powerHour The Power Hour to delete.
+     */
     fun delete(powerHour: PowerHour) {
         return service.delete(loggedInUserId!!, powerHour)
     }
 
+    /**
+     * Start the service listener for Power Hour changes, providing a callback to handle events.
+     * Each time the callback function is run, the [userPowerHoursLD] gets updated.
+     */
     private fun getPowerHoursForUser() {
         service.getPowerHoursForUser(loggedInUserId!!) { powerHour, docId, change ->
             // create a new empty list
@@ -62,6 +90,9 @@ class PowerHourRepository(private val service: PowerHourService) : BaseRepositor
         }
     }
 
+    /**
+     * Returns a sum of the points earned by the user.
+     */
     fun getTotalPointsEarnedForUser(): Int {
         // no need for live data as no way of possible updates when on user page
         // therefore called every refresh anyway
@@ -71,6 +102,9 @@ class PowerHourRepository(private val service: PowerHourService) : BaseRepositor
         return points ?: 0
     }
 
+    /**
+     * Returns a total sum of the number of Power Hours completed by the user.
+     */
     fun getTotalPowerHoursCompletedForUser(): Int {
         // no need for live data as no way of possible updates when on user page
         // therefore called every refresh anyway
@@ -79,10 +113,18 @@ class PowerHourRepository(private val service: PowerHourService) : BaseRepositor
         return points ?: 0
     }
 
+    /**
+     * Returns a Power Hour from the stored list of user Power Hours.
+     */
     fun getUserPowerHourById(id: String) : PowerHour? {
         return userPowerHoursLD.value?.find { ph -> ph.id == id }
     }
 
+    /**
+     * Sets the [loggedInUserId] to the current user logged in.
+     * Then starts the [getPowerHoursForUser] method to fetch and listen to the Power Hour list for the user.
+     * @see BaseRepository.onInit
+     */
     override fun onInit() {
         super.onInit()
         // set the loggedInUserId value to the current logged in user id from Firebase
@@ -91,11 +133,17 @@ class PowerHourRepository(private val service: PowerHourService) : BaseRepositor
         getPowerHoursForUser()
     }
 
+    /**
+     * Resets the [loggedInUserId] to null to resemble no user currently logged in.
+     * Then empties the [userPowerHoursLD] to clear any link to the users Power Hours.
+     * @see BaseRepository.onDestroy
+     */
     override fun onDestroy() {
         super.onDestroy()
         // reset the loggedInUserId
         loggedInUserId = null
         // reset power hour value
         userPowerHoursLD.value = ArrayList()
+        service.userPowerHoursDataListener.remove()
     }
 }

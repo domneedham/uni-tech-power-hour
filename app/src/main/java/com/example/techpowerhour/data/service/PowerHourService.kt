@@ -2,7 +2,6 @@ package com.example.techpowerhour.data.service
 
 import android.content.ContentValues
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.data.service.enums.DatabaseCollectionPaths
 import com.example.techpowerhour.data.service.enums.DatabaseStatisticsDocumentPaths
@@ -16,14 +15,48 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
+/**
+ * The service class for the Power Hour persistent storage in Firestore.
+ */
 class PowerHourService {
     private val db = Firebase.firestore
+
+    /**
+     * The reference to the power_hours collection.
+     */
     private val powerHoursRef = db.collection(DatabaseCollectionPaths.PowerHour.path)
+
+    /**
+     * The reference to the leaderboard collection.
+     */
     private val leaderboardRef = db.collection(DatabaseCollectionPaths.Leaderboard.path)
+
+    /**
+     * The reference to the statistics collection.
+     */
     private val statisticsRef = db.collection(DatabaseCollectionPaths.Statistics.path)
 
+    /**
+     * The variable for storing the listener registration. This allows it to be stopped from the repository.
+     * @see com.example.techpowerhour.data.repository.PowerHourRepository.onDestroy
+     */
     lateinit var userPowerHoursDataListener: ListenerRegistration
 
+    /**
+     * Enum used to determine whether changes to a Power Hour points have increased or decreased.
+     * The value is used to determine methods to call on the Firestore SDK.
+     */
+    enum class PointsType {
+        Increment,
+        Decrement
+    }
+
+    /**
+     * Store a Power Hour in Firestore. Updates the [powerHoursRef], then updates the points and total
+     * for the [statisticsRef] and [leaderboardRef] so the values are aligned.
+     * @param id The id of the user who created the Power Hour.
+     * @param powerHour The Power Hour object to insert.
+     */
     fun insert(id: String, powerHour: PowerHour) {
         powerHoursRef.add(powerHour)
 
@@ -40,6 +73,21 @@ class PowerHourService {
         incrementValuesAll(id, powerHourMonthDate, powerHour.points!!, PowerHourDatabaseDateType.Month)
     }
 
+    /**
+     * Update a Power Hour in Firestore. Updates the [powerHoursRef], then updates the points and total
+     * for the [statisticsRef] and [leaderboardRef] so the values are aligned.
+     *
+     * Old values are updated (such as points) if the date has not changed. If the date has changed,
+     * values are removed from the old date reference and inserted into the new reference. This occurs
+     * for each possibility, but does not strictly do them all straight away. For example, the day
+     * reference may have changed, but the week or month has not. In this case, only the day reference
+     * is updated in the [statisticsRef] and [leaderboardRef]. This pattern continues for all possible
+     * changes, only modifying where a change has definitely occurred.
+     *
+     * @param id The id of the user who created the Power Hour.
+     * @param oldPowerHour The Power Hour object before the updates.
+     * @param newPowerHour The Power Hour object that has been updated.
+     */
     fun update(id: String, oldPowerHour: PowerHour, newPowerHour: PowerHour) {
         powerHoursRef.document(oldPowerHour.id!!).set(newPowerHour)
 
@@ -106,6 +154,12 @@ class PowerHourService {
         }
     }
 
+    /**
+     * Delete a Power Hour from Firestore. Updates the [powerHoursRef], then updates (by deleting)
+     * the points and total for the [statisticsRef] and [leaderboardRef] so the values are aligned.
+     * @param id The id of the user who created the Power Hour.
+     * @param powerHour The Power Hour object to delete.
+     */
     fun delete(id: String, powerHour: PowerHour) {
         powerHoursRef.document(powerHour.id!!).delete()
 
@@ -120,11 +174,6 @@ class PowerHourService {
         // delete values from the month collections
         val powerHourMonthDate = DateHelper.getStartOfMonthEpochFromDayEpoch(powerHour.epochDate!!)
         decrementValuesAll(id, powerHourMonthDate, powerHour.points!!, PowerHourDatabaseDateType.Month)
-    }
-
-    enum class PointsType {
-        Increment,
-        Decrement
     }
 
     /**
@@ -163,7 +212,22 @@ class PowerHourService {
         updatePointsInStatistics(date, points, PointsType.Increment, type)
     }
 
-    private fun updatePointsInLeaderboard(id: String, powerHourDate: Long, powerHourPoints: Int, pointsType: PointsType, dateType: PowerHourDatabaseDateType) {
+    /**
+     * Update the points stored in the [leaderboardRef] for day, week or month depending on the
+     * [dateType] passed to the function.
+     * @param id The user id.
+     * @param powerHourDate The date of the Power Hour. This can be an exact day, a start of week or a start of month.
+     * @param powerHourPoints The points for the Power Hour.
+     * @param pointsType Whether to increment or decrement points from the current value.
+     * @param dateType Whether to update the day, week or month document.
+     */
+    private fun updatePointsInLeaderboard(
+            id: String,
+            powerHourDate: Long,
+            powerHourPoints: Int,
+            pointsType: PointsType,
+            dateType: PowerHourDatabaseDateType
+    ) {
         val points = getPositiveOrNegativeValue(powerHourPoints, pointsType)
 
         leaderboardRef
@@ -176,7 +240,20 @@ class PowerHourService {
                 )
     }
 
-    private fun updatePointsInStatistics(powerHourDate: Long, powerHourPoints: Int, pointsType: PointsType, dateType: PowerHourDatabaseDateType) {
+    /**
+     * Update the points stored in the [statisticsRef] for day, week or month depending on the
+     * [dateType] passed to the function.
+     * @param powerHourDate The date of the Power Hour. This can be an exact day, a start of week or a start of month.
+     * @param powerHourPoints The points for the Power Hour.
+     * @param pointsType Whether to increment or decrement points from the current value.
+     * @param dateType Whether to update the day, week or month document.
+     */
+    private fun updatePointsInStatistics(
+            powerHourDate: Long,
+            powerHourPoints: Int,
+            pointsType: PointsType,
+            dateType: PowerHourDatabaseDateType
+    ) {
         val points = getPositiveOrNegativeValue(powerHourPoints, pointsType)
 
         statisticsRef
@@ -189,7 +266,18 @@ class PowerHourService {
                 )
     }
 
-    private fun updateCountInStatistics(powerHourDate: Long, pointsType: PointsType, dateType: PowerHourDatabaseDateType) {
+    /**
+     * Update the total count of Power Hours stored in the [statisticsRef] for day, week or month
+     * depending on the [dateType] passed to the function.
+     * @param powerHourDate The date of the Power Hour. This can be an exact day, a start of week or a start of month.
+     * @param pointsType Whether to increment or decrement points from the current value.
+     * @param dateType Whether to update the day, week or month document.
+     */
+    private fun updateCountInStatistics(
+            powerHourDate: Long,
+            pointsType: PointsType,
+            dateType: PowerHourDatabaseDateType
+    ) {
         val count = getPositiveOrNegativeValue(1, pointsType)
 
         statisticsRef
@@ -202,6 +290,14 @@ class PowerHourService {
                 )
     }
 
+    /**
+     * Decide whether to use a positive or negative integer. The Firestore SDK only allows
+     * an increment method, but passing a negative value will do subtraction rather than addition.
+     * Therefore, depending on whether the value has gone up or down determines the need for
+     * positive or negative values passed to the Firestore SDK.
+     * @param powerHourPoints The points value. Also is used for the count, in which case the value is 1.
+     * @param pointsType Whether the value should increment or decrement from the current value.
+     */
     private fun getPositiveOrNegativeValue(powerHourPoints: Int, pointsType: PointsType) : Double {
         return if (pointsType == PointsType.Increment) {
             powerHourPoints
@@ -210,6 +306,11 @@ class PowerHourService {
         }.toDouble()
     }
 
+    /**
+     * A method to determine the difference in points between the old and new.
+     * @param oldPoints The points of the non-updated Power Hour.
+     * @param newPoints The points of the updated Power Hour.
+     */
     private fun getDifferenceInPoints(oldPoints: Int, newPoints: Int) : Int {
         return if (oldPoints < newPoints) {
             oldPoints - newPoints
@@ -218,7 +319,16 @@ class PowerHourService {
         }
     }
 
-    fun getPowerHoursForUser(id: String, onChangeCallback: ((powerHour: PowerHour, docId: String, change: DocumentChange.Type) -> Unit)) {
+    /**
+     * Implement a listener on a query to get the Power Hours for the user.
+     * @param id The id of the user.
+     * @param onChangeCallback The callback function whenever Firebase is updated or on the
+     * initial load of the query.
+     */
+    fun getPowerHoursForUser(
+            id: String,
+            onChangeCallback: ((powerHour: PowerHour, docId: String, change: DocumentChange.Type) -> Unit)
+    ) {
         val query = powerHoursRef.whereEqualTo("userId", id)
         userPowerHoursDataListener = query.addSnapshotListener { value, error ->
             if (error != null) {
@@ -230,7 +340,6 @@ class PowerHourService {
                 val powerHour = dc.document.toObject<PowerHour>()
                 onChangeCallback(powerHour, dc.document.id, dc.type)
             }
-
         }
     }
 }

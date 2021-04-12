@@ -10,6 +10,14 @@ import com.google.firebase.auth.FirebaseAuth
 class AddPowerHourViewModel(private val repository: PowerHourRepository) : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
 
+    /**
+     * Create a new Power Hour from the users input and call the repository to save into
+     * persistent storage.
+     * @param name The text for the name of the Power Hour.
+     * @param duration The text for the duration of the Power Hour.
+     * @param type The text for the type of the Power Hour.
+     * @param date The text for the date of the Power Hour.
+     */
     fun createNewPourHour(name: String, duration: String, type: String, date: String): PowerHour {
         val powerHour = PowerHour(
                 name,
@@ -22,6 +30,15 @@ class AddPowerHourViewModel(private val repository: PowerHourRepository) : ViewM
         return powerHour
     }
 
+    /**
+     * Modify an existing Power Hour from the users input and call the repository to update in
+     * persistent storage.
+     * @param oldPowerHour The Power Hour object the user would like to change.
+     * @param name The text for the name of the Power Hour.
+     * @param duration The text for the duration of the Power Hour.
+     * @param type The text for the type of the Power Hour.
+     * @param date The text for the date of the Power Hour.
+     */
     fun updatePowerHour(oldPowerHour: PowerHour, name: String, duration: String, type: String, date: String): PowerHour {
         val newPowerHour = oldPowerHour.copy(
             name = name,
@@ -35,6 +52,10 @@ class AddPowerHourViewModel(private val repository: PowerHourRepository) : ViewM
         return newPowerHour
     }
 
+    /**
+     * Retrieve a Power Hour object by the id.
+     * @param id The id of the Power Hour.
+     */
     fun getPowerHourById(id: String): PowerHour? {
         return repository.getUserPowerHourById(id)
     }

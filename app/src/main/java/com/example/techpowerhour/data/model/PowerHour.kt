@@ -24,12 +24,18 @@ data class PowerHour(
 ) {
     var id: String? = null
 
-    val difficulty: Int?
+    private val difficulty: Int?
         get(): Int? = type?.difficulty
 
     val points: Int?
         get(): Int? = calculatePoints()
 
+    /**
+     * Calculate the total points earned for the Power Hour.
+     *
+     * Calculated by the formula:
+     * [difficulty] * [minutes] / 10 and rounded up.
+     */
     private fun calculatePoints() : Int? {
         return (difficulty?.let { minutes?.times(it) })?.div(10)?.let { ceil(it).toInt() }
     }

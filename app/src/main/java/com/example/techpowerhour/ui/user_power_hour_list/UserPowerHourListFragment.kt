@@ -14,6 +14,7 @@ import com.example.techpowerhour.R
 import com.example.techpowerhour.Repositories
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.databinding.FragmentUserPowerHourListBinding
+import com.example.techpowerhour.ui.add_power_hour.AddPowerHourFragment
 
 class UserPowerHourListFragment : Fragment() {
 
@@ -42,12 +43,17 @@ class UserPowerHourListFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Setup binding for the viewmodel.
+     */
     private fun setupViewModelBinding() {
         val viewModelFactory = UserPowerHourListViewModelFactory(Repositories.powerHour.value)
         viewModel = ViewModelProvider(this, viewModelFactory).get(UserPowerHourListViewModel::class.java)
-//        binding.viewModel = viewModel
     }
 
+    /**
+     * Start a listener for the users Power Hours to show in the list.
+     */
     private fun observePowerHourTable() {
         viewModel.getAllPowerHours().observe(viewLifecycleOwner, { powerHours ->
             val sortedPowerHours = powerHours.sortedByDescending { it.epochDate }
@@ -60,12 +66,20 @@ class UserPowerHourListFragment : Fragment() {
         })
     }
 
+    /**
+     * Set the click binding on the FAB to navigate to the [AddPowerHourFragment].
+     */
     private fun fabFragmentSwitchBinding() {
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.navigation_add_power_hour)
         }
     }
 
+    /**
+     * To be called when a user clicks the delete button on a Power Hour item. Makes a dialog
+     * so that the user can confirm or cancel the action before removing from persistent storage.
+     * @param powerHour The Power Hour the user clicked on.
+     */
     private fun deletePowerHour(powerHour: PowerHour) {
         val builder = AlertDialog.Builder(this.context)
         builder.setMessage("Are you sure you want to delete ${powerHour.name}?")
@@ -79,6 +93,11 @@ class UserPowerHourListFragment : Fragment() {
         builder.show()
     }
 
+    /**
+     * To be called when the user clicks the edit button on a Power Hour item. Navigates the user
+     * to the [AddPowerHourFragment] passing the id of the Power Hour item they clicked on.
+     * @param powerHour The Power Hour the user clicked on.
+     */
     private fun editPowerHour(powerHour: PowerHour) {
         val bundle = bundleOf("id" to powerHour.id!!)
         findNavController().navigate(R.id.navigation_add_power_hour, bundle)

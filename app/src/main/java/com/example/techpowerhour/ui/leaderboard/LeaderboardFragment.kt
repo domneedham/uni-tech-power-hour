@@ -35,6 +35,7 @@ class LeaderboardFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // add in a menu bar to the title, allowing the user to change the date range they are viewing.
         when (item.itemId) {
             R.id.action_date_range_today -> {
                 dateRange = DateRanges.TODAY
@@ -48,6 +49,7 @@ class LeaderboardFragment : Fragment() {
             else -> super.onOptionsItemSelected(item)
         }
 
+        // get the new values and update the title according to the changed value.
         getLeaderboardValues()
         changeTitle()
         return true
@@ -71,11 +73,17 @@ class LeaderboardFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Setup the binding to the viewmodel.
+     */
     private fun setupViewModelBinding() {
         val viewModelFactory = LeaderboardViewModelFactory(Repositories.leaderboard.value)
         viewModel = ViewModelProvider(this, viewModelFactory).get(LeaderboardViewModel::class.java)
     }
 
+    /**
+     * Get the new values for the leaderboard and update the UI accordingly.
+     */
     private fun getLeaderboardValues() {
         viewModel.viewModelScope.launch {
             val leaderboard = when (dateRange) {
@@ -99,6 +107,11 @@ class LeaderboardFragment : Fragment() {
         }
     }
 
+    /**
+     * Update the UI with the list of [LeaderboardUser]. If the list is empty, set appropriate
+     * text to inform the user that no values could be found.
+     * @param leaderboard The list of [LeaderboardUser] to use for the [LeaderboardUserRecyclerAdapter].
+     */
     private fun updateDisplay(leaderboard: List<LeaderboardUser>) {
         val adapter = LeaderboardUserRecyclerAdapter(
                 leaderboard,
@@ -113,6 +126,9 @@ class LeaderboardFragment : Fragment() {
         }
     }
 
+    /**
+     * Change the title of the page to show the current date range the user is viewing.
+     */
     private fun changeTitle() {
         binding.leaderboardDateRangeTitle.text = when (dateRange) {
             DateRanges.TODAY -> {

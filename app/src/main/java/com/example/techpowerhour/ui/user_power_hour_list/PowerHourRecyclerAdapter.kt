@@ -24,10 +24,13 @@ class PowerHourRecyclerAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
+        // set the top line of text as the Power Hour name
         holder.textPrimary.text = item.name
+        // set the bottom line of text as the date of the Power Hour
         holder.textSecondary.text = DateHelper.displayDate(item.epochDate!!)
-
+        // set the edit button to run the callback function
         holder.editButton.setOnClickListener { editCallback(item) }
+        // set the delete button to run the callback function
         holder.deleteButton.setOnClickListener { deleteCallback(item) }
     }
 

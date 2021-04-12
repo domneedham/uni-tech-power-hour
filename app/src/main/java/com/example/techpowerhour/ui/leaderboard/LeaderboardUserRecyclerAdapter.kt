@@ -22,8 +22,11 @@ class LeaderboardUserRecyclerAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
+        // set the top line to the name of the user
         holder.textPrimary.text = item.name
+        // set the bottom line to the points earned by the user
         holder.textSecondary.text = item.points.toString()
+        // Set the trailing text to the leaderboard position. Starts at 0 so needs +1 for readability.
         holder.trailingNumber.text = "#${position + 1}"
     }
 

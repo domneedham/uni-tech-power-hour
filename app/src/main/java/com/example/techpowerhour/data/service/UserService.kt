@@ -24,18 +24,23 @@ class UserService {
      * Perform a query on the [usersRef] to get user details.
      * @param id The user id.
      */
-    suspend fun getById(id: String): User {
+    suspend fun getById(id: String): User? {
         val query = usersRef.document(id)
-        return query.get().await().toObject<User>()!!
+        val result = query.get().await()
+
+        if (result.data == null) return null
+
+        return result.toObject<User>()!!
     }
 
     /**
      * Perform a query on the [usersRef] to create a new user.
      * @param id The user id.
      */
-    fun create(id: String) {
+    suspend fun create(id: String): User {
         val user = User(auth.currentUser!!.displayName!!)
-        usersRef.document(id).set(user)
+        usersRef.document(id).set(user).await()
+        return user
     }
 
     /**

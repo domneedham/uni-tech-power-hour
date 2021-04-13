@@ -15,14 +15,14 @@ class AddPowerHourViewModel(private val repository: PowerHourRepository) : ViewM
      * persistent storage.
      * @param name The text for the name of the Power Hour.
      * @param duration The text for the duration of the Power Hour.
-     * @param type The text for the type of the Power Hour.
+     * @param type The type of the Power Hour.
      * @param date The text for the date of the Power Hour.
      */
-    fun createNewPourHour(name: String, duration: String, type: String, date: String): PowerHour {
+    fun createNewPourHour(name: String, duration: String, type: PowerHourType, date: String): PowerHour {
         val powerHour = PowerHour(
                 name,
                 duration.toDouble(),
-                PowerHourType.valueOf(type),
+                type,
                 DateHelper.parseDateToEpoch(date),
                 auth.uid
         )
@@ -36,14 +36,14 @@ class AddPowerHourViewModel(private val repository: PowerHourRepository) : ViewM
      * @param oldPowerHour The Power Hour object the user would like to change.
      * @param name The text for the name of the Power Hour.
      * @param duration The text for the duration of the Power Hour.
-     * @param type The text for the type of the Power Hour.
+     * @param type The type of the Power Hour.
      * @param date The text for the date of the Power Hour.
      */
-    fun updatePowerHour(oldPowerHour: PowerHour, name: String, duration: String, type: String, date: String): PowerHour {
+    fun updatePowerHour(oldPowerHour: PowerHour, name: String, duration: String, type: PowerHourType, date: String): PowerHour {
         val newPowerHour = oldPowerHour.copy(
             name = name,
             minutes = duration.toDouble(),
-            type = PowerHourType.valueOf(type),
+            type = type,
             epochDate = DateHelper.parseDateToEpoch(date)
         )
 

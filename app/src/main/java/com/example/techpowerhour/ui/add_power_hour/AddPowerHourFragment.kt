@@ -2,6 +2,7 @@ package com.example.techpowerhour.ui.add_power_hour
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,8 @@ class AddPowerHourFragment : Fragment() {
     private lateinit var durationField: EditText
     private lateinit var typeField: EditText
     private lateinit var dateField: EditText
+
+    private var selectedType: PowerHourType? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -94,11 +97,13 @@ class AddPowerHourFragment : Fragment() {
     private fun copyValuesFromOldPowerHour() {
         nameField.setText(oldPowerHour?.name, TextView.BufferType.NORMAL)
         durationField.setText(oldPowerHour?.minutes.toString(), TextView.BufferType.NORMAL)
-        typeField.setText(oldPowerHour?.type.toString(), TextView.BufferType.NORMAL)
+        typeField.setText(requireContext().getString(oldPowerHour?.type!!.displayName), TextView.BufferType.NORMAL)
         dateField.setText(
                 oldPowerHour?.epochDate?.let { DateHelper.displayDate(it) },
                 TextView.BufferType.NORMAL
         )
+
+        selectedType = oldPowerHour?.type
     }
 
     /**
@@ -128,8 +133,17 @@ class AddPowerHourFragment : Fragment() {
      */
     private fun setupDropdownMenu() {
         val items = PowerHourType.values()
-        val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
-        (binding.typeLayout.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+        val adapter = PowerHourTypeArrayAdapter(requireContext(), R.layout.list_item, items)
+
+        val textView = (binding.typeLayout.editText as? AutoCompleteTextView)
+        textView?.setAdapter(adapter)
+        textView?.setOnItemClickListener { parent, _, position, _ ->
+            val item = (parent.adapter.getItem(position) as PowerHourType)
+            // set the selected type for use in form save
+            selectedType = item
+            // setting filter as false stops issue where the spinner is no longer visible
+            textView.setText(context?.getText(item.displayName), false)
+        }
 
         binding.typeText.setOnClickListener {
             it.hideKeyboard()
@@ -144,12 +158,11 @@ class AddPowerHourFragment : Fragment() {
         binding.floatingActionButton.setOnClickListener {
             val nameText = nameField.text.toString().trim()
             val durationText = durationField.text.toString().trim()
-            val typeText = typeField.text.toString().trim()
             val dateText = dateField.text.toString().trim()
 
             resetFormErrors()
 
-            val errors = checkForFormErrors(nameText, durationText, typeText, dateText)
+            val errors = checkForFormErrors(nameText, durationText, dateText)
             if (errors) return@setOnClickListener
 
             val powerHour: PowerHour = if (powerHourId != null) {
@@ -157,14 +170,14 @@ class AddPowerHourFragment : Fragment() {
                     oldPowerHour!!,
                     nameText,
                     durationText,
-                    typeText,
+                    selectedType!!,
                     dateText
                 )
             } else {
                 viewModel.createNewPourHour(
                     nameText,
                     durationText,
-                    typeText,
+                    selectedType!!,
                     dateText
                 )
             }
@@ -219,10 +232,14 @@ class AddPowerHourFragment : Fragment() {
 
         binding.workoutNameText.text?.clear()
         binding.workoutNameText.clearFocus()
+
         binding.durationText.text?.clear()
         binding.durationText.clearFocus()
+
         binding.typeText.text?.clear()
         binding.typeText.clearFocus()
+        selectedType = null
+
         binding.datePickerText.text?.clear()
         binding.datePickerText.clearFocus()
     }
@@ -241,13 +258,11 @@ class AddPowerHourFragment : Fragment() {
      * Checks for issues with the user input and updates the UI if errors are found.
      * @param nameText The text for the name input.
      * @param durationText The text for the duration input.
-     * @param typeText The text for the type input.
      * @param dateText The text for the date input.
      */
     private fun checkForFormErrors(
             nameText: String,
             durationText: String,
-            typeText: String,
             dateText: String
     ): Boolean {
         // check for issues in the form
@@ -257,7 +272,7 @@ class AddPowerHourFragment : Fragment() {
         val durationError = checkForDurationError(durationText)
         binding.durationLayout.error = durationError.text
 
-        val typeError = checkForTypeError(typeText)
+        val typeError = checkForTypeError()
         binding.typeLayout.error = typeError.text
 
         val dateError = checkForDateError(dateText)
@@ -293,17 +308,16 @@ class AddPowerHourFragment : Fragment() {
 
     /**
      * Checks for errors on the [typeField].
-     * @param text The text of the type input.
      */
-    private fun checkForTypeError(text: String): FormError {
-        if (text.isEmpty())
+    private fun checkForTypeError(): FormError {
+        if (selectedType == null)
             return FormError(true, "The type of workout is required")
 
         return FormError(false, null)
     }
 
     /**
-     * Checks for erros on the [dateField].
+     * Checks for errors on the [dateField].
      * @param text The text of the date input.
      */
     private fun checkForDateError(text: String): FormError {

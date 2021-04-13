@@ -91,4 +91,13 @@
     <string name="leaderboard_title_week">Leaderboard This Week</string>
     <string name="leaderboard_title_month">Leaderboard This Month</string>
     <string name="leaderboard_empty_text">No leaderboard available for the current date selection</string>
+
+    <!--    Power Hour display names-->
+    <string name="ph_type_walk">Walk</string>
+    <string name="ph_type_run">Run</string>
+    <string name="ph_type_cycle">Cycle</string>
+    <string name="ph_type_weights">Weights</string>
+    <string name="ph_type_yoga">Yoga</string>
+    <string name="ph_type_pilates">Pilates</string>
+    <string name="ph_type_dance">Dance</string>
 </resources>

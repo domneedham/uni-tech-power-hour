@@ -95,7 +95,7 @@ class LeaderboardService(private val userRepository: UserRepository) : BaseRepos
         val value = document.data?.get("points")?.toString()
         points += value?.toDouble()!!
 
-        val user = userRepository.getById(document.id)
+        val user = userRepository.getById(document.id)!!
 
         return LeaderboardUser(document.id, user.name!!, points.toInt())
     }

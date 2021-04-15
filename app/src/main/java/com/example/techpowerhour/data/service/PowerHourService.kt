@@ -14,6 +14,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import kotlin.math.absoluteValue
 
 /**
  * The service class for the Power Hour persistent storage in Firestore.
@@ -117,7 +118,15 @@ class PowerHourService {
             } else if (oldPowerHour.points!! != newPowerHour.points!!) {
                 // if the date has not changed for the week, the points may have so they need updating if the case
                 val difference = getDifferenceInPoints(oldPowerHour.points!!, newPowerHour.points!!)
-                incrementValuesPoints(id, newPowerHourWeekDate, difference, PowerHourDatabaseDateType.Week)
+                if (difference < 0) {
+                    // decrease the value from the current totals. Use absolute value (convert to positive)
+                    // as it is converted negative in the function
+                    decrementValuesPoints(id, newPowerHourWeekDate, difference.absoluteValue, PowerHourDatabaseDateType.Week)
+                }
+                if (difference > 0) {
+                    // increment the difference between new and old
+                    incrementValuesPoints(id, newPowerHourWeekDate, difference, PowerHourDatabaseDateType.Week)
+                }
             }
 
             // the new date may have made it change months
@@ -133,24 +142,41 @@ class PowerHourService {
             } else if (oldPowerHour.points!! != newPowerHour.points!!) {
                 // if the date has not changed for the month, the points may have so they need updating if the case
                 val difference = getDifferenceInPoints(oldPowerHour.points!!, newPowerHour.points!!)
-                incrementValuesPoints(id, newPowerHourMonthDate, difference, PowerHourDatabaseDateType.Month)
+                if (difference < 0) {
+                    // decrease the value from the current totals. Use absolute value (convert to positive)
+                    // as it is converted negative in the function
+                    decrementValuesPoints(id, newPowerHourMonthDate, difference.absoluteValue, PowerHourDatabaseDateType.Month)
+                }
+                if (difference > 0) {
+                    // increment the difference between new and old
+                    incrementValuesPoints(id, newPowerHourMonthDate, difference, PowerHourDatabaseDateType.Month)
+                }
             }
 
         } else if (oldPowerHour.points!! != newPowerHour.points!!) {
             // if the date has not changed, the points may have changed and so still need updating
             val difference = getDifferenceInPoints(oldPowerHour.points!!, newPowerHour.points!!)
 
-            // update the points value for the day collections
+            // get appropriate dates
             val dayDate = oldPowerHour.epochDate!!
-            incrementValuesPoints(id, dayDate, difference, PowerHourDatabaseDateType.Day)
-
-            // update the points value for the week collections
             val weekDate = DateHelper.getStartOfWeekEpochFromDayEpoch(dayDate)
-            incrementValuesPoints(id, weekDate, difference, PowerHourDatabaseDateType.Week)
-
-            // update the points value for the month collections
             val monthDate = DateHelper.getStartOfMonthEpochFromDayEpoch(dayDate)
-            incrementValuesPoints(id, monthDate, difference, PowerHourDatabaseDateType.Month)
+
+            // if the difference is negative
+            if (difference < 0) {
+                // decrease the value from the current totals. Use absolute value (convert to positive)
+                // as it is converted negative in the function
+                decrementValuesPoints(id, dayDate, difference.absoluteValue, PowerHourDatabaseDateType.Day)
+                decrementValuesPoints(id, weekDate, difference.absoluteValue, PowerHourDatabaseDateType.Week)
+                decrementValuesPoints(id, monthDate, difference.absoluteValue, PowerHourDatabaseDateType.Month)
+            }
+            // if the difference is positive
+            if (difference > 0) {
+                // increment the difference between new and old
+                incrementValuesPoints(id, dayDate, difference, PowerHourDatabaseDateType.Day)
+                incrementValuesPoints(id, weekDate, difference, PowerHourDatabaseDateType.Week)
+                incrementValuesPoints(id, monthDate, difference, PowerHourDatabaseDateType.Month)
+            }
         }
     }
 
@@ -210,6 +236,18 @@ class PowerHourService {
     private fun incrementValuesPoints(id: String, date: Long, points: Int, type: PowerHourDatabaseDateType) {
         updatePointsInLeaderboard(id, date, points, PointsType.Increment, type)
         updatePointsInStatistics(date, points, PointsType.Increment, type)
+    }
+
+    /**
+     * Decrement or update the values for points only:
+     * - points in the leaderboard
+     * - points in the statistics
+     *
+     * To be used when there is no need for modifying the count of power hours.
+     */
+    private fun decrementValuesPoints(id: String, date: Long, points: Int, type: PowerHourDatabaseDateType) {
+        updatePointsInLeaderboard(id, date, points, PointsType.Decrement, type)
+        updatePointsInStatistics(date, points, PointsType.Decrement, type)
     }
 
     /**
@@ -312,11 +350,7 @@ class PowerHourService {
      * @param newPoints The points of the updated Power Hour.
      */
     private fun getDifferenceInPoints(oldPoints: Int, newPoints: Int) : Int {
-        return if (oldPoints < newPoints) {
-            oldPoints - newPoints
-        } else {
-            newPoints - oldPoints
-        }
+        return newPoints - oldPoints
     }
 
     /**

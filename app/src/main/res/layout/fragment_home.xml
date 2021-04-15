@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,205 +7,210 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="8dp">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/company_points_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/company_points_layout_header"
-                style="@style/FragmentListTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/home_company_points_statistics_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <RelativeLayout
-                android:id="@+id/company_points_layout_today"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/company_points_layout_header"
-                app:layout_constraintVertical_bias="0.0"
-                tools:layout_editor_absoluteX="0dp">
-
-                <TextView
-                    android:id="@+id/company_points_layout_today_title"
-                    style="@style/FragmentListSubtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_company_statistics_title_today" />
-
-                <TextView
-                    android:id="@+id/company_points_layout_today_text"
-                    style="@style/FragmentListText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/company_points_layout_today_title"
-                    android:text="150 points recorded today" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/company_points_layout_week"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/company_points_layout_today"
-                app:layout_constraintTop_toBottomOf="@+id/company_points_layout_today">
-
-                <TextView
-                    android:id="@+id/company_points_layout_week_title"
-                    style="@style/FragmentListSubtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_company_statistics_title_week" />
-
-                <TextView
-                    android:id="@+id/company_points_layout_week_text"
-                    style="@style/FragmentListText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/company_points_layout_week_title"
-                    android:text="150 points recorded this week" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/company_points_layout_month"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/company_points_layout_week"
-                app:layout_constraintTop_toBottomOf="@+id/company_points_layout_week">
-
-                <TextView
-                    android:id="@+id/company_points_layout_month_title"
-                    style="@style/FragmentListSubtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_company_statistics_title_month" />
-
-                <TextView
-                    android:id="@+id/company_points_layout_month_text"
-                    style="@style/FragmentListText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/company_points_layout_month_title"
-                    android:text="150 points recorded this month" />
-
-            </RelativeLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!--            BT Power Hour Statistics-->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/company_power_hours_layout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp">
+            android:orientation="vertical"
+            android:paddingTop="8dp">
 
-            <TextView
-                android:id="@+id/company_power_hours_layout_header"
-                style="@style/FragmentListTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/home_company_power_hour_statistics_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/company_points_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:id="@+id/company_power_hours_layout_today"
+                <TextView
+                    android:id="@+id/company_points_layout_header"
+                    style="@style/FragmentListTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_company_points_statistics_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <RelativeLayout
+                    android:id="@+id/company_points_layout_today"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/company_points_layout_header"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:layout_editor_absoluteX="0dp">
+
+                    <TextView
+                        android:id="@+id/company_points_layout_today_title"
+                        style="@style/FragmentListSubtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_company_statistics_title_today" />
+
+                    <TextView
+                        android:id="@+id/company_points_layout_today_text"
+                        style="@style/FragmentListText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/company_points_layout_today_title"
+                        android:text="150 points recorded today" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/company_points_layout_week"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/company_points_layout_today"
+                    app:layout_constraintTop_toBottomOf="@+id/company_points_layout_today">
+
+                    <TextView
+                        android:id="@+id/company_points_layout_week_title"
+                        style="@style/FragmentListSubtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_company_statistics_title_week" />
+
+                    <TextView
+                        android:id="@+id/company_points_layout_week_text"
+                        style="@style/FragmentListText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/company_points_layout_week_title"
+                        android:text="150 points recorded this week" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/company_points_layout_month"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/company_points_layout_week"
+                    app:layout_constraintTop_toBottomOf="@+id/company_points_layout_week">
+
+                    <TextView
+                        android:id="@+id/company_points_layout_month_title"
+                        style="@style/FragmentListSubtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_company_statistics_title_month" />
+
+                    <TextView
+                        android:id="@+id/company_points_layout_month_text"
+                        style="@style/FragmentListText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/company_points_layout_month_title"
+                        android:text="150 points recorded this month" />
+
+                </RelativeLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--            BT Power Hour Statistics-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/company_power_hours_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/company_power_hours_layout_header"
-                app:layout_constraintVertical_bias="0.0"
-                tools:layout_editor_absoluteX="0dp">
+                android:layout_marginTop="25dp">
 
                 <TextView
-                    android:id="@+id/company_power_hours_layout_today_title"
-                    style="@style/FragmentListSubtitle"
+                    android:id="@+id/company_power_hours_layout_header"
+                    style="@style/FragmentListTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_company_power_hour_statistics_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <RelativeLayout
+                    android:id="@+id/company_power_hours_layout_today"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_company_statistics_title_today" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/company_power_hours_layout_header"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:layout_editor_absoluteX="0dp">
 
-                <TextView
-                    android:id="@+id/company_power_hours_layout_today_text"
-                    style="@style/FragmentListText"
+                    <TextView
+                        android:id="@+id/company_power_hours_layout_today_title"
+                        style="@style/FragmentListSubtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_company_statistics_title_today" />
+
+                    <TextView
+                        android:id="@+id/company_power_hours_layout_today_text"
+                        style="@style/FragmentListText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/company_power_hours_layout_today_title"
+                        android:text="150 points recorded today" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/company_power_hours_layout_week"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/company_power_hours_layout_today_title"
-                    android:text="150 points recorded today" />
+                    android:layout_below="@id/company_power_hours_layout_today"
+                    app:layout_constraintTop_toBottomOf="@+id/company_power_hours_layout_today">
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/company_power_hours_layout_week_title"
+                        style="@style/FragmentListSubtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_company_statistics_title_week" />
 
-            <RelativeLayout
-                android:id="@+id/company_power_hours_layout_week"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/company_power_hours_layout_today"
-                app:layout_constraintTop_toBottomOf="@+id/company_power_hours_layout_today">
+                    <TextView
+                        android:id="@+id/company_power_hours_layout_week_text"
+                        style="@style/FragmentListText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/company_power_hours_layout_week_title"
+                        android:text="150 points recorded this week" />
 
-                <TextView
-                    android:id="@+id/company_power_hours_layout_week_title"
-                    style="@style/FragmentListSubtitle"
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/company_power_hours_layout_month"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_company_statistics_title_week" />
+                    android:layout_below="@id/company_power_hours_layout_week"
+                    app:layout_constraintTop_toBottomOf="@+id/company_power_hours_layout_week">
 
-                <TextView
-                    android:id="@+id/company_power_hours_layout_week_text"
-                    style="@style/FragmentListText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/company_power_hours_layout_week_title"
-                    android:text="150 points recorded this week" />
+                    <TextView
+                        android:id="@+id/company_power_hours_layout_month_title"
+                        style="@style/FragmentListSubtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_company_statistics_title_month" />
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/company_power_hours_layout_month_text"
+                        style="@style/FragmentListText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/company_power_hours_layout_month_title"
+                        android:text="150 points recorded this month" />
 
-            <RelativeLayout
-                android:id="@+id/company_power_hours_layout_month"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/company_power_hours_layout_week"
-                app:layout_constraintTop_toBottomOf="@+id/company_power_hours_layout_week">
+                </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/company_power_hours_layout_month_title"
-                    style="@style/FragmentListSubtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_company_statistics_title_month" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/company_power_hours_layout_month_text"
-                    style="@style/FragmentListText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/company_power_hours_layout_month_title"
-                    android:text="150 points recorded this month" />
+        </LinearLayout>
 
-            </RelativeLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         style="@style/AddPowerHourFAB"
         android:src="@drawable/ic_plus_24dp"
         android:contentDescription="@string/fab_add_content" />
-
 </FrameLayout>

@@ -73,22 +73,40 @@ class ProfileFragment : Fragment() {
     }
 
     /**
-     * Fetch and update the UI for for users Power Hour total statistics.
+     * Observe the user Power Hour list and update the UI with the values.
      */
     private fun changePowerHourStatisticsText() {
-        val totalPoints = viewModel.getTotalPointsEarned()
+        viewModel.getPowerHours().observe(viewLifecycleOwner, { phList ->
+            val points = phList.sumOf { ph -> ph.points!! }
+            val total = phList.count()
+
+            updateTotalPointsText(points)
+            updateTotalPowerHoursCompletedText(total)
+        })
+    }
+
+    /**
+     * Update the total points text on the UI with the passed in [points].
+     * @param points The total of points the user has earned.
+     */
+    private fun updateTotalPointsText(points: Int) {
         val totalPointsText = resources.getQuantityString(
                 R.plurals.profile_statistics_total_points,
-                totalPoints,
-                totalPoints
+                points,
+                points
         )
         binding.pointsText.text = totalPointsText
+    }
 
-        val totalPowerHours = viewModel.getTotalPowerHours()
+    /**
+     * Update the total Power Hours completed text on the UI with the passed in [total].
+     * @param total The total Power Hours completed by the user.
+     */
+    private fun updateTotalPowerHoursCompletedText(total: Int) {
         val totalPowerHoursText = resources.getQuantityString(
                 R.plurals.profile_statistics_total_power_hours,
-                totalPowerHours,
-                totalPowerHours
+                total,
+                total
         )
         binding.numberWorkoutsText.text = totalPowerHoursText
     }

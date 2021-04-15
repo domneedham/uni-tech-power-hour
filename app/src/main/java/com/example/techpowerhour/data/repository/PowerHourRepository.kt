@@ -5,6 +5,7 @@ import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.data.service.PowerHourService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
+import kotlin.collections.ArrayList
 
 /**
  * The repository for all things related to the Power Hours.
@@ -88,29 +89,6 @@ class PowerHourRepository(private val service: PowerHourService) : BaseRepositor
             // reset the value of the live data list
             userPowerHoursLD.value = phList
         }
-    }
-
-    /**
-     * Returns a sum of the points earned by the user.
-     */
-    fun getTotalPointsEarnedForUser(): Int {
-        // no need for live data as no way of possible updates when on user page
-        // therefore called every refresh anyway
-        val points = userPowerHoursLD.value
-                ?.sumOf { powerHour: PowerHour -> powerHour.points!! }
-
-        return points ?: 0
-    }
-
-    /**
-     * Returns a total sum of the number of Power Hours completed by the user.
-     */
-    fun getTotalPowerHoursCompletedForUser(): Int {
-        // no need for live data as no way of possible updates when on user page
-        // therefore called every refresh anyway
-        val points = userPowerHoursLD.value?.count()
-
-        return points ?: 0
     }
 
     /**

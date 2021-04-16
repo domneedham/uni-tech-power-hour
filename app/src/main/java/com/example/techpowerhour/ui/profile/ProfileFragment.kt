@@ -18,8 +18,6 @@ import com.example.techpowerhour.ui.user_power_hour_list.UserPowerHourListFragme
 import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment : Fragment() {
-    private val auth = FirebaseAuth.getInstance()
-
     private var _binding: FragmentProfileBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
@@ -40,7 +38,7 @@ class ProfileFragment : Fragment() {
 
         signoutBinding()
 
-        binding.profileHeaderName.text = auth.currentUser!!.displayName!!
+        setName()
         changePowerHourStatisticsText()
 
         return binding.root
@@ -116,11 +114,12 @@ class ProfileFragment : Fragment() {
      */
     private fun signoutBinding() {
         binding.accountSignoutLayout.setOnClickListener {
+            // TODO: Change code to use R.string
             val builder = AlertDialog.Builder(this.context)
             builder.setMessage("Are you sure you want to signout?")
                 .setCancelable(false)
                 .setPositiveButton("Yes") { _, _ ->
-                    auth.signOut()
+                    viewModel.signOut()
                     val nextIntent = Intent(requireActivity(), LoginActivity::class.java)
                     startActivity(nextIntent)
                     requireActivity().finish()
@@ -130,5 +129,14 @@ class ProfileFragment : Fragment() {
                 }
             builder.show()
         }
+    }
+
+    /**
+     * Observe the username and update the UI.
+     */
+    private fun setName() {
+        viewModel.username.observe(viewLifecycleOwner, {
+            binding.profileHeaderName.text = it
+        })
     }
 }

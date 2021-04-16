@@ -81,6 +81,7 @@ class UserPowerHourListFragment : Fragment() {
      * @param powerHour The Power Hour the user clicked on.
      */
     private fun deletePowerHour(powerHour: PowerHour) {
+        // TODO: Change this to use R.string resource
         val builder = AlertDialog.Builder(this.context)
         builder.setMessage("Are you sure you want to delete ${powerHour.name}?")
             .setCancelable(false)

@@ -10,6 +10,11 @@ import com.google.firebase.auth.FirebaseAuth
 class AddPowerHourViewModel(private val repository: PowerHourRepository) : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
 
+    var powerHourId: String? = null
+    var oldPowerHour: PowerHour? = null
+
+    var selectedType: PowerHourType? = null
+
     /**
      * Create a new Power Hour from the users input and call the repository to save into
      * persistent storage.

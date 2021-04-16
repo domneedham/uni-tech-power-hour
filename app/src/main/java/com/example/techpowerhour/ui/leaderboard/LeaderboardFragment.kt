@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.techpowerhour.R
@@ -11,6 +12,7 @@ import com.example.techpowerhour.Repositories
 import com.example.techpowerhour.data.model.LeaderboardUser
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.databinding.FragmentLeaderboardBinding
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class LeaderboardFragment : Fragment() {
@@ -23,8 +25,6 @@ class LeaderboardFragment : Fragment() {
 
     private lateinit var layoutManager: LinearLayoutManager
 
-    private var dateRange = DateRanges.TODAY
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -36,22 +36,11 @@ class LeaderboardFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // add in a menu bar to the title, allowing the user to change the date range they are viewing.
-        when (item.itemId) {
-            R.id.action_date_range_today -> {
-                dateRange = DateRanges.TODAY
-            }
-            R.id.action_date_range_week -> {
-                dateRange = DateRanges.WEEK
-            }
-            R.id.action_date_range_month -> {
-                dateRange = DateRanges.MONTH
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+        viewModel.changeDateRange(item.itemId)
 
-        // get the new values and update the title according to the changed value.
-        getLeaderboardValues()
-        changeTitle()
+        // get the new values for the leaderboard
+        viewModel.getLeaderboardValues()
+        viewModel.changeTitle()
         return true
     }
 
@@ -67,8 +56,8 @@ class LeaderboardFragment : Fragment() {
         layoutManager = LinearLayoutManager(this.context)
         binding.powerHourList.layoutManager = layoutManager
 
+        updateDisplay()
         changeTitle()
-        getLeaderboardValues()
 
         return binding.root
     }
@@ -82,65 +71,31 @@ class LeaderboardFragment : Fragment() {
     }
 
     /**
-     * Get the new values for the leaderboard and update the UI accordingly.
-     */
-    private fun getLeaderboardValues() {
-        viewModel.viewModelScope.launch {
-            val leaderboard = when (dateRange) {
-                DateRanges.TODAY -> {
-                    // if the date is equal today
-                    viewModel.leaderboardToday()
-                }
-                DateRanges.WEEK -> {
-                    // if the date is between start of the week and today
-                    // no need for the end of the week as can't add workouts beyond the current day
-                    viewModel.leaderboardWeek()
-
-                }
-                DateRanges.MONTH -> {
-                    // if the date is between start of the month and today
-                    // no need for the end of the month as can't add workouts beyond the current day
-                    viewModel.leaderboardMonth()
-                }
-            }
-            updateDisplay(leaderboard)
-        }
-    }
-
-    /**
      * Update the UI with the list of [LeaderboardUser]. If the list is empty, set appropriate
      * text to inform the user that no values could be found.
-     * @param leaderboard The list of [LeaderboardUser] to use for the [LeaderboardUserRecyclerAdapter].
      */
-    private fun updateDisplay(leaderboard: List<LeaderboardUser>) {
-        val adapter = LeaderboardUserRecyclerAdapter(
-                leaderboard,
-        )
-        binding.powerHourList.adapter = adapter
+    private fun updateDisplay() {
+        viewModel.leaderboard.observe(viewLifecycleOwner, {
+            val adapter = LeaderboardUserRecyclerAdapter(it)
+            binding.powerHourList.adapter = adapter
 
-        // if no items in leaderboard, show a message to the user
-        if (leaderboard.isEmpty()) {
-            binding.listEmptyText.visibility = View.VISIBLE
-        } else {
-            binding.listEmptyText.visibility = View.GONE
-        }
+            // if no items in leaderboard, show a message to the user
+            if (it.isEmpty()) {
+                binding.listEmptyText.visibility = View.VISIBLE
+            } else {
+                binding.listEmptyText.visibility = View.GONE
+            }
+        })
+
     }
 
     /**
      * Change the title of the page to show the current date range the user is viewing.
      */
     private fun changeTitle() {
-        binding.leaderboardDateRangeTitle.text = when (dateRange) {
-            DateRanges.TODAY -> {
-                getString(R.string.leaderboard_title_today)
-            }
-            DateRanges.WEEK -> {
-                getString(R.string.leaderboard_title_week)
-            }
-            DateRanges.MONTH -> {
-                getString(R.string.leaderboard_title_month)
-            }
-        }
+        viewModel.pageTitle.observe(viewLifecycleOwner, {
+            binding.leaderboardDateRangeTitle.text = getString(it)
+        })
     }
 
     enum class DateRanges {

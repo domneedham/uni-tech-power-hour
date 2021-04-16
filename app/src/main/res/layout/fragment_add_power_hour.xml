@@ -4,10 +4,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.add_power_hour.AddPowerHourFragment"
     android:id="@+id/content_wrapper"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.add_power_hour.AddPowerHourFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                     android:id="@+id/workoutNameText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapWords" />
+                    android:inputType="textCapWords"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -50,7 +50,7 @@
                     android:id="@+id/durationText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -86,7 +86,7 @@
                     android:focusableInTouchMode="false"
                     android:autofillHints=""
                     android:inputType="date"
-                    tools:ignore="LabelFor" />
+                    tools:ignore="LabelFor"/>
             </com.google.android.material.textfield.TextInputLayout>
 
         </GridLayout>

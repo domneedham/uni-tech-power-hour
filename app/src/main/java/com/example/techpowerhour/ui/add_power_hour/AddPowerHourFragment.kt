@@ -23,9 +23,6 @@ import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 class AddPowerHourFragment : Fragment() {
-    private var powerHourId: String? = null
-    private var oldPowerHour: PowerHour? = null
-
     private lateinit var viewModel: AddPowerHourViewModel
 
     private var _binding: FragmentAddPowerHourBinding? = null
@@ -34,13 +31,6 @@ class AddPowerHourFragment : Fragment() {
 
     private lateinit var datePicker: DatePickerHelper
 
-    private lateinit var nameField: EditText
-    private lateinit var durationField: EditText
-    private lateinit var typeField: EditText
-    private lateinit var dateField: EditText
-
-    private var selectedType: PowerHourType? = null
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,14 +38,13 @@ class AddPowerHourFragment : Fragment() {
         _binding = FragmentAddPowerHourBinding.inflate(inflater, container, false)
 
         setupViewModelBinding()
-        bindTextFields()
 
-        powerHourId = arguments?.getString("id")
-        if (powerHourId != null) {
+        viewModel.powerHourId = arguments?.getString("id")
+        if (viewModel.powerHourId != null) {
             // change title to show form is in edit mode
             (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.title_edit_power_hour)
             // get the full power pour the user wants to edit
-            oldPowerHour = viewModel.getPowerHourById(powerHourId!!)
+            viewModel.oldPowerHour = viewModel.getPowerHourById(viewModel.powerHourId!!)
             // copy the new values into the form fields
             copyValuesFromOldPowerHour()
         }
@@ -67,10 +56,10 @@ class AddPowerHourFragment : Fragment() {
         // hide the keyboard when the user clicks anywhere that is not an input field
         binding.contentWrapper.setOnClickListener {
             it.hideKeyboard()
-            nameField.clearFocus()
-            durationField.clearFocus()
-            typeField.clearFocus()
-            dateField.clearFocus()
+            binding.workoutNameText.clearFocus()
+            binding.durationText.clearFocus()
+            binding.typeText.clearFocus()
+            binding.datePickerText.clearFocus()
         }
 
         return binding.root
@@ -82,28 +71,15 @@ class AddPowerHourFragment : Fragment() {
     }
 
     /**
-     * Set the field variables to the relevant binding of the UI.
-     */
-    private fun bindTextFields() {
-        nameField = binding.workoutNameText
-        durationField = binding.durationText
-        typeField = binding.typeText
-        dateField = binding.datePickerText
-    }
-
-    /**
-     * Set the fields to the values of the [oldPowerHour] if the user is editing.
+     * Set the fields to the values of the oldPowerHour if the user is editing.
      */
     private fun copyValuesFromOldPowerHour() {
-        nameField.setText(oldPowerHour?.name, TextView.BufferType.NORMAL)
-        durationField.setText(oldPowerHour?.minutes.toString(), TextView.BufferType.NORMAL)
-        typeField.setText(requireContext().getString(oldPowerHour?.type!!.displayName), TextView.BufferType.NORMAL)
-        dateField.setText(
-                oldPowerHour?.epochDate?.let { DateHelper.displayDate(it) },
-                TextView.BufferType.NORMAL
-        )
+        binding.workoutNameText.setText(viewModel.oldPowerHour?.name)
+        binding.durationText.setText(viewModel.oldPowerHour?.minutes.toString())
+        binding.typeText.setText(requireContext().getString(viewModel.oldPowerHour?.type!!.displayName), false)
+        binding.datePickerText.setText(viewModel.oldPowerHour?.epochDate?.let { DateHelper.displayDate(it) })
 
-        selectedType = oldPowerHour?.type
+        viewModel.selectedType = viewModel.oldPowerHour?.type
     }
 
     /**
@@ -121,7 +97,7 @@ class AddPowerHourFragment : Fragment() {
     private fun setupCalendarBinding() {
         datePicker = DatePickerHelper(requireContext())
 
-        dateField.setOnClickListener {
+        binding.datePickerText.setOnClickListener {
             it.hideKeyboard()
             showDatePickerDialog()
         }
@@ -140,7 +116,7 @@ class AddPowerHourFragment : Fragment() {
         textView?.setOnItemClickListener { parent, _, position, _ ->
             val item = (parent.adapter.getItem(position) as PowerHourType)
             // set the selected type for use in form save
-            selectedType = item
+            viewModel.selectedType = item
             // setting filter as false stops issue where the spinner is no longer visible
             textView.setText(context?.getText(item.displayName), false)
         }
@@ -156,28 +132,28 @@ class AddPowerHourFragment : Fragment() {
      */
     private fun setupSaveButtonBinding() {
         binding.floatingActionButton.setOnClickListener {
-            val nameText = nameField.text.toString().trim()
-            val durationText = durationField.text.toString().trim()
-            val dateText = dateField.text.toString().trim()
+            val nameText = binding.workoutNameText.text.toString().trim()
+            val durationText = binding.durationText.text.toString().trim()
+            val dateText = binding.datePickerText.text.toString().trim()
 
             resetFormErrors()
 
             val errors = checkForFormErrors(nameText, durationText, dateText)
             if (errors) return@setOnClickListener
 
-            val powerHour: PowerHour = if (powerHourId != null) {
+            val powerHour: PowerHour = if (viewModel.powerHourId != null) {
                 viewModel.updatePowerHour(
-                    oldPowerHour!!,
+                    viewModel.oldPowerHour!!,
                     nameText,
                     durationText,
-                    selectedType!!,
+                    viewModel.selectedType!!,
                     dateText
                 )
             } else {
                 viewModel.createNewPourHour(
                     nameText,
                     durationText,
-                    selectedType!!,
+                    viewModel.selectedType!!,
                     dateText
                 )
             }
@@ -238,7 +214,7 @@ class AddPowerHourFragment : Fragment() {
 
         binding.typeText.text?.clear()
         binding.typeText.clearFocus()
-        selectedType = null
+        viewModel.selectedType = null
 
         binding.datePickerText.text?.clear()
         binding.datePickerText.clearFocus()
@@ -282,7 +258,7 @@ class AddPowerHourFragment : Fragment() {
     }
 
     /**
-     * Checks for errors on the [nameField].
+     * Checks for errors on the nameField
      * @param text The text of the name input.
      */
     private fun checkForNameError(text: String): FormError {
@@ -293,7 +269,7 @@ class AddPowerHourFragment : Fragment() {
     }
 
     /**
-     * Checks for errors on the [durationField].
+     * Checks for errors on the durationField.
      * @param text The text of the duration input.
      */
     private fun checkForDurationError(text: String): FormError {
@@ -307,17 +283,17 @@ class AddPowerHourFragment : Fragment() {
     }
 
     /**
-     * Checks for errors on the [typeField].
+     * Checks for errors on the typeField.
      */
     private fun checkForTypeError(): FormError {
-        if (selectedType == null)
+        if (viewModel.selectedType == null)
             return FormError(true, "The type of workout is required")
 
         return FormError(false, null)
     }
 
     /**
-     * Checks for errors on the [dateField].
+     * Checks for errors on the dateField.
      * @param text The text of the date input.
      */
     private fun checkForDateError(text: String): FormError {

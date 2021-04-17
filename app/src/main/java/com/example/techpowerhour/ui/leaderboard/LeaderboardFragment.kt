@@ -54,9 +54,9 @@ class LeaderboardFragment : Fragment() {
         setupViewModelBinding()
 
         layoutManager = LinearLayoutManager(this.context)
-        binding.powerHourList.layoutManager = layoutManager
+        binding.leaderboardRecyclerView.layoutManager = layoutManager
 
-        updateDisplay()
+        observeLeaderboard()
         changeTitle()
 
         return binding.root
@@ -71,22 +71,29 @@ class LeaderboardFragment : Fragment() {
     }
 
     /**
+     * Observe the leaderboard value from the viewmodel and update the UI.
+     */
+    private fun observeLeaderboard() {
+        viewModel.leaderboard.observe(viewLifecycleOwner, {
+            updateDisplay(it)
+        })
+    }
+
+    /**
      * Update the UI with the list of [LeaderboardUser]. If the list is empty, set appropriate
      * text to inform the user that no values could be found.
+     * @param items The list of the users.
      */
-    private fun updateDisplay() {
-        viewModel.leaderboard.observe(viewLifecycleOwner, {
-            val adapter = LeaderboardUserRecyclerAdapter(it)
-            binding.powerHourList.adapter = adapter
+    fun updateDisplay(items: List<LeaderboardUser>) {
+        val adapter = LeaderboardUserRecyclerAdapter(items)
+        binding.leaderboardRecyclerView.adapter = adapter
 
-            // if no items in leaderboard, show a message to the user
-            if (it.isEmpty()) {
-                binding.listEmptyText.visibility = View.VISIBLE
-            } else {
-                binding.listEmptyText.visibility = View.GONE
-            }
-        })
-
+        // if no items in leaderboard, show a message to the user
+        if (items.isEmpty()) {
+            binding.leaderboardListEmptyText.visibility = View.VISIBLE
+        } else {
+            binding.leaderboardListEmptyText.visibility = View.GONE
+        }
     }
 
     /**

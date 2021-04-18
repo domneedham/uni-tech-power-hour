@@ -55,6 +55,12 @@
         <item quantity="one">Nice job, you have earned %d point!</item>
         <item quantity="other">Nice job, you have earned %d points!</item>
     </plurals>
+    <string name="add_ph_name_missing">The name of the workout is missing</string>
+    <string name="add_ph_duration_missing">The duration of the workout is missing</string>
+    <string name="add_ph_duration_not_number">The duration of the workout is missing</string>
+    <string name="add_ph_type_missing">The type of workout is required</string>
+    <string name="add_ph_date_missing">The date of the workout is missing</string>
+    <string name="add_ph_date_future">The workout can\'t be in the future</string>
 
     <!--    Profile fragment-->
     <string name="profile_statistics_title">Statistics</string>

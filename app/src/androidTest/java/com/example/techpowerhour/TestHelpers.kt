@@ -6,8 +6,10 @@ import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.BoundedMatcher
+import com.google.android.material.textfield.TextInputLayout
 import org.hamcrest.Description
 import org.hamcrest.Matcher
+
 
 object TestHelpers {
     fun hasItemAtPosition(position: Int, matcher: Matcher<View>) : Matcher<View> {
@@ -32,5 +34,29 @@ object TestHelpers {
         override fun perform(uiController: UiController, view: View) =
             click()
             .perform(uiController, view.findViewById<View>(viewId))
+    }
+
+    fun hasErrorText(errorText: String): Matcher<View?> {
+        return object : BoundedMatcher<View?, TextInputLayout>(TextInputLayout::class.java) {
+            override fun describeTo(description: Description) {
+                description.appendText("has no error text: ")
+            }
+
+            override fun matchesSafely(view: TextInputLayout): Boolean {
+                return view.error == errorText
+            }
+        }
+    }
+
+    fun hasNoErrorText(): Matcher<View?> {
+        return object : BoundedMatcher<View?, TextInputLayout>(TextInputLayout::class.java) {
+            override fun describeTo(description: Description) {
+                description.appendText("has no error text: ")
+            }
+
+            override fun matchesSafely(view: TextInputLayout): Boolean {
+                return view.error == null
+            }
+        }
     }
 }

@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.techpowerhour.R
 import com.example.techpowerhour.Repositories
+import com.example.techpowerhour.TEST_MODE
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.data.model.enums.PowerHourType
 import com.example.techpowerhour.databinding.FragmentAddPowerHourBinding
@@ -23,6 +24,8 @@ import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 class AddPowerHourFragment : Fragment() {
+    private var testMode = false
+
     private lateinit var viewModel: AddPowerHourViewModel
 
     private var _binding: FragmentAddPowerHourBinding? = null
@@ -48,6 +51,25 @@ class AddPowerHourFragment : Fragment() {
             // copy the new values into the form fields
             copyValuesFromOldPowerHour()
         }
+
+        if (arguments != null) {
+            val bundleTestMode = requireArguments().get(TEST_MODE)
+            val bundleEdit = requireArguments().get("EDIT")
+            if (bundleTestMode != null) {
+                testMode = bundleTestMode as Boolean
+            }
+            if (bundleEdit != null && testMode) {
+                viewModel.oldPowerHour = PowerHour(
+                    "Test",
+                    30.0,
+                    PowerHourType.Run,
+                    DateHelper.todayEpoch,
+                    "Test"
+                )
+                copyValuesFromOldPowerHour()
+            }
+        }
+
 
         setupCalendarBinding()
         setupDropdownMenu()
@@ -263,7 +285,7 @@ class AddPowerHourFragment : Fragment() {
      */
     private fun checkForNameError(text: String): FormError {
         if (text.isEmpty())
-            return FormError(true, "The name of the workout is missing")
+            return FormError(true, getString(R.string.add_ph_name_missing))
 
         return FormError(false, null)
     }
@@ -274,10 +296,10 @@ class AddPowerHourFragment : Fragment() {
      */
     private fun checkForDurationError(text: String): FormError {
         if (text.isEmpty())
-            return FormError(true, "The duration of the workout is missing")
+            return FormError(true, getString(R.string.add_ph_duration_missing))
 
         if (text.toDoubleOrNull() == null)
-            return FormError(true, "The duration must be a number")
+            return FormError(true, getString(R.string.add_ph_duration_not_number))
 
         return FormError(false, null)
     }
@@ -287,7 +309,7 @@ class AddPowerHourFragment : Fragment() {
      */
     private fun checkForTypeError(): FormError {
         if (viewModel.selectedType == null)
-            return FormError(true, "The type of workout is required")
+            return FormError(true, getString(R.string.add_ph_type_missing))
 
         return FormError(false, null)
     }
@@ -298,10 +320,10 @@ class AddPowerHourFragment : Fragment() {
      */
     private fun checkForDateError(text: String): FormError {
         if (text.isEmpty())
-            return FormError(true, "The date of the workout is missing")
+            return FormError(true, getString(R.string.add_ph_date_missing))
 
         if (DateHelper.parseDateToEpoch(text)!! > DateHelper.todayEpoch)
-            return FormError(true, "The workout can't be in the future")
+            return FormError(true, getString(R.string.add_ph_date_future))
 
         return FormError(false, null)
     }

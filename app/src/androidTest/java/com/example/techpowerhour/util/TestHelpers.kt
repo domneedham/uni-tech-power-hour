@@ -1,4 +1,4 @@
-package com.example.techpowerhour
+package com.example.techpowerhour.util
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

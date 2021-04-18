@@ -1,7 +1,6 @@
 package com.example.techpowerhour
 
 import android.widget.DatePicker
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -16,8 +15,8 @@ import androidx.test.espresso.contrib.PickerActions
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.techpowerhour.TestHelpers.hasErrorText
-import com.example.techpowerhour.TestHelpers.hasNoErrorText
+import com.example.techpowerhour.util.TestHelpers.hasErrorText
+import com.example.techpowerhour.util.TestHelpers.hasNoErrorText
 import com.example.techpowerhour.data.model.enums.PowerHourType
 import com.example.techpowerhour.ui.add_power_hour.AddPowerHourFragment
 import com.example.techpowerhour.util.DateHelper

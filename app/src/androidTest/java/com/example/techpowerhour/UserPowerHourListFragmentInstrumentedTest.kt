@@ -12,8 +12,8 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.techpowerhour.TestHelpers.clickOnViewChild
-import com.example.techpowerhour.TestHelpers.hasItemAtPosition
+import com.example.techpowerhour.util.TestHelpers.clickOnViewChild
+import com.example.techpowerhour.util.TestHelpers.hasItemAtPosition
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.data.model.enums.PowerHourType
 import com.example.techpowerhour.ui.user_power_hour_list.UserPowerHourListFragment

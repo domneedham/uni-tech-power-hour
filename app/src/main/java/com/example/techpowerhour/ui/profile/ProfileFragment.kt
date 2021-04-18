@@ -12,12 +12,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.techpowerhour.LoginActivity
 import com.example.techpowerhour.R
 import com.example.techpowerhour.Repositories
+import com.example.techpowerhour.TEST_MODE
 import com.example.techpowerhour.databinding.FragmentProfileBinding
 import com.example.techpowerhour.ui.add_power_hour.AddPowerHourFragment
 import com.example.techpowerhour.ui.user_power_hour_list.UserPowerHourListFragment
-import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment : Fragment() {
+    private var testMode: Boolean = false
+
     private var _binding: FragmentProfileBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
@@ -38,8 +40,14 @@ class ProfileFragment : Fragment() {
 
         signoutBinding()
 
-        setName()
-        changePowerHourStatisticsText()
+        if (arguments != null) {
+            testMode = requireArguments().getBoolean(TEST_MODE)
+        }
+
+        if (!testMode) {
+            setName()
+            changePowerHourStatisticsText()
+        }
 
         return binding.root
     }
@@ -87,7 +95,7 @@ class ProfileFragment : Fragment() {
      * Update the total points text on the UI with the passed in [points].
      * @param points The total of points the user has earned.
      */
-    private fun updateTotalPointsText(points: Int) {
+    fun updateTotalPointsText(points: Int) {
         val totalPointsText = resources.getQuantityString(
                 R.plurals.profile_statistics_total_points,
                 points,
@@ -100,7 +108,7 @@ class ProfileFragment : Fragment() {
      * Update the total Power Hours completed text on the UI with the passed in [total].
      * @param total The total Power Hours completed by the user.
      */
-    private fun updateTotalPowerHoursCompletedText(total: Int) {
+    fun updateTotalPowerHoursCompletedText(total: Int) {
         val totalPowerHoursText = resources.getQuantityString(
                 R.plurals.profile_statistics_total_power_hours,
                 total,
@@ -135,8 +143,12 @@ class ProfileFragment : Fragment() {
      * Observe the username and update the UI.
      */
     private fun setName() {
-        viewModel.username.observe(viewLifecycleOwner, {
-            binding.profileHeaderName.text = it
+        viewModel.username.observe(viewLifecycleOwner, { name ->
+            updateName(name)
         })
+    }
+
+    fun updateName(name: String) {
+        binding.profileHeaderName.text = name
     }
 }

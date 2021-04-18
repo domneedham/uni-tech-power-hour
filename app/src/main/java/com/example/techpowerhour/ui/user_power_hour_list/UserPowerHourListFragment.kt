@@ -17,7 +17,8 @@ import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.databinding.FragmentUserPowerHourListBinding
 import com.example.techpowerhour.ui.add_power_hour.AddPowerHourFragment
 
-class UserPowerHourListFragment(var testMode: Boolean = false) : Fragment() {
+class UserPowerHourListFragment : Fragment() {
+    private var testMode: Boolean = false
 
     private var _binding: FragmentUserPowerHourListBinding? = null
     // This property is only valid between onCreateView and onDestroyView.

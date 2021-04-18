@@ -76,9 +76,10 @@
     <string name="profile_account_signout_text">Signout of your account</string>
     <string name="profile_power_hour_list_chevron">End icon for card</string>
 
-    <!--    PowerHourList fragment-->
-    <string name="ph_list_edit_icon">Edit icon button for list item</string>
-    <string name="ph_list_delete_icon">Delete icon button for list item</string>
+    <!--    UserPowerHourList fragment-->
+    <string name="user_ph_list_edit_icon">Edit icon button for list item</string>
+    <string name="user_ph_list_delete_icon">Delete icon button for list item</string>
+    <string name="user_ph_list_empty">You have no Power Hours to display!</string>
 
     <!--    Leaderboard fragment-->
     <string name="leaderboard_action_date_range_title">Date Range</string>

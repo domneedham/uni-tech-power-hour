@@ -20,10 +20,9 @@ data class PowerHour(
     var minutes: Double? = null,
     var type: PowerHourType? = null,
     var epochDate: Long? = null,
+    var id: String? = null,
     var userId: String? = null,
 ) {
-    var id: String? = null
-
     private val difficulty: Int?
         get(): Int? = type?.difficulty
 

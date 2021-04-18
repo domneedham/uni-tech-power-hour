@@ -12,11 +12,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.techpowerhour.R
 import com.example.techpowerhour.Repositories
+import com.example.techpowerhour.TEST_MODE
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.databinding.FragmentUserPowerHourListBinding
 import com.example.techpowerhour.ui.add_power_hour.AddPowerHourFragment
 
 class UserPowerHourListFragment : Fragment() {
+    private var testMode: Boolean = false
 
     private var _binding: FragmentUserPowerHourListBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
@@ -34,10 +36,19 @@ class UserPowerHourListFragment : Fragment() {
         _binding = FragmentUserPowerHourListBinding.inflate(inflater, container, false)
 
         layoutManager = LinearLayoutManager(this.context)
-        binding.powerHourList.layoutManager = layoutManager
+        binding.userPowerHourListRecyclerView.layoutManager = layoutManager
 
         setupViewModelBinding()
-        observePowerHourTable()
+
+        if (arguments != null) {
+            testMode = requireArguments().getBoolean(TEST_MODE)
+        }
+
+        // if in test, do not fetch user Power Hours from Firebase
+        if (!testMode) {
+            observePowerHourTable()
+        }
+
         fabFragmentSwitchBinding()
 
         return binding.root
@@ -56,14 +67,29 @@ class UserPowerHourListFragment : Fragment() {
      */
     private fun observePowerHourTable() {
         viewModel.getAllPowerHours().observe(viewLifecycleOwner, { powerHours ->
-            val sortedPowerHours = powerHours.sortedByDescending { it.epochDate }
-            val adapter = PowerHourRecyclerAdapter(
-                    sortedPowerHours,
-                    { powerHour -> editPowerHour(powerHour) },
-                    { powerHour -> deletePowerHour(powerHour) }
-            )
-            binding.powerHourList.adapter = adapter
+            updateDisplay(powerHours)
         })
+    }
+
+    /**
+     * Sort the Power Hours by descending date order and update the UI.
+     * @param powerHours The list of Power Hours.
+     */
+    fun updateDisplay(powerHours: List<PowerHour>) {
+        val sortedPowerHours = powerHours.sortedByDescending { it.epochDate }
+        val adapter = PowerHourRecyclerAdapter(
+                sortedPowerHours,
+                { powerHour -> editPowerHour(powerHour) },
+                { powerHour -> deletePowerHour(powerHour) }
+        )
+        binding.userPowerHourListRecyclerView.adapter = adapter
+
+        // if no items in Power Hour list, show a message to the user
+        if (powerHours.isEmpty()) {
+            binding.userPowerHourListEmptyText.visibility = View.VISIBLE
+        } else {
+            binding.userPowerHourListEmptyText.visibility = View.GONE
+        }
     }
 
     /**

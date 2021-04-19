@@ -20,12 +20,13 @@ import kotlin.math.absoluteValue
  * The service class for the Power Hour persistent storage in Firestore.
  */
 class PowerHourService {
+    private val powerHourPath = DatabaseCollectionPaths.PowerHour.path
     private val db = Firebase.firestore
 
     /**
      * The reference to the power_hours collection.
      */
-    private val powerHoursRef = db.collection(DatabaseCollectionPaths.PowerHour.path)
+    private val powerHoursRef = db.collection(powerHourPath)
 
     /**
      * The reference to the leaderboard collection.
@@ -59,7 +60,7 @@ class PowerHourService {
      * @param powerHour The Power Hour object to insert.
      */
     fun insert(id: String, powerHour: PowerHour) {
-        powerHoursRef.add(powerHour)
+        powerHoursRef.document(id).collection(powerHourPath).add(powerHour)
 
         // insert or update values for the day collections
         val powerHourDayDate = powerHour.epochDate!!
@@ -90,7 +91,8 @@ class PowerHourService {
      * @param newPowerHour The Power Hour object that has been updated.
      */
     fun update(id: String, oldPowerHour: PowerHour, newPowerHour: PowerHour) {
-        powerHoursRef.document(oldPowerHour.id!!).set(newPowerHour)
+        powerHoursRef.document(id).collection(powerHourPath)
+                .document(oldPowerHour.id!!).set(newPowerHour)
 
         // if the updated power hour has changed date
         // the value needs changing in the leaderboard and statistics collections
@@ -187,7 +189,7 @@ class PowerHourService {
      * @param powerHour The Power Hour object to delete.
      */
     fun delete(id: String, powerHour: PowerHour) {
-        powerHoursRef.document(powerHour.id!!).delete()
+        powerHoursRef.document(id).collection(powerHourPath).document(powerHour.id!!).delete()
 
         // delete values from the day collections
         val powerHourDayDate = powerHour.epochDate!!
@@ -363,7 +365,7 @@ class PowerHourService {
             id: String,
             onChangeCallback: ((powerHour: PowerHour, docId: String, change: DocumentChange.Type) -> Unit)
     ) {
-        val query = powerHoursRef.whereEqualTo("userId", id)
+        val query = powerHoursRef.document(id).collection(powerHourPath)
         userPowerHoursDataListener = query.addSnapshotListener { value, error ->
             if (error != null) {
                 Log.w(ContentValues.TAG, "listen:error", error)

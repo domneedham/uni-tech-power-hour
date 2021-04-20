@@ -82,6 +82,10 @@
     <string name="profile_account_signout_text">Signout of your account</string>
     <string name="profile_power_hour_list_chevron">End icon for card</string>
 
+    <string name="profile_name_placeholder">John Doe</string>
+    <string name="profile_points_placeholder">You have earned 0 points</string>
+    <string name="profile_total_power_hours_placeholder">You have completed 0 Power Hours</string>
+
     <!--    UserPowerHourList fragment-->
     <string name="user_ph_list_edit_icon">Edit icon button for list item</string>
     <string name="user_ph_list_delete_icon">Delete icon button for list item</string>
@@ -98,6 +102,8 @@
     <string name="leaderboard_title_week">Leaderboard This Week</string>
     <string name="leaderboard_title_month">Leaderboard This Month</string>
     <string name="leaderboard_empty_text">No leaderboard available for the current date selection</string>
+
+    <string name="leaderboard_item_img_desc">Profile picture</string>
 
     <!--    Power Hour display names-->
     <string name="ph_type_walk">Walk</string>

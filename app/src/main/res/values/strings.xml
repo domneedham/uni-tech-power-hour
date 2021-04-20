@@ -82,6 +82,10 @@
     <string name="profile_account_signout_text">Signout of your account</string>
     <string name="profile_power_hour_list_chevron">End icon for card</string>
 
+    <string name="profile_name_placeholder">John Doe</string>
+    <string name="profile_points_placeholder">You have earned 0 points</string>
+    <string name="profile_total_power_hours_placeholder">You have completed 0 Power Hours</string>
+
     <!--    UserPowerHourList fragment-->
     <string name="user_ph_list_edit_icon">Edit icon button for list item</string>
     <string name="user_ph_list_delete_icon">Delete icon button for list item</string>

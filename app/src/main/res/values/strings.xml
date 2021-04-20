@@ -99,6 +99,8 @@
     <string name="leaderboard_title_month">Leaderboard This Month</string>
     <string name="leaderboard_empty_text">No leaderboard available for the current date selection</string>
 
+    <string name="leaderboard_item_img_desc">Profile picture</string>
+
     <!--    Power Hour display names-->
     <string name="ph_type_walk">Walk</string>
     <string name="ph_type_run">Run</string>

@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/circle_background"
             android:padding="4dp"
-            android:src="@drawable/ic_account_circle_24dp"/>
+            android:src="@drawable/ic_account_circle_24dp"
+            android:contentDescription="@string/leaderboard_item_img_desc"/>
 
     </RelativeLayout>
 

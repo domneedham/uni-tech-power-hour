@@ -11,6 +11,7 @@
 
     <!--    Login activity-->
     <string name="login_button">Login or Signup</string>
+    <string name="login_email_sent">Please verify your email by clinking the link sent to you</string>
 
     <!--    Home fragment-->
     <string name="home_company_statistics_title_today">Today</string>

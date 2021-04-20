@@ -1,22 +1,30 @@
-package com.example.techpowerhour
+package com.example.techpowerhour.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.techpowerhour.R
+import com.example.techpowerhour.Repositories
+import com.example.techpowerhour.ui.leaderboard.LeaderboardViewModel
+import com.example.techpowerhour.ui.leaderboard.LeaderboardViewModelFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-    val auth = FirebaseAuth.getInstance()
+    private lateinit var viewModel: MainActivityViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         Repositories.onInit()
+
+        setupViewModelBinding()
 
         setContentView(R.layout.activity_main)
 
@@ -32,8 +40,13 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         lifecycleScope.launch {
-            setUser()
+            viewModel.setUser()
         }
+    }
+
+    private fun setupViewModelBinding() {
+        val viewModelFactory = MainActivityViewModelFactory(Repositories.user.value)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
     }
 
     override fun onDestroy() {
@@ -44,10 +57,5 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp() || super.onSupportNavigateUp()
-    }
-
-    private suspend fun setUser() {
-        val userRepo = Repositories.user.value
-        userRepo.setCurrentUser(auth.uid!!)
     }
 }

@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.techpowerhour.LoginActivity
+import com.example.techpowerhour.ui.login.LoginActivity
 import com.example.techpowerhour.R
 import com.example.techpowerhour.Repositories
 import com.example.techpowerhour.TEST_MODE
@@ -56,7 +56,7 @@ class ProfileFragment : Fragment() {
      * Setup the binding to the viewmodel.
      */
     private fun setupViewModelBinding() {
-        val viewModelFactory = ProfileViewModelFactory(Repositories.powerHour.value)
+        val viewModelFactory = ProfileViewModelFactory(Repositories.powerHour.value, Repositories.user.value)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java)
     }
 

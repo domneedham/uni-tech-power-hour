@@ -1,23 +1,27 @@
-package com.example.techpowerhour
+package com.example.techpowerhour.ui.login
 
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.activity.viewModels
+import com.example.techpowerhour.ui.main.MainActivity
+import com.example.techpowerhour.R
 import com.example.techpowerhour.databinding.ActivityLoginBinding
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
-import com.google.firebase.auth.FirebaseAuth
+import com.google.android.material.snackbar.Snackbar
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (auth.currentUser != null) {
+        setupViewModelBinding()
+
+        if (viewModel.user != null) {
             displayNewActivity()
         } else {
             setContentView(R.layout.activity_main)
@@ -27,6 +31,11 @@ class LoginActivity : AppCompatActivity() {
 
             setContentView(binding.root)
         }
+    }
+
+    private fun setupViewModelBinding() {
+        val vm: LoginViewModel by viewModels()
+        viewModel = vm
     }
 
     companion object {
@@ -54,9 +63,17 @@ class LoginActivity : AppCompatActivity() {
             val response = IdpResponse.fromResultIntent(data)
             //Check the exit from intent was successful
             if (resultCode == Activity.RESULT_OK) {
+                // set the user variable in the viewmodel
+                viewModel.resetUser()
                 //Check email has been verified – if not
-                if(!auth.currentUser!!.isEmailVerified) {
-                    verifyEmail()
+                if(!viewModel.user!!.isEmailVerified) {
+                    viewModel.verifyEmail()
+
+                    Snackbar.make(
+                            findViewById(android.R.id.content),
+                            getString(R.string.login_email_sent),
+                            Snackbar.LENGTH_LONG
+                    ).show()
 
                     //display the sign in page again
                     displaySignIn()
@@ -73,17 +90,4 @@ class LoginActivity : AppCompatActivity() {
         startActivity(nextIntent)
         finish()
     }
-
-    private fun verifyEmail() {
-        val user = auth.currentUser
-        user?.sendEmailVerification()
-            ?.addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Log.w("Login", "Verification email sent to " + user.email)
-                } else {
-                    Log.e("Login", "sendEmailVerification", task.exception)
-                }
-            }
-    }
-
 }

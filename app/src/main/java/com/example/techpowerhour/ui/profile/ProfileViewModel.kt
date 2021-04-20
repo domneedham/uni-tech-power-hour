@@ -5,27 +5,30 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.techpowerhour.data.model.PowerHour
 import com.example.techpowerhour.data.repository.PowerHourRepository
+import com.example.techpowerhour.data.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
 
-class ProfileViewModel(private val repository: PowerHourRepository) : ViewModel() {
-    private val auth = FirebaseAuth.getInstance()
+class ProfileViewModel(
+        private val phRepo: PowerHourRepository,
+        private val userRepo: UserRepository
+) : ViewModel() {
     val username = MutableLiveData<String>()
 
     init {
-        username.value = auth.currentUser!!.displayName
+        username.value = userRepo.currentUser!!.name!!
     }
 
     /**
      * Fetch the user Power Hour list.
      */
     fun getPowerHours(): LiveData<List<PowerHour>> {
-        return repository.userPowerHoursLD
+        return phRepo.userPowerHoursLD
     }
 
     /**
      * Signout from the app.
      */
     fun signOut() {
-        auth.signOut()
+        userRepo.signOut()
     }
 }

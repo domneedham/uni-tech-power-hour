@@ -51,10 +51,12 @@ class LoginActivity : AppCompatActivity() {
             AuthUI.IdpConfig.EmailBuilder().build())
         startActivityForResult( // Create and launch sign-in intent
             AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(providers)
-                .build(),
-            RC_SIGN_IN)
+                    .createSignInIntentBuilder()
+                    .setTheme(R.style.Theme_TechPowerHour)
+                    .setAvailableProviders(providers)
+                    .build(),
+            RC_SIGN_IN
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

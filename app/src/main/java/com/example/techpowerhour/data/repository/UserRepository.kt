@@ -70,4 +70,12 @@ class UserRepository(private val service: UserService) : BaseRepository() {
     suspend fun getById(id: String): User? {
         return service.getById(id)
     }
+
+    /**
+     * Sign the user out of the application.
+     */
+    fun signOut() {
+        auth.signOut()
+        currentUser = null
+    }
 }

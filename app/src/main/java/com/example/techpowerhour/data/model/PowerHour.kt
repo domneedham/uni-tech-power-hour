@@ -11,10 +11,9 @@ import kotlin.math.ceil
  * @property type The type of the Power Hour completed.
  * @property epochDate The date the Power Hour was completed formatted as Long for easy serialisation.
  * @property userId The user id who created the Power Hour.
- * @property difficulty The difficulty of the Power Hour. Determined from the type of Power Hour (PowerHourType enum).
+ * @property difficulty The difficulty of the Power Hour. Determined from the type of Power Hour ([PowerHourType] enum).
  * @property points The points earned for the Power Hour.
  */
-
 data class PowerHour(
     var name: String? = null,
     var minutes: Double? = null,

@@ -230,4 +230,5 @@
     style="@style/AddPowerHourFAB"
     android:src="@drawable/ic_plus_24dp"
     android:contentDescription="@string/fab_add_content" />
+
 </FrameLayout>

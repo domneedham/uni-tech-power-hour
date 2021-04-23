@@ -8,11 +8,12 @@ import com.example.techpowerhour.data.repository.UserRepository
 @Suppress("UNCHECKED_CAST")
 class ProfileViewModelFactory(
         private val phRepo: PowerHourRepository,
-        private val userRepo: UserRepository
+        private val userRepo: UserRepository,
+        private val testMode: Boolean = false,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
-            return ProfileViewModel(phRepo, userRepo) as T
+            return ProfileViewModel(phRepo, userRepo, testMode) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

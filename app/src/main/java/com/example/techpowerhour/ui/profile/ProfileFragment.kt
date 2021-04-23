@@ -33,16 +33,16 @@ class ProfileFragment : Fragment() {
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
+        if (arguments != null) {
+            testMode = requireArguments().getBoolean(TEST_MODE)
+        }
+
         setupViewModelBinding()
 
         fabFragmentSwitchBinding()
         powerHourListFragmentSwitchBinding()
 
         signoutBinding()
-
-        if (arguments != null) {
-            testMode = requireArguments().getBoolean(TEST_MODE)
-        }
 
         if (!testMode) {
             setName()
@@ -56,7 +56,7 @@ class ProfileFragment : Fragment() {
      * Setup the binding to the viewmodel.
      */
     private fun setupViewModelBinding() {
-        val viewModelFactory = ProfileViewModelFactory(Repositories.powerHour.value, Repositories.user.value)
+        val viewModelFactory = ProfileViewModelFactory(Repositories.powerHour.value, Repositories.user.value, testMode)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ProfileViewModel::class.java)
     }
 

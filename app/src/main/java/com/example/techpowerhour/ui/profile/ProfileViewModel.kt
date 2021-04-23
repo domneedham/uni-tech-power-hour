@@ -10,12 +10,14 @@ import com.google.firebase.auth.FirebaseAuth
 
 class ProfileViewModel(
         private val phRepo: PowerHourRepository,
-        private val userRepo: UserRepository
+        private val userRepo: UserRepository,
+        private val testMode: Boolean
 ) : ViewModel() {
     val username = MutableLiveData<String>()
 
     init {
-        username.value = userRepo.currentUser!!.name!!
+        if (testMode) username.value = "Test User"
+        else username.value = userRepo.currentUser!!.name!!
     }
 
     /**

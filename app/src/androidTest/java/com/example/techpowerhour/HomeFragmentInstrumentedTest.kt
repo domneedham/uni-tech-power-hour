@@ -1,5 +1,6 @@
 package com.example.techpowerhour
 
+import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -12,9 +13,16 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class HomeFragmentInstrumentedTest {
+
+    private fun getScenario(): FragmentScenario<HomeFragment> {
+        return launchFragmentInContainer<HomeFragment>(
+                themeResId = R.style.Theme_TechPowerHour
+        )
+    }
+
     @Test
     fun verifyCompanyPointsStatisticsAreDisplayedForTheDay() {
-        launchFragmentInContainer<HomeFragment>(themeResId = R.style.Theme_AppCompat)
+        getScenario()
 
         onView(withId(R.id.company_points_layout_today_title))
             .check(matches(withText(R.string.home_company_statistics_title_today)))
@@ -26,7 +34,7 @@ class HomeFragmentInstrumentedTest {
     }
     @Test
     fun verifyCompanyPointsStatisticsAreDisplayedForTheWeek() {
-        launchFragmentInContainer<HomeFragment>(themeResId = R.style.Theme_AppCompat)
+        getScenario()
 
         onView(withId(R.id.company_points_layout_week_title))
             .check(matches(withText(R.string.home_company_statistics_title_week)))
@@ -38,7 +46,7 @@ class HomeFragmentInstrumentedTest {
     }
     @Test
     fun verifyCompanyPointsStatisticsAreDisplayedForTheMonth() {
-        launchFragmentInContainer<HomeFragment>(themeResId = R.style.Theme_AppCompat)
+        getScenario()
 
         onView(withId(R.id.company_points_layout_month_title))
             .check(matches(withText(R.string.home_company_statistics_title_month)))
@@ -51,7 +59,7 @@ class HomeFragmentInstrumentedTest {
 
     @Test
     fun verifyCompanyPowerHourTotalStatisticsAreDisplayedForTheDay() {
-        launchFragmentInContainer<HomeFragment>(themeResId = R.style.Theme_AppCompat)
+        getScenario()
 
         onView(withId(R.id.company_power_hours_layout_today_title))
             .check(matches(withText(R.string.home_company_statistics_title_today)))
@@ -63,7 +71,7 @@ class HomeFragmentInstrumentedTest {
     }
     @Test
     fun verifyCompanyPowerHourTotalStatisticsAreDisplayedForTheWeek() {
-        launchFragmentInContainer<HomeFragment>(themeResId = R.style.Theme_AppCompat)
+        getScenario()
 
         onView(withId(R.id.company_power_hours_layout_week_title))
             .check(matches(withText(R.string.home_company_statistics_title_week)))
@@ -75,7 +83,7 @@ class HomeFragmentInstrumentedTest {
     }
     @Test
     fun verifyCompanyPowerHourTotalStatisticsAreDisplayedForTheMonth() {
-        launchFragmentInContainer<HomeFragment>(themeResId = R.style.Theme_AppCompat)
+        getScenario()
 
         onView(withId(R.id.company_power_hours_layout_month_title))
             .check(matches(withText(R.string.home_company_statistics_title_month)))

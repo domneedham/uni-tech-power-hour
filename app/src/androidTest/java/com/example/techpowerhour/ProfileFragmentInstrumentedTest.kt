@@ -33,7 +33,7 @@ class ProfileFragmentInstrumentedTest {
 
     private fun getScenario(): FragmentScenario<ProfileFragment> {
         return launchFragmentInContainer<ProfileFragment>(
-            themeResId = R.style.Theme_AppCompat,
+            themeResId = R.style.Theme_TechPowerHour,
             fragmentArgs = bundleOf(TEST_MODE to true)
         )
     }

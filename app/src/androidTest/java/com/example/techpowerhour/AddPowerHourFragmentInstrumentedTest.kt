@@ -29,14 +29,14 @@ import org.junit.runner.RunWith
 class AddPowerHourFragmentInstrumentedTest {
     private fun getScenario(): FragmentScenario<AddPowerHourFragment> {
         return launchFragmentInContainer<AddPowerHourFragment>(
-            themeResId = R.style.Theme_MaterialComponents,
+            themeResId = R.style.Theme_TechPowerHour,
             fragmentArgs = bundleOf(TEST_MODE to true)
         )
     }
 
     private fun getScenarioEdit(): FragmentScenario<AddPowerHourFragment> {
         return launchFragmentInContainer<AddPowerHourFragment>(
-            themeResId = R.style.Theme_MaterialComponents,
+            themeResId = R.style.Theme_TechPowerHour,
             fragmentArgs = bundleOf(TEST_MODE to true, "EDIT" to true)
         )
     }

@@ -34,7 +34,7 @@ class UserPowerHourListFragmentInstrumentedTest {
 
     private fun getScenario() : FragmentScenario<UserPowerHourListFragment> {
         return launchFragmentInContainer(
-                themeResId = R.style.Theme_AppCompat,
+                themeResId = R.style.Theme_TechPowerHour,
                 fragmentArgs = bundleOf(TEST_MODE to true)
         )
     }

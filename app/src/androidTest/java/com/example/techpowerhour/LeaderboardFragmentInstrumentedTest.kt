@@ -2,6 +2,7 @@ package com.example.techpowerhour
 
 import android.app.Application
 import androidx.appcompat.view.menu.ActionMenuItem
+import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
@@ -23,6 +24,12 @@ class LeaderboardFragmentInstrumentedTest {
     private val populatedListOne = arrayListOf(userOne)
     private val populatedListTwo = arrayListOf(userOne, userTwo)
 
+    private fun getScenario(): FragmentScenario<LeaderboardFragment> {
+        return launchFragmentInContainer<LeaderboardFragment>(
+                themeResId = R.style.Theme_TechPowerHour
+        )
+    }
+
     private fun createOptionMenu(option: Int) : ActionMenuItem {
         // Create a dummy menu item with the desired item id.
         val context = ApplicationProvider.getApplicationContext<Application>()
@@ -31,7 +38,7 @@ class LeaderboardFragmentInstrumentedTest {
 
     @Test
     fun verifyTitleDisplaysForDateSelectionOfDay() {
-        val scenario = launchFragmentInContainer<LeaderboardFragment>(themeResId = R.style.Theme_AppCompat)
+        val scenario = getScenario()
 
         val addMenuItem = createOptionMenu(R.id.action_date_range_today)
 
@@ -46,7 +53,7 @@ class LeaderboardFragmentInstrumentedTest {
 
     @Test
     fun verifyTitleDisplaysForDateSelectionOfWeek() {
-        val scenario = launchFragmentInContainer<LeaderboardFragment>(themeResId = R.style.Theme_AppCompat)
+        val scenario = getScenario()
 
         val addMenuItem = createOptionMenu(R.id.action_date_range_week)
 
@@ -61,7 +68,7 @@ class LeaderboardFragmentInstrumentedTest {
 
     @Test
     fun verifyTitleDisplaysForDateSelectionOfMonth() {
-        val scenario = launchFragmentInContainer<LeaderboardFragment>(themeResId = R.style.Theme_AppCompat)
+        val scenario = getScenario()
 
         val addMenuItem = createOptionMenu(R.id.action_date_range_month)
 
@@ -76,7 +83,7 @@ class LeaderboardFragmentInstrumentedTest {
 
     @Test
     fun verifyNoItemsFoundTextIsDisplayedIfLeaderboardIsNotPopulatedForToday() {
-        val scenario = launchFragmentInContainer<LeaderboardFragment>(themeResId = R.style.Theme_AppCompat)
+        val scenario = getScenario()
 
         val addMenuItem = createOptionMenu(R.id.action_date_range_today)
 
@@ -92,7 +99,7 @@ class LeaderboardFragmentInstrumentedTest {
 
     @Test
     fun verifyNoItemsFoundTextIsDisplayedIfLeaderboardIsNotPopulatedForWeek() {
-        val scenario = launchFragmentInContainer<LeaderboardFragment>(themeResId = R.style.Theme_AppCompat)
+        val scenario = getScenario()
 
         val addMenuItem = createOptionMenu(R.id.action_date_range_week)
 
@@ -108,7 +115,7 @@ class LeaderboardFragmentInstrumentedTest {
 
     @Test
     fun verifyNoItemsFoundTextIsDisplayedIfLeaderboardIsNotPopulatedForMonth() {
-        val scenario = launchFragmentInContainer<LeaderboardFragment>(themeResId = R.style.Theme_AppCompat)
+        val scenario = getScenario()
 
         val addMenuItem = createOptionMenu(R.id.action_date_range_month)
 
@@ -124,7 +131,7 @@ class LeaderboardFragmentInstrumentedTest {
 
     @Test
     fun verifyNoItemsFoundTextIsNotDisplayedIfLeaderboardIsPopulatedForToday() {
-        val scenario = launchFragmentInContainer<LeaderboardFragment>(themeResId = R.style.Theme_AppCompat)
+        val scenario = getScenario()
 
         val addMenuItem = createOptionMenu(R.id.action_date_range_today)
 
@@ -140,7 +147,7 @@ class LeaderboardFragmentInstrumentedTest {
 
     @Test
     fun verifyNoItemsFoundTextIsNotDisplayedIfLeaderboardIsPopulatedForWeek() {
-        val scenario = launchFragmentInContainer<LeaderboardFragment>(themeResId = R.style.Theme_AppCompat)
+        val scenario = getScenario()
 
         val addMenuItem = createOptionMenu(R.id.action_date_range_week)
 
@@ -156,7 +163,7 @@ class LeaderboardFragmentInstrumentedTest {
 
     @Test
     fun verifyNoItemsFoundTextIsNotDisplayedIfLeaderboardIsPopulatedForMonth() {
-        val scenario = launchFragmentInContainer<LeaderboardFragment>(themeResId = R.style.Theme_AppCompat)
+        val scenario = getScenario()
 
         val addMenuItem = createOptionMenu(R.id.action_date_range_month)
 
@@ -172,7 +179,7 @@ class LeaderboardFragmentInstrumentedTest {
 
     @Test
     fun verifyFirstItemInLeaderboardListStartsAtNumberOne() {
-        val scenario = launchFragmentInContainer<LeaderboardFragment>(themeResId = R.style.Theme_AppCompat)
+        val scenario = getScenario()
 
         scenario.onFragment { fragment ->
             fragment.updateDisplay(populatedListOne)
@@ -184,7 +191,7 @@ class LeaderboardFragmentInstrumentedTest {
 
     @Test
     fun verifyItemInLeaderboardUsesNameAsPrimaryText() {
-        val scenario = launchFragmentInContainer<LeaderboardFragment>(themeResId = R.style.Theme_AppCompat)
+        val scenario = getScenario()
 
         scenario.onFragment { fragment ->
             fragment.updateDisplay(populatedListOne)
@@ -196,7 +203,7 @@ class LeaderboardFragmentInstrumentedTest {
 
     @Test
     fun verifyItemInLeaderboardUsesPointsAsSecondaryText() {
-        val scenario = launchFragmentInContainer<LeaderboardFragment>(themeResId = R.style.Theme_AppCompat)
+        val scenario = getScenario()
 
         scenario.onFragment { fragment ->
             fragment.updateDisplay(populatedListOne)

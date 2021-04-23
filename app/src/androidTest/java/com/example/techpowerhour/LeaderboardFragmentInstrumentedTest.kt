@@ -15,7 +15,6 @@ import org.hamcrest.core.IsNot.not
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
 class LeaderboardFragmentInstrumentedTest {
     private val userOne = LeaderboardUser("one", "User One", 5)

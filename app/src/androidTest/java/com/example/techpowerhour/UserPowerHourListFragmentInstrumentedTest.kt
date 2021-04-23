@@ -22,7 +22,6 @@ import org.hamcrest.core.IsNot.not
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
 class UserPowerHourListFragmentInstrumentedTest {
     private val phOne = PowerHour("Today", 30.0, PowerHourType.Walk, DateHelper.todayEpoch, "One")

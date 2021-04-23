@@ -32,6 +32,7 @@ class HomeFragmentInstrumentedTest {
         onView(withId(R.id.company_points_layout_today_text))
             .check(matches(isDisplayed()))
     }
+
     @Test
     fun verifyCompanyPointsStatisticsAreDisplayedForTheWeek() {
         getScenario()
@@ -44,6 +45,7 @@ class HomeFragmentInstrumentedTest {
         onView(withId(R.id.company_points_layout_week_text))
             .check(matches(isDisplayed()))
     }
+
     @Test
     fun verifyCompanyPointsStatisticsAreDisplayedForTheMonth() {
         getScenario()
@@ -69,6 +71,7 @@ class HomeFragmentInstrumentedTest {
         onView(withId(R.id.company_power_hours_layout_today_text))
             .check(matches(isDisplayed()))
     }
+
     @Test
     fun verifyCompanyPowerHourTotalStatisticsAreDisplayedForTheWeek() {
         getScenario()
@@ -81,6 +84,7 @@ class HomeFragmentInstrumentedTest {
         onView(withId(R.id.company_power_hours_layout_week_text))
             .check(matches(isDisplayed()))
     }
+
     @Test
     fun verifyCompanyPowerHourTotalStatisticsAreDisplayedForTheMonth() {
         getScenario()

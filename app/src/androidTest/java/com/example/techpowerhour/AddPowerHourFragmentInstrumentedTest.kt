@@ -24,9 +24,9 @@ import org.hamcrest.Matchers.equalTo
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
 class AddPowerHourFragmentInstrumentedTest {
+
     private fun getScenario(): FragmentScenario<AddPowerHourFragment> {
         return launchFragmentInContainer<AddPowerHourFragment>(
             themeResId = R.style.Theme_TechPowerHour,
